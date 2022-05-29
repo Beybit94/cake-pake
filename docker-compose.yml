@@ -1,0 +1,36 @@
+services:
+  web:
+    image: cake-pake:latest
+    ports:
+      - "1000:1000"
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - parking-net
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=224a9d3dccd04a758443ccd5beee7490
+      - POSTGRES_DB=cake
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - parking-net
+networks:
+  parking-net:
+    external: true
+version: '2.1'
