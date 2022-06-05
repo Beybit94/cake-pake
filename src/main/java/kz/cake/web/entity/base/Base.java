@@ -1,6 +1,6 @@
-package kz.cake.web.entity;
+package kz.cake.web.entity.base;
 
-abstract class Base<T> {
+public abstract class Base<T> {
     private T id;
     private boolean active;
 
@@ -19,4 +19,10 @@ abstract class Base<T> {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public abstract String getTableName();
+
+    public abstract String getParameters();
+
+    public abstract String getCreateTableSql();
 }

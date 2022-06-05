@@ -1,12 +1,14 @@
 package kz.cake.web.entity;
 
+import kz.cake.web.entity.base.Base;
+
 public class User extends Base<Long> {
     private String name;
     private String password;
     private String sex;
     private String address;
 
-    private User() {
+    public User() {
         super();
     }
 
@@ -16,6 +18,28 @@ public class User extends Base<Long> {
         this.password = password;
         this.sex = sex;
         this.address = address;
+    }
+
+    @Override
+    public String getTableName(){
+        return "web.users";
+    }
+
+    @Override
+    public String getParameters() {
+        return "id,username,password,sex,address,active";
+    }
+
+    @Override
+    public String getCreateTableSql() {
+        return String.format("CREATE TABLE IF NOT EXISTS %s (" +
+                "id bigserial PRIMARY KEY," +
+                "username varchar(150) UNIQUE NOT NULL," +
+                "password varchar(20) NOT NULL," +
+                "sex varchar(10) NOT NULL," +
+                "address varchar(255) NOT NULL," +
+                "active boolean DEFAULT true not null" +
+                ");", getTableName());
     }
 
     public String getName(){

@@ -1,22 +1,34 @@
 package kz.cake.web.entity;
 
+import kz.cake.web.entity.base.BaseDictionary;
+
 public class OrderStatus extends BaseDictionary<Long> {
-    private OrderStatus(String code) {
-        super(code);
+    public OrderStatus() {
+        super();
+    }
+
+    private OrderStatus(Long localId) {
+        super(localId);
+    }
+
+    @Override
+    public String getTableName() {
+        return "web.order_status";
     }
 
     public static class Builder {
-        private String code;
+        private Long localId;
 
-        public Builder(){}
+        public Builder() {
+        }
 
-        public Builder code(String code) {
-            this.code = code;
+        public Builder localId(Long localId) {
+            this.localId = localId;
             return this;
         }
 
         public OrderStatus build() {
-            return new OrderStatus(code);
+            return new OrderStatus(localId);
         }
     }
 }

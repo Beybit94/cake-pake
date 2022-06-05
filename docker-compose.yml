@@ -2,8 +2,12 @@ services:
   web:
     image: cake-pake:latest
     ports:
-      - "1000:1000"
+      - "8080:8080"
     restart: always
+    environment:
+      - url=jdbc:postgresql://db:5432/cake
+      - username=postgres
+      - password=postgres
     logging:
       options:
         max-size: 50m
@@ -13,16 +17,16 @@ services:
     networks:
       - parking-net
   db:
+    container_name: db
     image: postgres
     ports:
       - "5432:5432"
     restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=224a9d3dccd04a758443ccd5beee7490
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=cake
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - DB_HOST=127.0.0.1
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -30,6 +34,18 @@ services:
       retries: 5
     networks:
       - parking-net
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aka.beka94@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - parking-net
+    restart: always
 networks:
   parking-net:
     external: true

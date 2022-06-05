@@ -1,22 +1,34 @@
 package kz.cake.web.entity;
 
+import kz.cake.web.entity.base.BaseDictionary;
+
 public class Role extends BaseDictionary<Long> {
-    private Role(String code) {
-        super(code);
+    public Role() {
+        super();
+    }
+
+    private Role(Long localId) {
+        super(localId);
+    }
+
+    @Override
+    public String getTableName() {
+        return "web.roles";
     }
 
     public static class Builder {
-        private String code;
+        private Long localId;
 
-        public Builder(){}
+        public Builder() {
+        }
 
-        public Builder code(String code) {
-            this.code = code;
+        public Builder localId(Long localId) {
+            this.localId = localId;
             return this;
         }
 
         public Role build() {
-            return new Role(code);
+            return new Role(localId);
         }
     }
 }
