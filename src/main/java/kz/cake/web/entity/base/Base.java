@@ -1,5 +1,10 @@
 package kz.cake.web.entity.base;
 
+import kz.cake.web.helper.StringUtils;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public abstract class Base<T> {
     private T id;
     private boolean active;
@@ -25,4 +30,30 @@ public abstract class Base<T> {
     public abstract String getParameters();
 
     public abstract String getCreateTableSql();
+
+    public String getCreateSql() {
+        String parameters = StringUtils.skipFirstElement(getParameters());
+        String valuesStr = String.join(",", Arrays.stream(parameters.split(","))
+                .map(p -> "?")
+                .collect(Collectors.toList()));
+        String sql = String.format("insert into %s(%s) values(%s)", getTableName(), parameters, valuesStr);
+        return sql;
+    }
+
+    public String getReadSql() {
+        return String.format("select %s from %s order by id", getParameters(), getTableName());
+    }
+
+    public String getUpdateSql() {
+        String parameters = StringUtils.skipFirstElement(getParameters());
+        String valuesStr = String.join(",", Arrays.stream(StringUtils.skipFirstElement(parameters).split(","))
+                .map(p -> p + " = ?")
+                .collect(Collectors.toList()));
+        String sql = String.format("update %s set %s where id=%d", getTableName(), valuesStr, id);
+        return sql;
+    }
+
+    public String getDeleteSql() {
+        return String.format("update %s set active=false where id=%d;", getTableName(), id);
+    }
 }
