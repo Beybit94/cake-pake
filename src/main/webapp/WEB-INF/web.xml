@@ -11,9 +11,6 @@
     <listener>
         <listener-class>kz.cake.web.ContextListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>kz.cake.web.RequestListener</listener-class>
-    </listener>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -32,5 +29,26 @@
     <servlet-mapping>
         <servlet-name>BaseController</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ico</url-pattern>
     </servlet-mapping>
 </web-app>
