@@ -17,7 +17,7 @@ public abstract class BaseDictionary<T> extends Base<T> {
 
     @Override
     public String getParameters() {
-        return "id,local_id,active";
+        return "id,active,local_id";
     }
 
     @Override

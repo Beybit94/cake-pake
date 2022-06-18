@@ -9,10 +9,7 @@ import org.apache.log4j.Logger;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class BaseRepository<T extends Base> implements CrudRepository<T> {
     private final Logger logger = LogManager.getLogger(this.getClass().getName());
@@ -37,7 +34,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
             setQueryParameters(preparedStatement, entity, true);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
-            logger.error(e);
+            e.printStackTrace();
         } finally {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }
@@ -86,11 +83,16 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         }
     }
 
+    @Override
+    public List<T> getAll() {
+        return null;
+    }
+
     private Map<Integer, Object> getFields(T t, boolean skipFirst) throws IllegalAccessException {
         Map<Integer, Object> result = new HashMap<>();
-        Field[] fields = t.getClass().getDeclaredFields();
+        Field[] fields = getAllFields(t.getClass());
 
-        int iterator = 0;
+        int iterator = 1;
         for (int i = 0; i < fields.length; i++) {
             if (skipFirst && i == 0) continue;
 
@@ -99,7 +101,17 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
             result.put(iterator, field.get(t));
             iterator++;
         }
+
         return result;
+    }
+
+    private Field[] getAllFields(Class klass) {
+        List<Field> fields = new ArrayList<>();
+        if (klass.getSuperclass() != null) {
+            fields.addAll(Arrays.asList(getAllFields(klass.getSuperclass())));
+        }
+        fields.addAll(Arrays.asList(klass.getDeclaredFields()));
+        return fields.toArray(new Field[]{});
     }
 
     private void setFields(T t, ResultSet resultSet) throws SQLException, NoSuchFieldException, IllegalAccessException {
@@ -131,12 +143,12 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
                 preparedStatement.setDouble(i, (Double) value);
             } else if (value instanceof BigDecimal) {
                 preparedStatement.setBigDecimal(i, (BigDecimal) value);
-            } else if (value instanceof LocalDateTime) {
-                preparedStatement.setTimestamp(i, Timestamp.valueOf((LocalDateTime) value));
             } else if (value instanceof Boolean) {
                 preparedStatement.setBoolean(i, (Boolean) value);
+            } else if (value instanceof String) {
+                preparedStatement.setString(i, (String) value);
             } else {
-                preparedStatement.setString(i, value.toString());
+                preparedStatement.setObject(i, value);
             }
         }
     }

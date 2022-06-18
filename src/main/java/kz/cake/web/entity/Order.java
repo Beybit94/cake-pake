@@ -3,21 +3,22 @@ package kz.cake.web.entity;
 import kz.cake.web.entity.base.Base;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Order extends Base<Long> {
     private Long userId;
     private Long orderDetailId;
     private Long orderStatusId;
-    private LocalDateTime orderDate;
-    private LocalDateTime shippingDate;
+    private Timestamp orderDate;
+    private Timestamp shippingDate;
     private BigDecimal total;
 
     public Order() {
         super();
     }
 
-    private Order(Long userId, Long orderDetailId, Long orderStatusId, LocalDateTime orderDate, LocalDateTime shippingDate, BigDecimal total) {
+    private Order(Long userId, Long orderDetailId, Long orderStatusId, Timestamp orderDate, Timestamp shippingDate, BigDecimal total) {
         this.userId = userId;
         this.orderDetailId = orderDetailId;
         this.orderStatusId = orderStatusId;
@@ -33,7 +34,7 @@ public class Order extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,user_id,order_detail_id,order_status_id,order_date,shipping_date,total,active";
+        return "id,active,user_id,order_detail_id,order_status_id,order_date,shipping_date,total";
     }
 
     @Override
@@ -65,11 +66,11 @@ public class Order extends Base<Long> {
         return orderStatusId;
     }
 
-    public LocalDateTime getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
-    public LocalDateTime getShippingDate() {
+    public Timestamp getShippingDate() {
         return shippingDate;
     }
 
@@ -81,8 +82,8 @@ public class Order extends Base<Long> {
         private Long userId;
         private Long orderDetailId;
         private Long orderStatusId;
-        private LocalDateTime orderDate;
-        private LocalDateTime shippingDate;
+        private Timestamp orderDate;
+        private Timestamp shippingDate;
         private BigDecimal total;
 
         public Builder userId(Long userId) {
@@ -100,12 +101,12 @@ public class Order extends Base<Long> {
             return this;
         }
 
-        public Builder orderDate(LocalDateTime orderDate) {
+        public Builder orderDate(Timestamp orderDate) {
             this.orderDate = orderDate;
             return this;
         }
 
-        public Builder shippingDate(LocalDateTime shippingDate) {
+        public Builder shippingDate(Timestamp shippingDate) {
             this.shippingDate = shippingDate;
             return this;
         }

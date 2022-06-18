@@ -21,7 +21,7 @@ public class UserRole extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,user_id,role_id,active";
+        return "id,active,user_id,role_id";
     }
 
     @Override

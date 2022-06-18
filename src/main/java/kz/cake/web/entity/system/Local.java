@@ -28,7 +28,7 @@ public class Local extends System<Long> {
 
     @Override
     public String getParameters() {
-        return "id,message,language_id,active";
+        return "id,active,message,language_id";
     }
 
     @Override

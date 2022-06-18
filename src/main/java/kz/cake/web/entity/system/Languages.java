@@ -22,7 +22,7 @@ public class Languages extends System<Long> {
 
     @Override
     public String getParameters() {
-        return "id,code,active";
+        return "id,active,code";
     }
 
     @Override

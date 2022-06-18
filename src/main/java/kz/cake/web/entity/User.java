@@ -27,7 +27,7 @@ public class User extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,username,password,sex,address,active";
+        return "id,active,username,password,sex,address";
     }
 
     @Override

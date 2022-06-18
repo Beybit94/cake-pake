@@ -1,32 +1,36 @@
 package kz.cake.web.entity.system;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Settings extends System<Long> {
     private Boolean isInitTables;
     private Boolean isDemoMode;
-    private LocalDateTime demoModeDateTime;
+    private Timestamp demoActivatedDateTime;
 
     public Settings() {
         super();
     }
 
-    private Settings(Boolean isInitTables, Boolean isDemoMode, LocalDateTime demoModeDateTime) {
+    private Settings(Boolean isInitTables, Boolean isDemoMode, Timestamp demoActivatedDateTime) {
         this.isInitTables = isInitTables;
         this.isDemoMode = isDemoMode;
-        this.demoModeDateTime = demoModeDateTime;
+        this.demoActivatedDateTime = demoActivatedDateTime;
     }
 
     public Boolean getInitTables() {
         return isInitTables;
     }
 
+    public void setInitTables(Boolean initTables) {
+        isInitTables = initTables;
+    }
+
     public Boolean getDemoMode() {
         return isDemoMode;
     }
 
-    public LocalDateTime getDemoModeDateTime() {
-        return demoModeDateTime;
+    public Timestamp getDemoActivatedDateTime() {
+        return demoActivatedDateTime;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class Settings extends System<Long> {
 
     @Override
     public String getParameters() {
-        return "id,is_init_tables,is_demo_mode,demo_mode_datetime,active";
+        return "id,active,is_init_tables,is_demo_mode,demo_mode_datetime";
     }
 
     @Override
@@ -53,10 +57,7 @@ public class Settings extends System<Long> {
     public static class Builder {
         private Boolean isInitTables;
         private Boolean isDemoMode;
-        private LocalDateTime demoModeDateTime;
-
-        public Builder() {
-        }
+        private Timestamp demoActivatedDateTime;
 
         public Builder isInitTables(Boolean isInitTables) {
             this.isInitTables = isInitTables;
@@ -68,13 +69,13 @@ public class Settings extends System<Long> {
             return this;
         }
 
-        public Builder demoModeDateTime(LocalDateTime demoModeDateTime) {
-            this.demoModeDateTime = demoModeDateTime;
+        public Builder demoModeDateTime(Timestamp demoModeDateTime) {
+            this.demoActivatedDateTime = demoModeDateTime;
             return this;
         }
 
         public Settings build() {
-            return new Settings(isInitTables, isDemoMode, demoModeDateTime);
+            return new Settings(isInitTables, isDemoMode, demoActivatedDateTime);
         }
     }
 }

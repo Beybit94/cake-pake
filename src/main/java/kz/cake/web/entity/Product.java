@@ -32,7 +32,7 @@ public class Product extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,user_id,category_id,size_id,price,description,active";
+        return "id,active,user_id,category_id,size_id,price,description";
     }
 
     @Override

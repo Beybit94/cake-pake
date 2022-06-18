@@ -22,7 +22,7 @@ public class OrderDetail extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,product_id,quantity";
+        return "id,active,product_id,quantity";
     }
 
     @Override

@@ -20,9 +20,9 @@ public abstract class StringUtils {
         String result = "";
         for (int i = 1; i < arr.length; i++) {
             if (i == arr.length - 1) {
-                result += String.valueOf(i);
+                result += arr[i];
             } else {
-                result += String.format("%d,", i);
+                result += String.format("%s,", arr[i]);
             }
         }
         return result;

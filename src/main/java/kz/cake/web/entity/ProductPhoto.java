@@ -24,7 +24,7 @@ public class ProductPhoto extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,product_id,thumbnail,image,active";
+        return "id,active,product_id,thumbnail,image";
     }
 
     @Override

@@ -2,19 +2,20 @@ package kz.cake.web.entity;
 
 import kz.cake.web.entity.base.Base;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class ProductComment extends Base<Long> {
     private Long userId;
     private String comment;
     private Long productId;
-    private LocalDateTime commentDate;
+    private Timestamp commentDate;
 
     public ProductComment() {
         super();
     }
 
-    private ProductComment(Long userId, String comment, Long productId, LocalDateTime date) {
+    private ProductComment(Long userId, String comment, Long productId, Timestamp date) {
         this.userId = userId;
         this.comment = comment;
         this.productId = productId;
@@ -57,7 +58,7 @@ public class ProductComment extends Base<Long> {
         return productId;
     }
 
-    public LocalDateTime getCommentDate() {
+    public Timestamp getCommentDate() {
         return commentDate;
     }
 
@@ -65,7 +66,7 @@ public class ProductComment extends Base<Long> {
         private Long userId;
         private String comment;
         private Long productId;
-        private LocalDateTime commentDate;
+        private Timestamp commentDate;
 
         public Builder() {
         }
@@ -85,7 +86,7 @@ public class ProductComment extends Base<Long> {
             return this;
         }
 
-        public Builder commentDate(LocalDateTime date) {
+        public Builder commentDate(Timestamp date) {
             this.commentDate = date;
             return this;
         }

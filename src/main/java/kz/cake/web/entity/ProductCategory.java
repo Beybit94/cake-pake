@@ -25,7 +25,7 @@ public class ProductCategory extends BaseDictionary<Long> {
 
     @Override
     public String getParameters() {
-        return "id,parent,localId,active";
+        return "id,active,parent,localId";
     }
 
     @Override
