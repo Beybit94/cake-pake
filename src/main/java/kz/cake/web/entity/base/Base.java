@@ -1,13 +1,13 @@
 package kz.cake.web.entity.base;
 
-import kz.cake.web.helper.StringUtils;
+import kz.cake.web.helpers.StringUtils;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public abstract class Base<T> {
-    private T id;
-    private boolean active;
+    protected T id;
+    protected boolean active;
 
     protected Base() {
         active = true;
@@ -41,7 +41,7 @@ public abstract class Base<T> {
     }
 
     public String getReadSql() {
-        return String.format("select %s from %s order by id", getParameters(), getTableName());
+        return String.format("select %s from %s", getParameters(), getTableName());
     }
 
     public String getUpdateSql() {

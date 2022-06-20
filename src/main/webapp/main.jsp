@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
@@ -9,13 +10,16 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Cake-Pake web</title>
+    <title>Cake - Home</title>
     <link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet">
 </head>
-
 <body>
 <jsp:include page="header.jsp"/>
 <div class="container">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Pricing</h1>
+        <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It's built with default Bootstrap components and utilities with little customization.</p>
+    </div>
     <div class="card-deck mb-3 text-center">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
@@ -64,9 +68,9 @@
         </div>
     </div>
 </div>
-</body>
 <jsp:include page="footer.jsp"/>
 
 <script src="${contextPath}/js/jquery-3.6.0.min.js"></script>
 <script src="${contextPath}/js/bootstrap.min.js"></script>
+</body>
 </html>

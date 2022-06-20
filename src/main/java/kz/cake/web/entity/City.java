@@ -7,7 +7,7 @@ public class City extends BaseDictionary<Long> {
         super();
     }
 
-    private City(Long localId) {
+    private City(String localId) {
         super(localId);
     }
 
@@ -17,12 +17,12 @@ public class City extends BaseDictionary<Long> {
     }
 
     public static class Builder {
-        private Long localId;
+        private String localId;
 
         public Builder() {
         }
 
-        public Builder localId(Long localId) {
+        public Builder localId(String localId) {
             this.localId = localId;
             return this;
         }

@@ -12,8 +12,10 @@ public class User extends Base<Long> {
         super();
     }
 
-    private User(String name, String password, String sex, String address) {
+    private User(Long id, boolean active, String name, String password, String sex, String address) {
         super();
+        this.id = id;
+        this.active = active;
         this.name = name;
         this.password = password;
         this.sex = sex;
@@ -21,7 +23,7 @@ public class User extends Base<Long> {
     }
 
     @Override
-    public String getTableName(){
+    public String getTableName() {
         return "web.users";
     }
 
@@ -35,18 +37,18 @@ public class User extends Base<Long> {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                 "id bigserial PRIMARY KEY," +
                 "username varchar(150) UNIQUE NOT NULL," +
-                "password varchar(20) NOT NULL," +
-                "sex varchar(10) NOT NULL," +
-                "address varchar(255) NOT NULL," +
+                "password varchar(250) NOT NULL," +
+                "sex varchar(10) NULL," +
+                "address varchar(255) NULL," +
                 "active boolean DEFAULT true not null" +
                 ");", getTableName());
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 
@@ -54,17 +56,29 @@ public class User extends Base<Long> {
         return this.sex;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return this.address;
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private String name;
         private String password;
         private String sex;
         private String address;
 
         public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
         }
 
         public Builder name(String name) {
@@ -88,7 +102,7 @@ public class User extends Base<Long> {
         }
 
         public User build() {
-            return new User(name, password, sex, address);
+            return new User(id, active, name, password, sex, address);
         }
     }
 }

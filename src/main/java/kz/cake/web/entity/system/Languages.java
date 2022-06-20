@@ -7,7 +7,9 @@ public class Languages extends System<Long> {
         super();
     }
 
-    private Languages(String code){
+    private Languages(Long id, boolean active, String code) {
+        this.id = id;
+        this.active = active;
         this.code = code;
     }
 
@@ -35,9 +37,21 @@ public class Languages extends System<Long> {
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private String code;
 
         public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
         }
 
         public Builder code(String code) {
@@ -46,7 +60,7 @@ public class Languages extends System<Long> {
         }
 
         public Languages build() {
-            return new Languages(code);
+            return new Languages(id, active, code);
         }
     }
 }

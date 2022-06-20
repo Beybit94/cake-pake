@@ -14,6 +14,14 @@ public class UserRole extends Base<Long> {
         this.roleId = roleId;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
     @Override
     public String getTableName() {
         return "web.user_roles";

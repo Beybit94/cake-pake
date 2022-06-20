@@ -7,8 +7,10 @@ public class Role extends BaseDictionary<Long> {
         super();
     }
 
-    private Role(Long localId) {
-        super(localId);
+    private Role(Long id, boolean active, String code) {
+        super(code);
+        this.id = id;
+        this.active = active;
     }
 
     @Override
@@ -17,18 +19,30 @@ public class Role extends BaseDictionary<Long> {
     }
 
     public static class Builder {
-        private Long localId;
+        private Long id;
+        private boolean active;
+        private String code;
 
         public Builder() {
         }
 
-        public Builder localId(Long localId) {
-            this.localId = localId;
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder code(String code) {
+            this.code = code;
             return this;
         }
 
         public Role build() {
-            return new Role(localId);
+            return new Role(id, active, code);
         }
     }
 }

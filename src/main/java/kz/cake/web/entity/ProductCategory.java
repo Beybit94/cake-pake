@@ -9,8 +9,8 @@ public class ProductCategory extends BaseDictionary<Long> {
         super();
     }
 
-    protected ProductCategory(Long localId, Long parent) {
-        super(localId);
+    protected ProductCategory(String code, Long parent) {
+        super(code);
         this.parent = parent;
     }
 
@@ -25,7 +25,7 @@ public class ProductCategory extends BaseDictionary<Long> {
 
     @Override
     public String getParameters() {
-        return "id,active,parent,localId";
+        return "id,active,code,parent";
     }
 
     @Override
@@ -33,20 +33,19 @@ public class ProductCategory extends BaseDictionary<Long> {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                 "id bigserial PRIMARY KEY," +
                 "parent bigint NULL," +
-                "local_id bigint NOT NULL," +
-                "active boolean DEFAULT true not null," +
-                "FOREIGN KEY (local_id) REFERENCES web.local (id)" +
+                "code varchar(100) NOT NULL," +
+                "active boolean DEFAULT true not null" +
                 ");", getTableName());
     }
 
     public static class Builder {
         private Long parent;
-        private Long localId;
+        private String localId;
 
         public Builder() {
         }
 
-        public Builder localId(Long localId) {
+        public Builder localId(String localId) {
             this.localId = localId;
             return this;
         }

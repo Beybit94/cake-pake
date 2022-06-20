@@ -7,8 +7,8 @@ public class OrderStatus extends BaseDictionary<Long> {
         super();
     }
 
-    private OrderStatus(Long localId) {
-        super(localId);
+    private OrderStatus(String code) {
+        super(code);
     }
 
     @Override
@@ -17,18 +17,18 @@ public class OrderStatus extends BaseDictionary<Long> {
     }
 
     public static class Builder {
-        private Long localId;
+        private String code;
 
         public Builder() {
         }
 
-        public Builder localId(Long localId) {
-            this.localId = localId;
+        public Builder code(String code) {
+            this.code = code;
             return this;
         }
 
         public OrderStatus build() {
-            return new OrderStatus(localId);
+            return new OrderStatus(code);
         }
     }
 }

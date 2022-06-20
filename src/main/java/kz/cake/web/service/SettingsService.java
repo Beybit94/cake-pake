@@ -1,16 +1,23 @@
 package kz.cake.web.service;
 
 import kz.cake.web.database.BasicConnectionPool;
+import kz.cake.web.entity.Role;
+import kz.cake.web.entity.User;
+import kz.cake.web.entity.UserRole;
 import kz.cake.web.entity.base.Base;
 import kz.cake.web.entity.base.BaseDictionary;
+import kz.cake.web.entity.system.Languages;
+import kz.cake.web.entity.system.Local;
 import kz.cake.web.entity.system.Settings;
 import kz.cake.web.entity.system.System;
+import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.repository.SettingsRepository;
 import kz.cake.web.repository.base.BaseRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,12 +54,26 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
     }
 
     public void init() {
-        initTables();
-        Settings settings = getOne().orElse(new Settings.Builder()
-                .isInitTables(true)
-                .isDemoMode(false)
-                .build());
-        save(settings);
+        getOne().ifPresentOrElse(
+                s -> {
+                    if (!s.getInitTables()) {
+                        initTables();
+                        try {
+                            initData();
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                () -> {
+                    initTables();
+                    try {
+                        initData();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     private void initTables() {
@@ -106,9 +127,48 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
                 Base model = object.getDeclaredConstructor().newInstance();
                 repository.createTable(model);
             }
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (Exception e) {
             logger.error(e);
         }
+    }
+
+    private void initData() throws NoSuchAlgorithmException {
+        LanguagesService languagesService = new LanguagesService();
+        languagesService.save(new Languages.Builder().code("en").active(true).build());
+        languagesService.save(new Languages.Builder().code("ru").active(true).build());
+
+        Optional<Languages> en = languagesService.findByCOde("en");
+        Optional<Languages> ru = languagesService.findByCOde("ru");
+
+        LocalService localService = new LocalService();
+        localService.save(new Local.Builder().code("admin").languageId(en.get().getId()).message("admin").build());
+        localService.save(new Local.Builder().code("manager").languageId(en.get().getId()).message("manager").build());
+        localService.save(new Local.Builder().code("user").languageId(en.get().getId()).message("user").build());
+        localService.save(new Local.Builder().code("admin").languageId(ru.get().getId()).message("админ").build());
+        localService.save(new Local.Builder().code("manager").languageId(ru.get().getId()).message("менеджер").build());
+        localService.save(new Local.Builder().code("user").languageId(ru.get().getId()).message("пользователь").build());
+
+        RoleService roleService = new RoleService();
+        roleService.save(new Role.Builder().code("admin").active(true).build());
+        roleService.save(new Role.Builder().code("manager").active(true).build());
+        roleService.save(new Role.Builder().code("user").active(true).build());
+
+        UserService userService = new UserService();
+        userService.save(new User.Builder()
+                .name("admin")
+                .password(StringUtils.encryptPassword("admin"))
+                .active(true)
+                .build());
+
+        Optional<Role> adminRole = roleService.findByCode("admin");
+        Optional<User> adminUser = userService.findUserByName("admin");
+        UserRoleService userRoleService = new UserRoleService();
+        userRoleService.save(new UserRole(adminUser.get().getId(), adminRole.get().getId()));
+
+        save(new Settings.Builder()
+                .isInitTables(true)
+                .isDemoMode(false)
+                .build());
     }
 }

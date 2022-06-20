@@ -1,5 +1,6 @@
 package kz.cake.web.controller;
 
+import kz.cake.web.service.UrlRouterService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class BaseController extends HttpServlet {
-    private final Logger logger = LogManager.getLogger(this.getClass().getName());
+    private final Logger logger = LogManager.getLogger(BaseController.class);
 
     public BaseController() {
         super();
@@ -23,6 +24,10 @@ public class BaseController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        try {
+            UrlRouterService.Instance.route(req, resp);
+        } catch (Exception e) {
+            logger.error(e);
+        }
     }
 }

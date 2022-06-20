@@ -7,8 +7,8 @@ public class ProductSize extends BaseDictionary<Long> {
         super();
     }
 
-    private ProductSize(Long localId) {
-        super(localId);
+    private ProductSize(String code) {
+        super(code);
     }
 
     @Override
@@ -17,18 +17,18 @@ public class ProductSize extends BaseDictionary<Long> {
     }
 
     public static class Builder {
-        private Long localId;
+        private String code;
 
         public Builder() {
         }
 
-        public Builder localId(Long localId) {
-            this.localId = localId;
+        public Builder code(String code) {
+            this.code = code;
             return this;
         }
 
         public ProductSize build() {
-            return new ProductSize(localId);
+            return new ProductSize(code);
         }
     }
 }

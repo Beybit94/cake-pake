@@ -1,32 +1,31 @@
 package kz.cake.web.entity.base;
 
 public abstract class BaseDictionary<T> extends Base<T> {
-    private Long localId;
+    private String code;
 
     public BaseDictionary() {
         super();
     }
 
-    protected BaseDictionary(Long localId) {
-        this.localId = localId;
+    protected BaseDictionary(String localId) {
+        this.code = localId;
     }
 
-    public Long getLocalId() {
-        return localId;
+    public String getCode() {
+        return code;
     }
 
     @Override
     public String getParameters() {
-        return "id,active,local_id";
+        return "id,active,code";
     }
 
     @Override
     public String getCreateTableSql() {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                 "id bigserial PRIMARY KEY," +
-                "local_id bigint NOT NULL," +
-                "active boolean DEFAULT true not null," +
-                "FOREIGN KEY (local_id) REFERENCES web.local (id)" +
+                "code varchar(100) NOT NULL," +
+                "active boolean DEFAULT true not null" +
                 ");", getTableName());
     }
 }
