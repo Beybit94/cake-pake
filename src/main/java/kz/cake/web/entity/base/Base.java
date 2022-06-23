@@ -46,7 +46,7 @@ public abstract class Base<T> {
 
     public String getUpdateSql() {
         String parameters = StringUtils.skipFirstElement(getParameters());
-        String valuesStr = String.join(",", Arrays.stream(StringUtils.skipFirstElement(parameters).split(","))
+        String valuesStr = String.join(",", Arrays.stream(parameters.split(","))
                 .map(p -> p + " = ?")
                 .collect(Collectors.toList()));
         String sql = String.format("update %s set %s where id=%d", getTableName(), valuesStr, id);

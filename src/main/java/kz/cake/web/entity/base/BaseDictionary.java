@@ -7,8 +7,8 @@ public abstract class BaseDictionary<T> extends Base<T> {
         super();
     }
 
-    protected BaseDictionary(String localId) {
-        this.code = localId;
+    protected BaseDictionary(String code) {
+        this.code = code;
     }
 
     public String getCode() {

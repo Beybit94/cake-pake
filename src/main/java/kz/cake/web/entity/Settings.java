@@ -1,8 +1,10 @@
-package kz.cake.web.entity.system;
+package kz.cake.web.entity;
+
+import kz.cake.web.entity.base.Base;
 
 import java.sql.Timestamp;
 
-public class Settings extends System<Long> {
+public class Settings extends Base<Long> {
     private Boolean isInitTables;
     private Boolean isDemoMode;
     private Timestamp demoActivatedDateTime;

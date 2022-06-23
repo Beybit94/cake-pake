@@ -1,6 +1,8 @@
-package kz.cake.web.entity.system;
+package kz.cake.web.entity;
 
-public class Languages extends System<Long> {
+import kz.cake.web.entity.base.Base;
+
+public class Languages extends Base<Long> {
     private String code;
 
     public Languages() {

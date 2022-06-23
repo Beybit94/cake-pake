@@ -3,7 +3,7 @@ package kz.cake.web.model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CurrentUser {
+public class CurrentUserDto {
     private Long userId;
     private String userName;
     private Set<String> roles = new HashSet<>();

@@ -1,6 +1,9 @@
-package kz.cake.web.entity.system;
+package kz.cake.web.entity;
 
-public class Local extends System<Long> {
+
+import kz.cake.web.entity.base.Base;
+
+public class Local extends Base<Long> {
     private String code;
     private String message;
     private Long languageId;

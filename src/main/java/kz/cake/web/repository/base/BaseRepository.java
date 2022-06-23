@@ -88,7 +88,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         return null;
     }
 
-    private Map<Integer, Object> getFields(T t, boolean skipFirst) throws IllegalAccessException {
+    protected Map<Integer, Object> getFields(T t, boolean skipFirst) throws IllegalAccessException {
         Map<Integer, Object> result = new HashMap<>();
         Field[] fields = getAllFields(t.getClass());
 
@@ -105,7 +105,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         return result;
     }
 
-    private Field[] getAllFields(Class klass) {
+    protected Field[] getAllFields(Class klass) {
         List<Field> fields = new ArrayList<>();
         if (klass.getSuperclass() != null) {
             fields.addAll(Arrays.asList(getAllFields(klass.getSuperclass())));
@@ -114,7 +114,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         return fields.toArray(new Field[]{});
     }
 
-    private void setFields(T t, ResultSet resultSet) throws SQLException, NoSuchFieldException, IllegalAccessException {
+    protected void setFields(T t, ResultSet resultSet) throws SQLException, NoSuchFieldException, IllegalAccessException {
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         int columnCount = resultSetMetaData.getColumnCount();
         for (int column = 0; column < columnCount; column++) {
@@ -124,14 +124,14 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         }
     }
 
-    private void setField(T t, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
+    protected void setField(T t, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
         Class<?> tClass = t.getClass();
         Field field = tClass.getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(t, value);
     }
 
-    private void setQueryParameters(PreparedStatement preparedStatement, T t, boolean skipFirst) throws IllegalAccessException, SQLException {
+    protected void setQueryParameters(PreparedStatement preparedStatement, T t, boolean skipFirst) throws IllegalAccessException, SQLException {
         Map<Integer, Object> fields = getFields(t, skipFirst);
         for (Integer i : fields.keySet()) {
             Object value = fields.get(i);

@@ -1,16 +1,11 @@
 package kz.cake.web.service;
 
 import kz.cake.web.database.BasicConnectionPool;
-import kz.cake.web.entity.Role;
-import kz.cake.web.entity.User;
-import kz.cake.web.entity.UserRole;
+import kz.cake.web.entity.*;
 import kz.cake.web.entity.base.Base;
 import kz.cake.web.entity.base.BaseDictionary;
-import kz.cake.web.entity.system.Languages;
-import kz.cake.web.entity.system.Local;
-import kz.cake.web.entity.system.Settings;
-import kz.cake.web.entity.system.System;
 import kz.cake.web.helpers.StringUtils;
+import kz.cake.web.helpers.constants.Language;
 import kz.cake.web.repository.SettingsRepository;
 import kz.cake.web.repository.base.BaseRepository;
 import org.apache.log4j.LogManager;
@@ -87,11 +82,11 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         Reflections reflections = new Reflections("kz.cake.web");
         Set<Class<? extends BaseRepository>> repositories = reflections.getSubTypesOf(BaseRepository.class);
 
-        reflections.getSubTypesOf(System.class).stream()
+        reflections.getSubTypesOf(Base.class).stream()
                 .filter(m -> systemPrimary.contains(m.getSimpleName()))
                 .forEach(object -> initTable(object, repositories));
 
-        reflections.getSubTypesOf(System.class).stream()
+        reflections.getSubTypesOf(Base.class).stream()
                 .filter(m -> systemSecondary.contains(m.getSimpleName()))
                 .forEach(object -> initTable(object, repositories));
 
@@ -135,11 +130,11 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
 
     private void initData() throws NoSuchAlgorithmException {
         LanguagesService languagesService = new LanguagesService();
-        languagesService.save(new Languages.Builder().code("en").active(true).build());
-        languagesService.save(new Languages.Builder().code("ru").active(true).build());
+        languagesService.save(new Languages.Builder().code(Language.en).active(true).build());
+        languagesService.save(new Languages.Builder().code(Language.ru).active(true).build());
 
-        Optional<Languages> en = languagesService.findByCOde("en");
-        Optional<Languages> ru = languagesService.findByCOde("ru");
+        Optional<Languages> en = languagesService.findByCode("en");
+        Optional<Languages> ru = languagesService.findByCode("ru");
 
         LocalService localService = new LocalService();
         localService.save(new Local.Builder().code("admin").languageId(en.get().getId()).message("admin").build());

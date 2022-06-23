@@ -1,9 +1,9 @@
 package kz.cake.web.model;
 
-public class ValidationError {
+public class ValidationErrorDto {
     private String text;
 
-    public ValidationError(String text){
+    public ValidationErrorDto(String text){
         this.text = text;
     }
 

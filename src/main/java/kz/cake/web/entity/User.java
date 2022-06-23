@@ -3,7 +3,7 @@ package kz.cake.web.entity;
 import kz.cake.web.entity.base.Base;
 
 public class User extends Base<Long> {
-    private String name;
+    private String username;
     private String password;
     private String sex;
     private String address;
@@ -12,11 +12,11 @@ public class User extends Base<Long> {
         super();
     }
 
-    private User(Long id, boolean active, String name, String password, String sex, String address) {
+    private User(Long id, boolean active, String username, String password, String sex, String address) {
         super();
         this.id = id;
         this.active = active;
-        this.name = name;
+        this.username = username;
         this.password = password;
         this.sex = sex;
         this.address = address;
@@ -44,8 +44,8 @@ public class User extends Base<Long> {
                 ");", getTableName());
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
     }
 
     public String getPassword() {
@@ -58,6 +58,22 @@ public class User extends Base<Long> {
 
     public String getAddress() {
         return this.address;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public static class Builder {

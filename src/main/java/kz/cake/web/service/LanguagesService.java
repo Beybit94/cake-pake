@@ -1,8 +1,7 @@
 package kz.cake.web.service;
 
 import kz.cake.web.database.BasicConnectionPool;
-import kz.cake.web.entity.User;
-import kz.cake.web.entity.system.Languages;
+import kz.cake.web.entity.Languages;
 import kz.cake.web.repository.LanguagesRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,7 +18,7 @@ public class LanguagesService extends BaseService<Languages, LanguagesRepository
         this.repository = new LanguagesRepository();
     }
 
-    public Optional<Languages> findByCOde(String code){
+    public Optional<Languages> findByCode(String code){
         Languages languages = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try {
