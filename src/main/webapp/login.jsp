@@ -48,10 +48,9 @@
             </form>
         </div>
     </div>
-    <jsp:include page="footer.jsp"/>
+
 </div>
 
-<script src="${contextPath}/js/jquery-3.6.0.min.js"></script>
-<script src="${contextPath}/js/bootstrap.min.js"></script>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

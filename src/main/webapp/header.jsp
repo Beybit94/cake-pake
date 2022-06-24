@@ -27,9 +27,27 @@
                         <button type="submit" class="btn btn-link text-dark"><fmt:message
                                 key="page.users"/></button>
                     </form>
-                    <a class="p-2 text-dark" href="#">Dictionaries</a>
-                    <a class="p-2 text-dark" href="#">Locals</a>
-                    <a class="p-2 text-dark" href="#">Languages</a>
+                    <div class="dropdown">
+                        <button class="btn btn-link text-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                            <fmt:message key="label.dictionaries"/>
+                        </button>
+                        <div class="dropdown-menu">
+                            <form class="form-inline" action="${ActionNames.CityList.name}" method="post">
+                                <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                        key="page.city"/></button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <form class="form-inline" action="${ActionNames.LocalList.name}" method="post">
+                                <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                        key="page.locals"/></button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <form class="form-inline" action="${ActionNames.LanguagesList.name}" method="post">
+                                <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                        key="page.languages"/></button>
+                            </form>
+                        </div>
+                    </div>
                 </c:if>
                 <c:if test="${sessionScope.user.roles.contains('manager')}">
                     <a class="p-2 text-dark" href="#">Products</a>

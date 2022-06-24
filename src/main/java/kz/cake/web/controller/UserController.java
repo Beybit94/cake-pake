@@ -3,6 +3,7 @@ package kz.cake.web.controller;
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.helpers.StringUtils;
+import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
@@ -63,7 +64,8 @@ public class UserController extends BaseController {
 
             session.setAttribute(SessionParameters.user.getName(), currentUser);
             CurrentSession.Instance.setCurrentUser(currentUser);
-            response.sendRedirect(request.getContextPath() + "/");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.main.getName());
+            dispatcher.forward(request, response);
         } else {
             request.setAttribute(SessionParameters.errors.getName(), errorList);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.login.getName());

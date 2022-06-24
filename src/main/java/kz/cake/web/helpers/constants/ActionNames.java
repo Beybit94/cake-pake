@@ -1,6 +1,10 @@
 package kz.cake.web.helpers.constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum ActionNames {
+    LanguagesChange("LanguagesChange"),
     UserLogin("UserLogin"),
     UserRegister("UserRegister"),
     UserLogout("UserLogout"),
@@ -11,7 +15,12 @@ public enum ActionNames {
     UserRemove("UserRemove"),
     UserReset("UserReset"),
     UserUnblock("UserUnblock"),
-    LanguagesChange("LanguagesChange");
+    CityList("CityList"),
+    LocalList("LocalList"),
+    LanguagesList("LanguagesList");
+
+    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
+    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
 
     String name;
 

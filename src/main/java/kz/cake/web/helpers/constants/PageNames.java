@@ -2,6 +2,8 @@ package kz.cake.web.helpers.constants;
 
 public enum PageNames {
     main("main.jsp"),
+    error("error.jsp"),
+    access_denied("access_denied.jsp"),
     login("login.jsp"),
     register("register.jsp"),
     users("users.jsp"),

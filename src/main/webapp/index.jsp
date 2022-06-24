@@ -3,7 +3,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Hunting Service Karaganda region</title>
+    <title>Cake</title>
 </head>
 <body>
 <jsp:forward page="/main.jsp"/>

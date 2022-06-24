@@ -54,6 +54,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     .map(m -> mapWithLocal(m))
                     .findFirst();
         } else {
+            getDictionaryWithLocal();
             Optional<T1> item = repository.findByCode(code);
             if (!item.isPresent()) Optional.ofNullable(null);
             return Optional.of(mapWithLocal(item.get()));
@@ -65,6 +66,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
             List<DictionaryDto> list = CacheProvider.get(getCacheKey());
             return list.stream().filter(m -> m.getCode().equals(code)).findFirst();
         } else {
+            getDictionary();
             Optional<T1> item = repository.findByCode(code);
             if (!item.isPresent()) Optional.ofNullable(null);
             return Optional.of(map(item.get()));
@@ -79,6 +81,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     .map(m -> mapWithLocal(m))
                     .findFirst().get();
         } else {
+            getDictionaryWithLocal();
             T1 item = (T1) repository.getById(id);
             return mapWithLocal(item);
         }
@@ -92,6 +95,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     .map(m -> mapWithLocal(m))
                     .findFirst().get();
         } else {
+            getDictionary();
             T1 item = (T1) repository.getById(id);
             return map(item);
         }
