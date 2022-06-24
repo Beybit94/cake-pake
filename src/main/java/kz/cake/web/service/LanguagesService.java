@@ -3,6 +3,7 @@ package kz.cake.web.service;
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Languages;
 import kz.cake.web.repository.LanguagesRepository;
+import kz.cake.web.service.base.BaseService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

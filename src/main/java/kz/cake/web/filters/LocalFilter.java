@@ -1,7 +1,7 @@
 package kz.cake.web.filters;
 
 
-import kz.cake.web.helpers.constants.CurrentSession;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
 

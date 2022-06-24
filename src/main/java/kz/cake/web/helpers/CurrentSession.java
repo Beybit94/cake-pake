@@ -1,4 +1,4 @@
-package kz.cake.web.helpers.constants;
+package kz.cake.web.helpers;
 
 import kz.cake.web.model.CurrentUserDto;
 

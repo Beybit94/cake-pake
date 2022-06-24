@@ -1,4 +1,4 @@
-package kz.cake.web.service;
+package kz.cake.web.service.base;
 
 import kz.cake.web.entity.base.Base;
 import kz.cake.web.repository.base.BaseRepository;
@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public abstract class BaseService<T1 extends Base, T2 extends BaseRepository> {
-    protected T2 repository;
+    public T2 repository;
 
     public void save(T1 entity) {
         if (entity.getId() == null || (Long) entity.getId() == 0) {

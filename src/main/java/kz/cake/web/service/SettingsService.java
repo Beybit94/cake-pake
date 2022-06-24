@@ -6,8 +6,10 @@ import kz.cake.web.entity.base.Base;
 import kz.cake.web.entity.base.BaseDictionary;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.constants.Language;
+import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.repository.SettingsRepository;
 import kz.cake.web.repository.base.BaseRepository;
+import kz.cake.web.service.base.BaseService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.reflections.Reflections;
@@ -156,7 +158,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
                 .active(true)
                 .build());
 
-        Optional<Role> adminRole = roleService.findByCode("admin");
+        Optional<DictionaryDto> adminRole = roleService.findByCode("admin");
         Optional<User> adminUser = userService.findUserByName("admin");
         UserRoleService userRoleService = new UserRoleService();
         userRoleService.save(new UserRole(adminUser.get().getId(), adminRole.get().getId()));

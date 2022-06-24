@@ -2,7 +2,7 @@ package kz.cake.web.repository;
 
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Local;
-import kz.cake.web.helpers.constants.CurrentSession;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.repository.base.BaseRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

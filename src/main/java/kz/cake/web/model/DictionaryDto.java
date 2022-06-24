@@ -1,6 +1,6 @@
 package kz.cake.web.model;
 
-public class RoleDto {
+public class DictionaryDto {
     private Long id;
     private boolean active;
     private String code;

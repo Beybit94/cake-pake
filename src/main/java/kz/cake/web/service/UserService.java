@@ -2,19 +2,17 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
-import kz.cake.web.helpers.constants.CurrentSession;
-import kz.cake.web.model.RoleDto;
+import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.UserDto;
 import kz.cake.web.repository.UserRepository;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import kz.cake.web.service.base.BaseService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserService extends BaseService<User, UserRepository> {
-    private final Logger logger = LogManager.getLogger(UserService.class);
     private final UserRoleService userRoleService;
     private final RoleService roleService;
 
@@ -36,9 +34,9 @@ public class UserService extends BaseService<User, UserRepository> {
             UserDto userDto = new UserDto();
             userDto.setUser(user);
 
-            List<RoleDto> roles = new ArrayList<>();
+            List<DictionaryDto> roles = new ArrayList<>();
             for (UserRole userRole : userRoleService.findByUserId(user.getId())) {
-                roles.add(roleService.getById(userRole.getRoleId()));
+                roles.add(roleService.getByIdWithLocal(userRole.getRoleId()));
             }
             userDto.setRoles(roles);
             userList.add(userDto);

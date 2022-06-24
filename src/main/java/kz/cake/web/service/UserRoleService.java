@@ -2,6 +2,7 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.repository.UserRoleRepository;
+import kz.cake.web.service.base.BaseService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import java.util.List;

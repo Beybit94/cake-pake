@@ -2,24 +2,26 @@ package kz.cake.web.repository;
 
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Role;
-import kz.cake.web.repository.base.BaseRepository;
-import kz.cake.web.service.UserService;
+import kz.cake.web.repository.base.DictionaryRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RoleRepository extends BaseRepository<Role> {
+public class RoleRepository extends DictionaryRepository<Role> {
     private final Logger logger = LogManager.getLogger(RoleRepository.class);
+
     public RoleRepository() {
 
     }
 
-    public Optional<Role> findByCode(String code){
+    @Override
+    public Optional<Role> findByCode(String code) {
         Role role = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try {
@@ -43,7 +45,8 @@ public class RoleRepository extends BaseRepository<Role> {
         return Optional.ofNullable(role);
     }
 
-    public Role getById(Long id){
+    @Override
+    public Role getById(Long id) {
         Role role = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try {
@@ -65,5 +68,28 @@ public class RoleRepository extends BaseRepository<Role> {
         }
 
         return role;
+    }
+
+    @Override
+    public List<Role> getAll() {
+        List<Role> list = new ArrayList<>();
+        Connection connection = BasicConnectionPool.Instance.getConnection();
+        try {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.roles where active=true order by id")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    list.add(new Role.Builder()
+                            .id(resultSet.getLong("id"))
+                            .active(resultSet.getBoolean("active"))
+                            .code(resultSet.getString("code"))
+                            .build());
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e);
+        } finally {
+            BasicConnectionPool.Instance.releaseConnection(connection);
+        }
+        return list;
     }
 }

@@ -1,15 +1,14 @@
 package kz.cake.web.controller;
 
-import kz.cake.web.entity.Role;
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.constants.CurrentSession;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.CurrentUserDto;
-import kz.cake.web.model.RoleDto;
+import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.ValidationErrorDto;
 import kz.cake.web.service.RoleService;
 import kz.cake.web.service.UserRoleService;
@@ -58,7 +57,7 @@ public class UserController extends BaseController {
             UserRoleService userRoleService = new UserRoleService();
             RoleService roleService = new RoleService();
             userRoleService.findByUserId(currentUser.getUserId()).forEach(ur -> {
-                RoleDto role = roleService.getById(ur.getRoleId());
+                DictionaryDto role = roleService.getByIdWithLocal(ur.getRoleId());
                 currentUser.getRoles().add(role.getCode());
             });
 
@@ -94,7 +93,7 @@ public class UserController extends BaseController {
             RoleService roleService = new RoleService();
             UserRoleService userRoleService = new UserRoleService();
 
-            Optional<Role> role = roleService.findByCode(request.getParameter("role"));
+            Optional<DictionaryDto> role = roleService.findByCode(request.getParameter("role"));
             if (role.isPresent()) {
                 userRoleService.save(new UserRole(user.get().getId(), role.get().getId()));
             }
@@ -105,7 +104,7 @@ public class UserController extends BaseController {
             currentUser.setUserName(user.get().getUsername());
 
             userRoleService.findByUserId(currentUser.getUserId()).forEach(ur -> {
-                currentUser.getRoles().add(roleService.getById(ur.getRoleId()).getCode());
+                currentUser.getRoles().add(roleService.getByIdWithLocal(ur.getRoleId()).getCode());
             });
 
             session.setAttribute(SessionParameters.user.getName(), currentUser);

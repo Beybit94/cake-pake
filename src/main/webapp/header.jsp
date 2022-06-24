@@ -28,7 +28,6 @@
                                 key="page.users"/></button>
                     </form>
                     <a class="p-2 text-dark" href="#">Dictionaries</a>
-                    <a class="p-2 text-dark" href="#">Roles</a>
                     <a class="p-2 text-dark" href="#">Locals</a>
                     <a class="p-2 text-dark" href="#">Languages</a>
                 </c:if>

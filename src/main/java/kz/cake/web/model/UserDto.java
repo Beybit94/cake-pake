@@ -7,13 +7,13 @@ import java.util.List;
 
 public class UserDto {
     private User user;
-    private List<RoleDto> roles = new ArrayList<>();
+    private List<DictionaryDto> roles = new ArrayList<>();
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public void setRoles(List<RoleDto> roles) {
+    public void setRoles(List<DictionaryDto> roles) {
         this.roles = roles;
     }
 
@@ -21,7 +21,7 @@ public class UserDto {
         return user;
     }
 
-    public List<RoleDto> getRoles() {
+    public List<DictionaryDto> getRoles() {
         return roles;
     }
 }
