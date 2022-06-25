@@ -1,5 +1,6 @@
 package kz.cake.web.controller;
 
+import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;

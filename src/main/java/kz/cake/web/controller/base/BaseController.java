@@ -1,4 +1,4 @@
-package kz.cake.web.controller;
+package kz.cake.web.controller.base;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

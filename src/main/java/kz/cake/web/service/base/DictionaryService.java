@@ -18,16 +18,19 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
         this.localService = new LocalService();
     }
 
-    public abstract String getCacheKey();
+    public abstract String cacheKey();
+
+    public abstract String cacheKeyWithLocal();
 
     @Override
     public void save(T1 entity) {
         super.save(entity);
-        CacheProvider.remove(getCacheKey());
+        CacheProvider.remove(cacheKey());
+        CacheProvider.remove(cacheKeyWithLocal());
     }
 
     public List<DictionaryDto> getDictionaryWithLocal() {
-        return CacheProvider.get(getCacheKey(), () -> {
+        return CacheProvider.get(cacheKeyWithLocal(), () -> {
                     List<T1> items = repository.getAll();
                     return items;
                 })
@@ -37,7 +40,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     public List<DictionaryDto> getDictionary() {
-        return CacheProvider.get(getCacheKey(), () -> {
+        return CacheProvider.get(cacheKey(), () -> {
                     List<T1> items = repository.getAll();
                     return items;
                 })
@@ -47,8 +50,8 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     public Optional<DictionaryDto> findByCodeWithLocal(String code) {
-        if (CacheProvider.contains(getCacheKey())) {
-            List<T1> list = CacheProvider.get(getCacheKey());
+        if (CacheProvider.contains(cacheKeyWithLocal())) {
+            List<T1> list = CacheProvider.get(cacheKeyWithLocal());
             return list.stream()
                     .filter(m -> m.getCode().equals(code))
                     .map(m -> mapWithLocal(m))
@@ -62,9 +65,12 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     public Optional<DictionaryDto> findByCode(String code) {
-        if (CacheProvider.contains(getCacheKey())) {
-            List<DictionaryDto> list = CacheProvider.get(getCacheKey());
-            return list.stream().filter(m -> m.getCode().equals(code)).findFirst();
+        if (CacheProvider.contains(cacheKey())) {
+            List<T1> list = CacheProvider.get(cacheKey());
+            return list.stream()
+                    .filter(m -> m.getCode().equals(code))
+                    .map(m -> map(m))
+                    .findFirst();
         } else {
             getDictionary();
             Optional<T1> item = repository.findByCode(code);
@@ -74,8 +80,8 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     public DictionaryDto getByIdWithLocal(Long id) {
-        if (CacheProvider.contains(getCacheKey())) {
-            List<T1> list = CacheProvider.get(getCacheKey());
+        if (CacheProvider.contains(cacheKeyWithLocal())) {
+            List<T1> list = CacheProvider.get(cacheKeyWithLocal());
             return list.stream()
                     .filter(m -> m.getId().equals(id))
                     .map(m -> mapWithLocal(m))
@@ -88,11 +94,11 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     public DictionaryDto getById(Long id) {
-        if (CacheProvider.contains(getCacheKey())) {
-            List<T1> list = CacheProvider.get(getCacheKey());
+        if (CacheProvider.contains(cacheKey())) {
+            List<T1> list = CacheProvider.get(cacheKey());
             return list.stream()
                     .filter(m -> m.getId().equals(id))
-                    .map(m -> mapWithLocal(m))
+                    .map(m -> map(m))
                     .findFirst().get();
         } else {
             getDictionary();

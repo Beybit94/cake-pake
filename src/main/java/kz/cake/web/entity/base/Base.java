@@ -21,6 +21,10 @@ public abstract class Base<T> {
         return active;
     }
 
+    public void setId(T id) {
+        this.id = id;
+    }
+
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -41,7 +45,7 @@ public abstract class Base<T> {
     }
 
     public String getReadSql() {
-        return String.format("select %s from %s", getParameters(), getTableName());
+        return String.format("select * from %s", getTableName());
     }
 
     public String getUpdateSql() {

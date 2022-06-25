@@ -7,12 +7,15 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class BaseRepository<T extends Base> implements CrudRepository<T> {
     private final Logger logger = LogManager.getLogger(BaseRepository.class);
+    protected Supplier<T> supplier;
 
     public void createTable(T table) {
         Connection connection = BasicConnectionPool.Instance.getConnection();
@@ -29,8 +32,10 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
 
     @Override
     public void create(T entity) {
+        String sql = entity.getCreateSql();
+
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(entity.getCreateSql())) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setQueryParameters(preparedStatement, entity, true);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -41,27 +46,30 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public T read(T entity) {
+    public T read() {
+        T entity = this.supplier.get();
+        String sql = entity.getReadSql() + " where id=" + entity.getId();
+
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(entity.getReadSql())) {
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    setFields(entity, resultSet);
-                }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                setFields(entity, resultSet);
             }
         } catch (Exception e) {
             logger.error(e);
         } finally {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }
-        return null;
+        return entity;
     }
 
     @Override
     public void update(T entity) {
+        String sql = entity.getUpdateSql();
+
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(entity.getUpdateSql())) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setQueryParameters(preparedStatement, entity, true);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -73,8 +81,10 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
 
     @Override
     public void delete(T entity) {
+        String sql = entity.getDeleteSql();
+
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(entity.getDeleteSql())) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             logger.error(e);
@@ -85,7 +95,25 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
 
     @Override
     public List<T> getAll() {
-        return null;
+        List<T> list = new ArrayList<>();
+        T entity = this.supplier.get();
+        String sql = entity.getReadSql();
+
+        Connection connection = BasicConnectionPool.Instance.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                setFields(entity, resultSet);
+                list.add(entity);
+                entity = this.supplier.get();
+            }
+        } catch (Exception e) {
+            logger.error(e);
+        } finally {
+            BasicConnectionPool.Instance.releaseConnection(connection);
+        }
+
+        return list;
     }
 
     protected Map<Integer, Object> getFields(T t, boolean skipFirst) throws IllegalAccessException {
@@ -114,21 +142,34 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
         return fields.toArray(new Field[]{});
     }
 
-    protected void setFields(T t, ResultSet resultSet) throws SQLException, NoSuchFieldException, IllegalAccessException {
+    protected Method[] getAllMethods(Class klass) {
+        List<Method> methods = new ArrayList<>();
+        while (klass != null) {
+            methods.addAll(Arrays.asList(klass.getDeclaredMethods()));
+            klass = klass.getSuperclass();
+        }
+        return methods.toArray(new Method[]{});
+    }
+
+    protected void setFields(T t, ResultSet resultSet) throws SQLException, IllegalAccessException {
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         int columnCount = resultSetMetaData.getColumnCount();
-        for (int column = 0; column < columnCount; column++) {
+        for (int column = 1; column <= columnCount; column++) {
             String columnName = resultSetMetaData.getColumnName(column);
             Object value = resultSet.getObject(column);
             setField(t, StringUtils.getFieldName(columnName), value);
         }
     }
 
-    protected void setField(T t, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
+    protected void setField(T t, String fieldName, Object value) throws IllegalAccessException {
         Class<?> tClass = t.getClass();
-        Field field = tClass.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(t, value);
+        for (Field field : getAllFields(tClass)) {
+            if (field.getName().equals(fieldName)) {
+                field.setAccessible(true);
+                field.set(t, value);
+                break;
+            }
+        }
     }
 
     protected void setQueryParameters(PreparedStatement preparedStatement, T t, boolean skipFirst) throws IllegalAccessException, SQLException {

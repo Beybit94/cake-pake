@@ -18,31 +18,34 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        CurrentUserDto currentUser = CurrentSession.Instance.getCurrentUser();
-        if (currentUser != null) {
-            HttpServletRequest request = (HttpServletRequest) servletRequest;
-            HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        CurrentUserDto currentUser = CurrentSession.Instance.getCurrentUser();
+        RequestDispatcher dispatcher = null;
+        A:
+        if (currentUser != null) {
             String url = request.getRequestURI();
             String[] path = url.split("/");
 
             String action = path[path.length - 1];
-            if (action.length() <= 0) filterChain.doFilter(servletRequest, servletResponse);
-            if(action.contains(".jsp")) filterChain.doFilter(servletRequest, servletResponse);
-
-            RequestDispatcher dispatcher = null;
-            if (currentUser.getRoles().contains("user") && !ActionNames.userPermissions.contains(action)) {
-                dispatcher = request.getRequestDispatcher(PageNames.access_denied.getName());
-            } else if (currentUser.getRoles().contains("manager") && !ActionNames.managerPermissions.contains(action)) {
-                dispatcher = request.getRequestDispatcher(PageNames.access_denied.getName());
-            }
-
-            if(dispatcher != null){
-                dispatcher.forward(request, response);
+            if (action.length() <= 0 || action.indexOf('.') > 0) {
+                break A;
+            } else {
+                if (currentUser.getRoles().contains("user") && !ActionNames.userPermissions.contains(ActionNames.valueOf(action))) {
+                    dispatcher = request.getRequestDispatcher(PageNames.access_denied.getName());
+                } else if (currentUser.getRoles().contains("manager") && !ActionNames.managerPermissions.contains(ActionNames.valueOf(action))) {
+                    dispatcher = request.getRequestDispatcher(PageNames.access_denied.getName());
+                }
             }
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        if (dispatcher != null) {
+            dispatcher.forward(request, response);
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
+
     }
 
     @Override

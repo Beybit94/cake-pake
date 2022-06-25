@@ -1,5 +1,6 @@
 package kz.cake.web.controller;
 
+import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.helpers.StringUtils;

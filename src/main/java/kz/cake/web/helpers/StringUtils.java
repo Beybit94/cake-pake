@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public abstract class StringUtils {
-    public static String encryptPassword(String param)  {
+    public static String encryptPassword(String param) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-256");
@@ -16,8 +16,7 @@ public abstract class StringUtils {
         byte[] hash = md.digest(param.getBytes(StandardCharsets.UTF_8));
         BigInteger number = new BigInteger(1, hash);
         StringBuilder hexString = new StringBuilder(number.toString(16));
-        while (hexString.length() < 32)
-        {
+        while (hexString.length() < 32) {
             hexString.insert(0, '0');
         }
         return hexString.toString();
@@ -28,8 +27,14 @@ public abstract class StringUtils {
     }
 
     public static String getFieldName(String column) {
+        if (!column.contains("_")) return column;
+
         String[] attributes = column.split("_");
         return attributes[0] + Character.toUpperCase(attributes[1].charAt(0)) + attributes[1].substring(1);
+    }
+
+    public static String getSetterName(String field) {
+        return "set" + Character.toUpperCase(field.charAt(0)) + field.substring(1);
     }
 
     public static String skipFirstElement(String param) {

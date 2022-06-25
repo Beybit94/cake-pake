@@ -7,8 +7,10 @@ public class City extends BaseDictionary<Long> {
         super();
     }
 
-    private City(String localId) {
-        super(localId);
+    private City(Long id, boolean active, String code) {
+        super(code);
+        this.id = id;
+        this.active = active;
     }
 
     @Override
@@ -17,18 +19,30 @@ public class City extends BaseDictionary<Long> {
     }
 
     public static class Builder {
-        private String localId;
+        private Long id;
+        private boolean active;
+        private String code;
 
         public Builder() {
         }
 
-        public Builder localId(String localId) {
-            this.localId = localId;
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder code(String code) {
+            this.code = code;
             return this;
         }
 
         public City build() {
-            return new City(localId);
+            return new City(id, active, code);
         }
     }
 }

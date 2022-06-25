@@ -11,6 +11,10 @@ public abstract class BaseDictionary<T> extends Base<T> {
         this.code = code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getCode() {
         return code;
     }

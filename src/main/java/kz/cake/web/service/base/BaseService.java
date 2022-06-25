@@ -23,12 +23,8 @@ public abstract class BaseService<T1 extends Base, T2 extends BaseRepository> {
         }
     }
 
-    public T1 read(T1 entity) {
-        return (T1) repository.read(entity);
-    }
-
-    public void update(T1 t) {
-        repository.update(t);
+    public T1 read() {
+        return (T1) repository.read();
     }
 
     public void delete(T1 entity) {

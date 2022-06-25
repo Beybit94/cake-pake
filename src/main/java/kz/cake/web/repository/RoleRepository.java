@@ -1,26 +1,18 @@
 package kz.cake.web.repository;
 
-import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Role;
 import kz.cake.web.repository.base.DictionaryRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 public class RoleRepository extends DictionaryRepository<Role> {
     private final Logger logger = LogManager.getLogger(RoleRepository.class);
 
     public RoleRepository() {
-
+        supplier = () -> new Role();
     }
 
-    @Override
+   /* @Override
     public Optional<Role> findByCode(String code) {
         Role role = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
@@ -91,5 +83,5 @@ public class RoleRepository extends DictionaryRepository<Role> {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }
         return list;
-    }
+    }*/
 }

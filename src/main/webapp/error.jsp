@@ -19,9 +19,7 @@
     <jsp:include page="header.jsp">
         <jsp:param name="redirect" value=""/>
     </jsp:include>
-    <div class="row text-center">
-        <h4><fmt:message key="error.undefinedError"/></h4>
-    </div>
+    <h4 class="text-center"><fmt:message key="error.undefinedError"/></h4>
 </div>
 <jsp:include page="footer.jsp"/>
 </body>

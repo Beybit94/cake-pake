@@ -15,6 +15,7 @@ public class LocalRepository extends BaseRepository<Local> {
     private final Logger logger = LogManager.getLogger(RoleRepository.class);
 
     public LocalRepository() {
+        supplier = () -> new Local();
     }
 
     public Local getByCode(String code) {

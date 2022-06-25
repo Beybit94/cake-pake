@@ -5,5 +5,6 @@ import kz.cake.web.repository.base.BaseRepository;
 
 public class ProductPhotoRepository extends BaseRepository<ProductPhoto> {
     public ProductPhotoRepository() {
+        supplier = () -> new ProductPhoto();
     }
 }

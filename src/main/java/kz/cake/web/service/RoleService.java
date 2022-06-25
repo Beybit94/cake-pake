@@ -11,7 +11,12 @@ public class RoleService extends DictionaryService<Role, RoleRepository> {
     }
 
     @Override
-    public String getCacheKey() {
+    public String cacheKey() {
         return "Role";
+    }
+
+    @Override
+    public String cacheKeyWithLocal() {
+        return "RoleWithLocal";
     }
 }

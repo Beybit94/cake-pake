@@ -5,5 +5,6 @@ import kz.cake.web.repository.base.BaseRepository;
 
 public class OrderStatusRepository extends BaseRepository<OrderStatus> {
     public OrderStatusRepository() {
+        supplier = () -> new OrderStatus();
     }
 }
