@@ -3,10 +3,10 @@ package kz.cake.web.controller;
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.CurrentUserDto;
@@ -31,6 +31,44 @@ public class UserController extends BaseController {
 
     public UserController() {
         userService = new UserService();
+    }
+
+    public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
+        session.setAttribute(SessionParameters.users.getName(), userService.getAllWithRole());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.users.getName());
+        dispatcher.forward(request, response);
+    }
+
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        userService.save(new User.Builder()
+                .name(username)
+                .password(StringUtils.encryptPassword(request.getParameter("password")))
+                .sex(request.getParameter("sex"))
+                .address(request.getParameter("address"))
+                .active(true)
+                .build());
+        userService.setRole(username, "manager");
+        list(request, response);
+    }
+
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        userService.findUserByName(username).ifPresent(user -> {
+            user.setAddress(request.getParameter("address"));
+            user.setSex(request.getParameter("sex"));
+            userService.save(user);
+        });
+        list(request, response);
+    }
+
+    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        userService.findUserByName(username).ifPresent(user -> {
+            userService.delete(user);
+        });
+        list(request, response);
     }
 
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -128,36 +166,6 @@ public class UserController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.setAttribute(SessionParameters.users.getName(), userService.getAllWithRole());
-        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.users.getName());
-        dispatcher.forward(request, response);
-    }
-
-    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        userService.save(new User.Builder()
-                .name(username)
-                .password(StringUtils.encryptPassword(request.getParameter("password")))
-                .sex(request.getParameter("sex"))
-                .address(request.getParameter("address"))
-                .active(true)
-                .build());
-        userService.setRole(username, "manager");
-        UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
-    }
-
-    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user -> {
-            user.setAddress(request.getParameter("address"));
-            user.setSex(request.getParameter("sex"));
-            userService.save(user);
-        });
-        UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
-    }
-
     public void reset(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         userService.findUserByName(username).ifPresent(user -> {
@@ -168,17 +176,9 @@ public class UserController extends BaseController {
         UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
     }
 
-    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user->{
-            userService.delete(user);
-        });
-        UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
-    }
-
     public void unblock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user->{
+        userService.findUserByName(username).ifPresent(user -> {
             user.setActive(true);
             userService.save(user);
         });

@@ -46,9 +46,9 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public T read() {
+    public T read(Long id) {
         T entity = this.supplier.get();
-        String sql = entity.getReadSql() + " where id=" + entity.getId();
+        String sql = String.format("%s where id=%d", entity.getReadSql(), id);
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -97,7 +97,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     public List<T> getAll() {
         List<T> list = new ArrayList<>();
         T entity = this.supplier.get();
-        String sql = entity.getReadSql();
+        String sql = String.format("%s where active=true", entity.getReadSql());
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

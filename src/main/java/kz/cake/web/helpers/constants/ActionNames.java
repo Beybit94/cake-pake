@@ -16,7 +16,13 @@ public enum ActionNames {
     UserReset("UserReset"),
     UserUnblock("UserUnblock"),
     CityList("CityList"),
+    CityAdd("CityAdd"),
+    CityEdit("CityEdit"),
+    CityRemove("CityRemove"),
     LocalList("LocalList"),
+    LocalAdd("LocalAdd"),
+    LocalEdit("LocalEdit"),
+    LocalRemove("LocalRemove"),
     LanguagesList("LanguagesList");
 
     public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);

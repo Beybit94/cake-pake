@@ -7,6 +7,7 @@ import kz.cake.web.service.base.DictionaryService;
 public class CityService extends DictionaryService<City, CityRepository> {
     public CityService() {
         this.repository = new CityRepository();
+        this.supplier = () -> new City();
     }
 
     @Override

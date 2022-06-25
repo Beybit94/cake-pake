@@ -32,19 +32,14 @@
                             <fmt:message key="label.dictionaries"/>
                         </button>
                         <div class="dropdown-menu">
-                            <form class="form-inline" action="${ActionNames.CityList.name}" method="post">
-                                <button type="submit" class="btn btn-link text-dark"><fmt:message
-                                        key="page.city"/></button>
-                            </form>
-                            <div class="dropdown-divider"></div>
                             <form class="form-inline" action="${ActionNames.LocalList.name}" method="post">
                                 <button type="submit" class="btn btn-link text-dark"><fmt:message
                                         key="page.locals"/></button>
                             </form>
                             <div class="dropdown-divider"></div>
-                            <form class="form-inline" action="${ActionNames.LanguagesList.name}" method="post">
+                            <form class="form-inline" action="${ActionNames.CityList.name}" method="post">
                                 <button type="submit" class="btn btn-link text-dark"><fmt:message
-                                        key="page.languages"/></button>
+                                        key="page.city"/></button>
                             </form>
                         </div>
                     </div>

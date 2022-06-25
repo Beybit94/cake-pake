@@ -36,24 +36,4 @@ public abstract class DictionaryRepository<T extends BaseDictionary> extends Bas
 
         return Optional.ofNullable(entity);
     }
-
-    public T getById(Long id) {
-        T entity = supplier.get();
-        String sql = String.format("%s where id=?", entity.getReadSql());
-
-        Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                setFields(entity, resultSet);
-            }
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            BasicConnectionPool.Instance.releaseConnection(connection);
-        }
-
-        return entity;
-    }
 }

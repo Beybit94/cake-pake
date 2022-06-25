@@ -1,15 +1,84 @@
 package kz.cake.web.service;
 
+import kz.cake.web.entity.Languages;
 import kz.cake.web.entity.Local;
+import kz.cake.web.helpers.CacheProvider;
+import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.model.LocalDto;
 import kz.cake.web.repository.LocalRepository;
 import kz.cake.web.service.base.BaseService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class LocalService extends BaseService<Local, LocalRepository> {
+    private final LanguagesService languagesService;
+
     public LocalService() {
         this.repository = new LocalRepository();
+        languagesService = new LanguagesService();
     }
 
-    public Local getByCode(String code){
-        return repository.getByCode(code);
+    @Override
+    public void save(Local entity) {
+        super.save(entity);
+        CacheProvider.remove("Locals");
+        CacheProvider.remove("LocalsWithLanguage");
+    }
+
+    @Override
+    public void delete(Local entity) {
+        super.delete(entity);
+        CacheProvider.remove("Locals");
+        CacheProvider.remove("LocalsWithLanguage");
+    }
+
+    @Override
+    public List<Local> getAll() {
+        return CacheProvider.get("Locals", () -> repository.getAll());
+    }
+
+    public List<LocalDto> getAllWithLanguage() {
+        return CacheProvider.get("LocalsWithLanguage", () -> repository.getAll().stream()
+                .map(m -> {
+                    Languages lang = languagesService.read(m.getLanguageId());
+                    return new LocalDto(m.getId(), m.getCode(), m.getMessage(), lang.getCode());
+                })
+                .collect(Collectors.toList()));
+    }
+
+    public Local getByCode(String code) {
+        if (CacheProvider.contains("Locals")) {
+            System.out.println(code + ":" + CurrentSession.Instance.getCurrentLanguageId());
+            List<Local> list = CacheProvider.get("Locals");
+            return list.stream()
+                    .filter(m -> m.getCode().equals(code) && m.getLanguageId().equals(CurrentSession.Instance.getCurrentLanguageId()))
+                    .findFirst().get();
+        } else {
+            getAll();
+            return repository.getByCode(code);
+        }
+    }
+
+    public Local getById(Long id) {
+        if (CacheProvider.contains("Locals")) {
+            List<Local> list = CacheProvider.get("Locals");
+            return list.stream().filter(m -> m.getId().equals(id)).findFirst().get();
+        } else {
+            getAll();
+            return repository.read(id);
+        }
+    }
+
+    public List<Local> getAllByLanguage() {
+        if (CacheProvider.contains("Locals")) {
+            List<Local> list = CacheProvider.get("Locals");
+            return list.stream()
+                    .filter(m -> m.getLanguageId().equals(CurrentSession.Instance.getCurrentLanguageId()))
+                    .collect(Collectors.toList());
+        } else {
+            getAll();
+            return repository.getAllByLanguage();
+        }
     }
 }

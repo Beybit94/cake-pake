@@ -4,7 +4,6 @@ import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
-import kz.cake.web.service.LanguagesService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,10 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LanguagesController extends BaseController {
-    private final LanguagesService languagesService;
-
     public LanguagesController() {
-        languagesService = new LanguagesService();
+
     }
 
     public void change(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

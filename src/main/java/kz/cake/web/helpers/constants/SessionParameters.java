@@ -2,11 +2,13 @@ package kz.cake.web.helpers.constants;
 
 public enum SessionParameters {
     language("language"),
+    languages("languages"),
     languageId("languageId"),
+    locals("locals"),
     errors("errors"),
     user("user"),
     users("users"),
-    dictionary("dictionary");
+    cities("cities");
 
     String name;
 

@@ -2,6 +2,7 @@ package kz.cake.web.helpers;
 
 import kz.cake.web.controller.CityController;
 import kz.cake.web.controller.LanguagesController;
+import kz.cake.web.controller.LocalController;
 import kz.cake.web.controller.UserController;
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.exceptions.ControllerNotFoundException;
@@ -20,9 +21,10 @@ public class UrlRouter {
     public static final Map<String, BaseController> routes = new HashMap<>();
 
     static {
-        routes.put("User", new UserController());
         routes.put("Languages", new LanguagesController());
+        routes.put("Local", new LocalController());
         routes.put("City", new CityController());
+        routes.put("User", new UserController());
     }
 
     public void route(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

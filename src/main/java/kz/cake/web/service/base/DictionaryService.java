@@ -9,10 +9,12 @@ import kz.cake.web.service.LocalService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends DictionaryRepository> extends BaseService<T1, T2> {
     private final LocalService localService;
+    protected Supplier<T1> supplier;
 
     public DictionaryService() {
         this.localService = new LocalService();
@@ -22,9 +24,24 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
 
     public abstract String cacheKeyWithLocal();
 
-    @Override
-    public void save(T1 entity) {
+    public void save(DictionaryDto dictionary) {
+        T1 entity = supplier.get();
+        entity.setId(dictionary.getId());
+        entity.setActive(dictionary.isActive());
+        entity.setCode(dictionary.getCode());
         super.save(entity);
+
+        CacheProvider.remove(cacheKey());
+        CacheProvider.remove(cacheKeyWithLocal());
+    }
+
+    public void delete(DictionaryDto dictionary) {
+        T1 entity = supplier.get();
+        entity.setId(dictionary.getId());
+        entity.setActive(dictionary.isActive());
+        entity.setCode(dictionary.getCode());
+        super.delete(entity);
+
         CacheProvider.remove(cacheKey());
         CacheProvider.remove(cacheKeyWithLocal());
     }
@@ -88,7 +105,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     .findFirst().get();
         } else {
             getDictionaryWithLocal();
-            T1 item = (T1) repository.getById(id);
+            T1 item = (T1) repository.read(id);
             return mapWithLocal(item);
         }
     }
@@ -102,13 +119,14 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     .findFirst().get();
         } else {
             getDictionary();
-            T1 item = (T1) repository.getById(id);
+            T1 item = (T1) repository.read(id);
             return map(item);
         }
     }
 
     private DictionaryDto mapWithLocal(T1 m) {
         Local local = localService.getByCode(m.getCode());
+        System.out.println(local.getCode() + ":" + local.getMessage() + ":" + local.getLanguageId());
         DictionaryDto dictionaryDto = new DictionaryDto();
         dictionaryDto.setId((Long) m.getId());
         dictionaryDto.setCode(m.getCode());

@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserRepository extends BaseRepository<User> {
@@ -43,5 +45,28 @@ public class UserRepository extends BaseRepository<User> {
         }
 
         return Optional.ofNullable(user);
+    }
+
+    @Override
+    public List<User> getAll() {
+        List<User> list = new ArrayList<>();
+        User entity = this.supplier.get();
+        String sql = entity.getReadSql();
+
+        Connection connection = BasicConnectionPool.Instance.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                setFields(entity, resultSet);
+                list.add(entity);
+                entity = this.supplier.get();
+            }
+        } catch (Exception e) {
+            logger.error(e);
+        } finally {
+            BasicConnectionPool.Instance.releaseConnection(connection);
+        }
+
+        return list;
     }
 }
