@@ -41,6 +41,11 @@
                                 <button type="submit" class="btn btn-link text-dark"><fmt:message
                                         key="page.city"/></button>
                             </form>
+                            <div class="dropdown-divider"></div>
+                            <form class="form-inline" action="${ActionNames.ProductsizeList.name}" method="post">
+                                <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                        key="page.productSize"/></button>
+                            </form>
                         </div>
                     </div>
                 </c:if>

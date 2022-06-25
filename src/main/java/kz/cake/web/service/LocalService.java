@@ -9,6 +9,7 @@ import kz.cake.web.repository.LocalRepository;
 import kz.cake.web.service.base.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LocalService extends BaseService<Local, LocalRepository> {
@@ -47,16 +48,17 @@ public class LocalService extends BaseService<Local, LocalRepository> {
                 .collect(Collectors.toList()));
     }
 
-    public Local getByCode(String code) {
+    public Optional<Local> getByCode(String code) {
         if (CacheProvider.contains("Locals")) {
-            System.out.println(code + ":" + CurrentSession.Instance.getCurrentLanguageId());
             List<Local> list = CacheProvider.get("Locals");
             return list.stream()
                     .filter(m -> m.getCode().equals(code) && m.getLanguageId().equals(CurrentSession.Instance.getCurrentLanguageId()))
-                    .findFirst().get();
+                    .findFirst();
         } else {
             getAll();
-            return repository.getByCode(code);
+            Optional<Local> item = repository.getByCode(code);
+            if (!item.isPresent()) Optional.ofNullable(null);
+            return Optional.of(item.get());
         }
     }
 

@@ -11,7 +11,6 @@ public enum PageNames {
     locals("locals.jsp"),
     roles("roles.jsp"),
     city("city.jsp"),
-    order_status("order-status.jsp"),
     product_size("product-size.jsp"),
     product_category("product-category.jsp");
 

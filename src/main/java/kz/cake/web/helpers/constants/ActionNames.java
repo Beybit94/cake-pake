@@ -5,6 +5,7 @@ import java.util.List;
 
 public enum ActionNames {
     LanguagesChange("LanguagesChange"),
+    LanguagesList("LanguagesList"),
     UserLogin("UserLogin"),
     UserRegister("UserRegister"),
     UserLogout("UserLogout"),
@@ -15,15 +16,18 @@ public enum ActionNames {
     UserRemove("UserRemove"),
     UserReset("UserReset"),
     UserUnblock("UserUnblock"),
-    CityList("CityList"),
-    CityAdd("CityAdd"),
-    CityEdit("CityEdit"),
-    CityRemove("CityRemove"),
     LocalList("LocalList"),
     LocalAdd("LocalAdd"),
     LocalEdit("LocalEdit"),
     LocalRemove("LocalRemove"),
-    LanguagesList("LanguagesList");
+    CityList("CityList"),
+    CityAdd("CityAdd"),
+    CityEdit("CityEdit"),
+    CityRemove("CityRemove"),
+    ProductsizeList("ProductsizeList"),
+    ProductsizeAdd("ProductsizeAdd"),
+    ProductsizeEdit("ProductsizeEdit"),
+    ProductsizeRemove("ProductsizeRemove");
 
     public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
     public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);

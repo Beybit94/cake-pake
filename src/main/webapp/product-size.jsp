@@ -1,4 +1,3 @@
-<%@ page import="kz.cake.web.helpers.constants.PageNames" %>
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
@@ -26,7 +25,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-row justify-content-between">
-                        <h5 class="p-2 justify-content-start"><fmt:message key="page.city"/></h5>
+                        <h5 class="p-2 justify-content-start"><fmt:message key="page.productSize"/></h5>
                         <button type="submit" class="btn btn-outline-success" data-toggle="modal" data-target="#addModal"><fmt:message key="button.add"/></button>
                     </div>
                 </div>
@@ -42,13 +41,13 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${empty cities}">
+                            <c:when test="${empty productSizes}">
                                 <tr>
                                     <td colspan="3" class="text-center"><fmt:message key="label.noData"/></td>
                                 </tr>
                             </c:when>
                             <c:otherwise>
-                                <c:forEach var="item" items="${cities}">
+                                <c:forEach var="item" items="${productSizes}">
                                     <tr>
                                         <th scope="row">${item.id}</th>
                                         <td>${item.code}</td>
@@ -59,7 +58,7 @@
                                             <div class="modal fade" id="updateModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form action="${ActionNames.CityEdit.name}" method="post">
+                                                        <form action="${ActionNames.ProductsizeEdit.name}" method="post">
                                                             <input type="hidden" name="id" value="${item.id}"/>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
@@ -84,7 +83,7 @@
                                             <div class="modal fade" id="deleteModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form action="${ActionNames.CityRemove.name}" method="post">
+                                                        <form action="${ActionNames.ProductsizeRemove.name}" method="post">
                                                             <input type="hidden" name="id" value="${item.id}"/>
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
@@ -109,7 +108,7 @@
                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <form action="${ActionNames.CityAdd.name}" method="post">
+                            <form action="${ActionNames.ProductsizeAdd.name}" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.code"/></b></label>

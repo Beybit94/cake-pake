@@ -1,29 +1,63 @@
 package kz.cake.web.controller;
 
-import kz.cake.web.controller.base.DictionaryController;
+import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
+import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.service.CityService;
+import kz.cake.web.service.LocalService;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-public class CityController extends DictionaryController<CityService> {
+public class CityController extends BaseController {
+    protected final LocalService localService;
+    protected final CityService cityService;
+
     public CityController() {
-        this.service = new CityService();
+        localService = new LocalService();
+        cityService = new CityService();
     }
 
-    @Override
-    public Map<String, SessionParameters> getSessionParameters() {
-        Map<String, SessionParameters> sessionParameters = new HashMap<>();
-        sessionParameters.put("list", SessionParameters.cities);
-        return sessionParameters;
+    public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(true);
+        session.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
+        session.setAttribute(SessionParameters.locals.getName(), localService.getAllByLanguage());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.city.getName());
+        dispatcher.forward(request, response);
     }
 
-    @Override
-    public Map<String, PageNames> getPageNames() {
-        Map<String, PageNames> pageNames = new HashMap<>();
-        pageNames.put("list", PageNames.city);
-        return pageNames;
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String code = request.getParameter("code");
+
+        DictionaryDto dictionary = new DictionaryDto();
+        dictionary.setCode(code);
+        dictionary.setActive(true);
+
+        cityService.save(dictionary);
+        list(request, response);
+    }
+
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
+        String code = request.getParameter("code");
+
+        DictionaryDto dictionary = cityService.getById(id);
+        dictionary.setCode(code);
+        cityService.save(dictionary);
+
+        list(request, response);
+    }
+
+    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
+        DictionaryDto dictionary = cityService.getById(id);
+        cityService.delete(dictionary);
+
+        list(request, response);
     }
 }

@@ -1,9 +1,6 @@
 package kz.cake.web.helpers;
 
-import kz.cake.web.controller.CityController;
-import kz.cake.web.controller.LanguagesController;
-import kz.cake.web.controller.LocalController;
-import kz.cake.web.controller.UserController;
+import kz.cake.web.controller.*;
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.exceptions.ControllerNotFoundException;
 import kz.cake.web.helpers.constants.PageNames;
@@ -25,6 +22,7 @@ public class UrlRouter {
         routes.put("Local", new LocalController());
         routes.put("City", new CityController());
         routes.put("User", new UserController());
+        routes.put("Productsize",new ProductSizeController());
     }
 
     public void route(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

@@ -52,7 +52,9 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     return items;
                 })
                 .stream()
-                .map(m -> mapWithLocal(m))
+                .map(m -> {
+                    return mapWithLocal(m);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -125,12 +127,14 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
     }
 
     private DictionaryDto mapWithLocal(T1 m) {
-        Local local = localService.getByCode(m.getCode());
-        System.out.println(local.getCode() + ":" + local.getMessage() + ":" + local.getLanguageId());
         DictionaryDto dictionaryDto = new DictionaryDto();
+        Optional<Local> local = localService.getByCode(m.getCode());
+
+        if (local.isPresent()) {
+            dictionaryDto.setText(local.get().getMessage());
+        }
         dictionaryDto.setId((Long) m.getId());
         dictionaryDto.setCode(m.getCode());
-        dictionaryDto.setText(local.getMessage());
         dictionaryDto.setActive(m.isActive());
         return dictionaryDto;
     }

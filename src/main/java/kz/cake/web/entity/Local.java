@@ -60,9 +60,9 @@ public class Local extends Base<Long> {
                 "message text NOT NULL," +
                 "language_id bigint NOT NULL," +
                 "active boolean DEFAULT true not null," +
-                "FOREIGN KEY (language_id) REFERENCES web.languages (id)," +
-                "UNIQUE (code, language_id)" +
-                ");", getTableName());
+                "FOREIGN KEY (language_id) REFERENCES web.languages (id)" +
+                ");" +
+                "CREATE UNIQUE INDEX unique_code_language ON %s(code, language_id) WHERE active;", getTableName(), getTableName());
     }
 
     public static class Builder {

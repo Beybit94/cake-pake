@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class LocalRepository extends BaseRepository<Local> {
     private final Logger logger = LogManager.getLogger(RoleRepository.class);
@@ -20,7 +21,7 @@ public class LocalRepository extends BaseRepository<Local> {
         supplier = () -> new Local();
     }
 
-    public Local getByCode(String code) {
+    public Optional<Local> getByCode(String code) {
         Local local = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.local where code=? and language_id=?")) {
@@ -42,7 +43,7 @@ public class LocalRepository extends BaseRepository<Local> {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }
 
-        return local;
+        return Optional.ofNullable(local);
     }
 
     public List<Local> getAllByLanguage() {
