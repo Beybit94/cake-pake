@@ -14,7 +14,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Cake - <fmt:message key="page.city"/></title>
-    <link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet">
+    <jsp:include page="css.jsp"/>
 </head>
 <body>
 <div class="container">
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table table-striped table-bordered" id="dataTable">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -41,67 +41,60 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:choose>
-                            <c:when test="${empty cities}">
-                                <tr>
-                                    <td colspan="3" class="text-center"><fmt:message key="label.noData"/></td>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="item" items="${cities}">
-                                    <tr>
-                                        <th scope="row">${item.id}</th>
-                                        <td>${item.code}</td>
-                                        <td class="d-flex flex-column justify-content-between align-content-start">
-                                            <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#updateModal${item.id}"><fmt:message key="button.update"/></button>
-                                            <button type="button" class="btn btn-outline-danger mb-1" data-toggle="modal" data-target="#deleteModal${item.id}"><fmt:message key="button.delete"/></button>
+                        <c:forEach var="item" items="${cities}">
+                            <tr>
+                                <th scope="row">${item.id}</th>
+                                <td>${item.code}</td>
+                                <td class="d-flex flex-column justify-content-between align-content-start">
+                                    <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#updateModal${item.id}"><fmt:message key="button.update"/></button>
+                                    <button type="button" class="btn btn-outline-danger mb-1" data-toggle="modal" data-target="#deleteModal${item.id}"><fmt:message key="button.delete"/></button>
 
-                                            <div class="modal fade" id="updateModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <form action="${ActionNames.CityEdit.name}" method="post">
-                                                            <input type="hidden" name="id" value="${item.id}"/>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <label><b><fmt:message key="label.code"/></b></label>
-                                                                    <select name="code" class="form-control">
-                                                                        <c:forEach items="${locals}" var="local">
-                                                                            <option value="${local.code}" <c:if test="${local.code == item.code}"> selected </c:if>>
-                                                                                    ${local.message}
-                                                                            </option>
-                                                                        </c:forEach>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary"><fmt:message key="button.update"/></button>
-                                                            </div>
-                                                        </form>
+                                    <div class="modal fade" id="updateModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="${ActionNames.CityEdit.name}" method="post">
+                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <fmt:message key="label.code"/>
+                                                            </label>
+                                                            <select name="code" class="form-control local" style="width: 100%">
+                                                                <c:forEach items="${locals}" var="local">
+                                                                    <option value="${local.code}" <c:if test="${local.code == item.code}"> selected </c:if>>
+                                                                            ${local.message}
+                                                                    </option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal fade" id="deleteModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <form action="${ActionNames.CityRemove.name}" method="post">
-                                                            <input type="hidden" name="id" value="${item.id}"/>
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-danger"><fmt:message key="button.delete"/></button>
-                                                            </div>
-                                                        </form>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary"><fmt:message key="button.update"/></button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="deleteModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="${ActionNames.CityRemove.name}" method="post">
+                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-danger"><fmt:message key="button.delete"/></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -112,8 +105,10 @@
                             <form action="${ActionNames.CityAdd.name}" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label><b><fmt:message key="label.code"/></b></label>
-                                        <select name="code" class="form-control" required>
+                                        <label>
+                                            <fmt:message key="label.code"/>
+                                        </label>
+                                        <select name="code" class="form-control local" style="width: 100%">
                                             <c:forEach items="${locals}" var="local">
                                                 <option value="${local.code}">
                                                         ${local.message}
@@ -137,4 +132,31 @@
 
 <jsp:include page="footer.jsp"/>
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        let address = '${contextPath}/static/datatable/json/ru.json';
+        const lang = '${sessionScope.language}'
+        if (lang === 'en') {
+            address = '';
+        }
+
+        $('#dataTable').DataTable({
+            columnDefs: [
+                {
+                    "targets": 2,
+                    "orderable": false
+                }
+            ],
+            "order": [
+                [0, "asc"]
+            ],
+            language: {
+                url: address
+            },
+            searching: true,
+        });
+
+        $('.local').select2();
+    });
+</script>
 </html>

@@ -31,6 +31,10 @@ public class CacheProvider {
         }
     }
 
+    public static void clear() {
+        cache.clear();
+    }
+
     public static <T> T get(String key) {
         return cache.containsKey(key) ? (T) cache.get(key).getData() : null;
     }

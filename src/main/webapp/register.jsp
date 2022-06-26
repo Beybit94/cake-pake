@@ -1,8 +1,6 @@
-<%@ page import="kz.cake.web.helpers.constants.PageNames" %>
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
@@ -14,7 +12,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Cake - <fmt:message key="page.register"/></title>
-    <link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet">
+    <jsp:include page="css.jsp"/>
 </head>
 <body>
 <div class="container">

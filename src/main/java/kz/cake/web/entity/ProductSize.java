@@ -7,8 +7,10 @@ public class ProductSize extends BaseDictionary<Long> {
         super();
     }
 
-    private ProductSize(String code) {
+    private ProductSize(Long id, boolean active, String code) {
         super(code);
+        this.id = id;
+        this.active = active;
     }
 
     @Override
@@ -17,9 +19,21 @@ public class ProductSize extends BaseDictionary<Long> {
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private String code;
 
         public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
         }
 
         public Builder code(String code) {
@@ -28,7 +42,7 @@ public class ProductSize extends BaseDictionary<Long> {
         }
 
         public ProductSize build() {
-            return new ProductSize(code);
+            return new ProductSize(id, active, code);
         }
     }
 }

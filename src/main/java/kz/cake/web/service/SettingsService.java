@@ -131,13 +131,17 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
     }
 
     private void initData() throws NoSuchAlgorithmException {
+
+        //region Language
         LanguagesService languagesService = new LanguagesService();
         languagesService.save(new Languages.Builder().code(Language.en).active(true).build());
         languagesService.save(new Languages.Builder().code(Language.ru).active(true).build());
+        //endregion
 
         Optional<Languages> en = languagesService.findByCode("en");
         Optional<Languages> ru = languagesService.findByCode("ru");
 
+        //region Roles
         LocalService localService = new LocalService();
         localService.save(new Local.Builder().code("admin").languageId(en.get().getId()).message("admin").build());
         localService.save(new Local.Builder().code("manager").languageId(en.get().getId()).message("manager").build());
@@ -150,7 +154,9 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         roleService.save(new Role.Builder().code("admin").active(true).build());
         roleService.save(new Role.Builder().code("manager").active(true).build());
         roleService.save(new Role.Builder().code("user").active(true).build());
+        //endregion
 
+        //region User
         UserService userService = new UserService();
         userService.save(new User.Builder()
                 .name("admin")
@@ -162,7 +168,9 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         Optional<User> adminUser = userService.findUserByName("admin");
         UserRoleService userRoleService = new UserRoleService();
         userRoleService.save(new UserRole(adminUser.get().getId(), adminRole.get().getId()));
+        //endregion
 
+        //region Order status
         localService.save(new Local.Builder().code("new").languageId(en.get().getId()).message("New").build());
         localService.save(new Local.Builder().code("inprogress").languageId(en.get().getId()).message("In progress").build());
         localService.save(new Local.Builder().code("completed").languageId(en.get().getId()).message("Completed").build());
@@ -174,7 +182,23 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         orderStatusService.save(new OrderStatus.Builder().code("new").active(true).build());
         orderStatusService.save(new OrderStatus.Builder().code("inprogress").active(true).build());
         orderStatusService.save(new OrderStatus.Builder().code("completed").active(true).build());
+        //endregion
 
+        //region Product size
+        localService.save(new Local.Builder().code("large").languageId(en.get().getId()).message("large").build());
+        localService.save(new Local.Builder().code("medium").languageId(en.get().getId()).message("medium").build());
+        localService.save(new Local.Builder().code("small").languageId(en.get().getId()).message("small").build());
+        localService.save(new Local.Builder().code("large").languageId(ru.get().getId()).message("большой").build());
+        localService.save(new Local.Builder().code("medium").languageId(ru.get().getId()).message("средний").build());
+        localService.save(new Local.Builder().code("small").languageId(ru.get().getId()).message("маленький").build());
+
+        ProductSizeService productSizeService = new ProductSizeService();
+        productSizeService.save(new ProductSize.Builder().code("large").active(true).build());
+        productSizeService.save(new ProductSize.Builder().code("medium").active(true).build());
+        productSizeService.save(new ProductSize.Builder().code("small").active(true).build());
+        //endregion
+
+        //region Product category
         localService.save(new Local.Builder().code("cake").languageId(en.get().getId()).message("cake").build());
         localService.save(new Local.Builder().code("cheesecake").languageId(en.get().getId()).message("cheesecake").build());
         localService.save(new Local.Builder().code("pie").languageId(en.get().getId()).message("pie").build());
@@ -225,6 +249,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
             productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("meat").active(true).build());
             productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
         });
+        //endregion
 
         save(new Settings.Builder()
                 .isInitTables(true)

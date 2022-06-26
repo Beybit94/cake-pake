@@ -12,6 +12,8 @@
     </footer>
 </div>
 
-<script src="${contextPath}/js/jquery-3.6.0.min.js"></script>
-<script src="${contextPath}/js/popper.min.js"></script>
-<script src="${contextPath}/js/bootstrap.min.js"></script>
+<script src="${contextPath}/static/jquery/jquery-3.6.0.min.js"></script>
+<script src="${contextPath}/static/popper/popper.min.js"></script>
+<script src="${contextPath}/static/bootstrap/bootstrap.js"></script>
+<script src="${contextPath}/static/datatable/datatables.min.js"></script>
+<script src="${contextPath}/static/select2/select2.js"></script>

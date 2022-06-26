@@ -1,13 +1,11 @@
 package kz.cake.web.model;
 
 public class DictionaryDto {
-    private Long id;
-    private Long parent;
-    private boolean active;
-    private String code;
-    private String text;
-    private String parentCode;
-    private String parentText;
+    protected Long id;
+    protected boolean active;
+    protected String code;
+    protected String text;
+
 
     public DictionaryDto() {
     }
@@ -18,12 +16,6 @@ public class DictionaryDto {
         this.active = active;
     }
 
-    public DictionaryDto(Long id, Long parent, String code, boolean active) {
-        this.id = id;
-        this.parent = parent;
-        this.code = code;
-        this.active = active;
-    }
 
     public Long getId() {
         return id;
@@ -31,10 +23,6 @@ public class DictionaryDto {
 
     public String getCode() {
         return code;
-    }
-
-    public Long getParent() {
-        return parent;
     }
 
     public boolean isActive() {
@@ -45,20 +33,8 @@ public class DictionaryDto {
         return text;
     }
 
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public String getParentText() {
-        return parentText;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setParent(Long parent) {
-        this.parent = parent;
     }
 
     public void setActive(boolean active) {
@@ -71,13 +47,5 @@ public class DictionaryDto {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
-
-    public void setParentText(String parentText) {
-        this.parentText = parentText;
     }
 }
