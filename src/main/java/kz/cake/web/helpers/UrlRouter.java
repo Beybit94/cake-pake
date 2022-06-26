@@ -23,6 +23,7 @@ public class UrlRouter {
         routes.put("City", new CityController());
         routes.put("User", new UserController());
         routes.put("Productsize",new ProductSizeController());
+        routes.put("Productcategory",new ProductCategoryController());
     }
 
     public void route(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

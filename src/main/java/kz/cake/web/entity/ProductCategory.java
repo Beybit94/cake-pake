@@ -9,8 +9,10 @@ public class ProductCategory extends BaseDictionary<Long> {
         super();
     }
 
-    protected ProductCategory(String code, Long parent) {
+    protected ProductCategory(Long id, boolean active, String code, Long parent) {
         super(code);
+        this.id = id;
+        this.active = active;
         this.parent = parent;
     }
 
@@ -39,14 +41,26 @@ public class ProductCategory extends BaseDictionary<Long> {
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private Long parent;
-        private String localId;
+        private String code;
 
         public Builder() {
         }
 
-        public Builder localId(String localId) {
-            this.localId = localId;
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder code(String code) {
+            this.code = code;
             return this;
         }
 
@@ -56,7 +70,7 @@ public class ProductCategory extends BaseDictionary<Long> {
         }
 
         public ProductCategory build() {
-            return new ProductCategory(localId, parent);
+            return new ProductCategory(id, active, code, parent);
         }
     }
 }

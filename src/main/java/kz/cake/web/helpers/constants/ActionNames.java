@@ -27,7 +27,11 @@ public enum ActionNames {
     ProductsizeList("ProductsizeList"),
     ProductsizeAdd("ProductsizeAdd"),
     ProductsizeEdit("ProductsizeEdit"),
-    ProductsizeRemove("ProductsizeRemove");
+    ProductsizeRemove("ProductsizeRemove"),
+    ProductcategoryList("ProductcategoryList"),
+    ProductcategoryAdd("ProductcategoryAdd"),
+    ProductcategoryEdit("ProductcategoryEdit"),
+    ProductcategoryRemove("ProductcategoryRemove");
 
     public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
     public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);

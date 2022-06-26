@@ -1,6 +1,5 @@
 package kz.cake.web.service.base;
 
-import kz.cake.web.entity.Local;
 import kz.cake.web.entity.base.BaseDictionary;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.model.DictionaryDto;
@@ -13,16 +12,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends DictionaryRepository> extends BaseService<T1, T2> {
-    private final LocalService localService;
+    protected final LocalService localService;
     protected Supplier<T1> supplier;
 
     public DictionaryService() {
         this.localService = new LocalService();
     }
-
-    public abstract String cacheKey();
-
-    public abstract String cacheKeyWithLocal();
 
     public void save(DictionaryDto dictionary) {
         T1 entity = supplier.get();
@@ -52,9 +47,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
                     return items;
                 })
                 .stream()
-                .map(m -> {
-                    return mapWithLocal(m);
-                })
+                .map(m -> mapWithLocal(m))
                 .collect(Collectors.toList());
     }
 
@@ -126,24 +119,11 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
         }
     }
 
-    private DictionaryDto mapWithLocal(T1 m) {
-        DictionaryDto dictionaryDto = new DictionaryDto();
-        Optional<Local> local = localService.getByCode(m.getCode());
+    public abstract String cacheKey();
 
-        if (local.isPresent()) {
-            dictionaryDto.setText(local.get().getMessage());
-        }
-        dictionaryDto.setId((Long) m.getId());
-        dictionaryDto.setCode(m.getCode());
-        dictionaryDto.setActive(m.isActive());
-        return dictionaryDto;
-    }
+    public abstract String cacheKeyWithLocal();
 
-    private DictionaryDto map(T1 m) {
-        DictionaryDto dictionaryDto = new DictionaryDto();
-        dictionaryDto.setId((Long) m.getId());
-        dictionaryDto.setCode(m.getCode());
-        dictionaryDto.setActive(m.isActive());
-        return dictionaryDto;
-    }
+    protected abstract DictionaryDto mapWithLocal(T1 m);
+
+    protected abstract DictionaryDto map(T1 m);
 }

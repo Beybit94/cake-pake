@@ -29,7 +29,7 @@ public abstract class DictionaryRepository<T extends BaseDictionary> extends Bas
                 setFields(entity, resultSet);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         } finally {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }

@@ -9,7 +9,8 @@ public enum SessionParameters {
     user("user"),
     users("users"),
     cities("cities"),
-    productSizes("productSizes");
+    productSizes("productSizes"),
+    productCategories("productCategories");
 
     String name;
 

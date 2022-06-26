@@ -7,8 +7,10 @@ public class OrderStatus extends BaseDictionary<Long> {
         super();
     }
 
-    private OrderStatus(String code) {
+    private OrderStatus(Long id, boolean active, String code) {
         super(code);
+        this.id = id;
+        this.active = active;
     }
 
     @Override
@@ -17,9 +19,21 @@ public class OrderStatus extends BaseDictionary<Long> {
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private String code;
 
         public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
         }
 
         public Builder code(String code) {
@@ -28,7 +42,7 @@ public class OrderStatus extends BaseDictionary<Long> {
         }
 
         public OrderStatus build() {
-            return new OrderStatus(code);
+            return new OrderStatus(id, active, code);
         }
     }
 }
