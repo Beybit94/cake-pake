@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.util.Optional;
 
 public abstract class DictionaryRepository<T extends BaseDictionary> extends BaseRepository<T> {
-    private final Logger logger = LogManager.getLogger(DictionaryRepository.class);
-
     public DictionaryRepository() {
 
     }

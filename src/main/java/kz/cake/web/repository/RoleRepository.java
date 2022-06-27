@@ -6,8 +6,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class RoleRepository extends DictionaryRepository<Role> {
-    private final Logger logger = LogManager.getLogger(RoleRepository.class);
-
     public RoleRepository() {
         supplier = () -> new Role();
     }

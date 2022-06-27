@@ -3,8 +3,6 @@ package kz.cake.web.repository;
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.repository.base.BaseRepository;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRoleRepository extends BaseRepository<UserRole> {
-    private final Logger logger = LogManager.getLogger(UserRoleRepository.class);
-
     public UserRoleRepository() {
         supplier = () -> new UserRole();
     }

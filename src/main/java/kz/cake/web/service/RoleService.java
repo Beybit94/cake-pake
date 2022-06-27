@@ -28,7 +28,7 @@ public class RoleService extends DictionaryService<Role, RoleRepository> {
     @Override
     protected DictionaryDto mapWithLocal(Role m) {
         DictionaryDto dictionaryDto = new DictionaryDto(m.getId(), m.getCode(), m.isActive());
-        Optional<Local> local = localService.getByCode(m.getCode());
+        Optional<Local> local = localService.findByCode(m.getCode());
         if (local.isPresent()) {
             dictionaryDto.setText(local.get().getMessage());
         }

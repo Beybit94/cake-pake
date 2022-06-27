@@ -1,6 +1,7 @@
 package kz.cake.web.service.base;
 
 import kz.cake.web.entity.base.BaseDictionary;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.repository.base.DictionaryRepository;
@@ -30,7 +31,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
         CacheProvider.remove(cacheKeyWithLocal());
     }
 
-    public void delete(DictionaryDto dictionary) {
+    public void delete(DictionaryDto dictionary) throws CustomValidationException {
         T1 entity = supplier.get();
         entity.setId(dictionary.getId());
         entity.setActive(dictionary.isActive());

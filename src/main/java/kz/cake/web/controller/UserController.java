@@ -3,6 +3,7 @@ package kz.cake.web.controller;
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.UrlRouter;
@@ -63,11 +64,12 @@ public class UserController extends BaseController {
         list(request, response);
     }
 
-    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
         String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user -> {
-            userService.delete(user);
-        });
+        Optional<User> user = userService.findUserByName(username);
+        if (user.isPresent()) {
+            userService.delete(user.get());
+        }
         list(request, response);
     }
 

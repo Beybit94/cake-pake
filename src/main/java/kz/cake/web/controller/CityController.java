@@ -1,6 +1,8 @@
 package kz.cake.web.controller;
 
 import kz.cake.web.controller.base.BaseController;
+import kz.cake.web.exceptions.CustomValidationException;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.DictionaryDto;
@@ -24,9 +26,9 @@ public class CityController extends BaseController {
     }
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
-        session.setAttribute(SessionParameters.locals.getName(), localService.getAllByLanguage());
+        request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
+        request.setAttribute(SessionParameters.locals.getName(), localService.getAllByLanguage());
+        request.setAttribute(SessionParameters.errors.getName(), CurrentSession.Instance.getErrors());
         RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.city.getName());
         dispatcher.forward(request, response);
     }
@@ -53,7 +55,7 @@ public class CityController extends BaseController {
         list(request, response);
     }
 
-    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
         Long id = Long.parseLong(request.getParameter("id"));
         DictionaryDto dictionary = cityService.getById(id);
         cityService.delete(dictionary);

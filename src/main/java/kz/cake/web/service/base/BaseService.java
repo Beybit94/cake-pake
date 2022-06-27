@@ -1,6 +1,7 @@
 package kz.cake.web.service.base;
 
 import kz.cake.web.entity.base.Base;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.repository.base.BaseRepository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public abstract class BaseService<T1 extends Base, T2 extends BaseRepository> {
         return (T1) repository.read(id);
     }
 
-    public void delete(T1 entity) {
+    public void delete(T1 entity) throws CustomValidationException {
         repository.delete(entity);
     }
 

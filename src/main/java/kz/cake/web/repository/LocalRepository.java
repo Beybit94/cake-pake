@@ -2,7 +2,9 @@ package kz.cake.web.repository;
 
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Local;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.repository.base.BaseRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,16 +17,50 @@ import java.util.List;
 import java.util.Optional;
 
 public class LocalRepository extends BaseRepository<Local> {
-    private final Logger logger = LogManager.getLogger(RoleRepository.class);
+    private final RoleRepository roleRepository;
+    private final CityRepository cityRepository;
+    private final OrderStatusRepository orderStatusRepository;
+    private final ProductSizeRepository productSizeRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
     public LocalRepository() {
         supplier = () -> new Local();
+        roleRepository = new RoleRepository();
+        cityRepository = new CityRepository();
+        orderStatusRepository = new OrderStatusRepository();
+        productSizeRepository = new ProductSizeRepository();
+        productCategoryRepository = new ProductCategoryRepository();
     }
 
-    public Optional<Local> getByCode(String code) {
+    @Override
+    public void delete(Local entity) throws CustomValidationException {
+        if(roleRepository.findByCode(entity.getCode()).isPresent()){
+            throw new CustomValidationException("error.activeRecord", ActionNames.LocalList);
+        }
+
+        if(cityRepository.findByCode(entity.getCode()).isPresent()){
+            throw new CustomValidationException("error.activeRecord", ActionNames.LocalList);
+        }
+
+        if(orderStatusRepository.findByCode(entity.getCode()).isPresent()){
+            throw new CustomValidationException("error.activeRecord", ActionNames.LocalList);
+        }
+
+        if(productSizeRepository.findByCode(entity.getCode()).isPresent()){
+            throw new CustomValidationException("error.activeRecord", ActionNames.LocalList);
+        }
+
+        if(productCategoryRepository.findByCode(entity.getCode()).isPresent()){
+            throw new CustomValidationException("error.activeRecord", ActionNames.LocalList);
+        }
+
+        super.delete(entity);
+    }
+
+    public Optional<Local> findByCode(String code) {
         Local local = null;
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.local where code=? and language_id=?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.local where code=? and language_id=? and active=true")) {
             preparedStatement.setString(1, code);
             preparedStatement.setLong(2, CurrentSession.Instance.getCurrentLanguageId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -50,7 +86,7 @@ public class LocalRepository extends BaseRepository<Local> {
         List<Local> list = new ArrayList<>();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.local where language_id=?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from web.local where language_id=? and active=true")) {
             preparedStatement.setLong(1, CurrentSession.Instance.getCurrentLanguageId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

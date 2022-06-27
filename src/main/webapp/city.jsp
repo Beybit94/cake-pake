@@ -23,6 +23,16 @@
     </jsp:include>
     <div class="row">
         <div class="col-12 mx-auto">
+            <c:if test="${requestScope.errors != null}">
+                <c:forEach var="error" items="${errors}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><fmt:message key="${error.text}"/></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:forEach>
+            </c:if>
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex flex-row justify-content-between">

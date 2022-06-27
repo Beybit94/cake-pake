@@ -2,6 +2,8 @@ package kz.cake.web.controller;
 
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.entity.Local;
+import kz.cake.web.exceptions.CustomValidationException;
+import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
@@ -24,9 +26,9 @@ public class LocalController extends BaseController {
     }
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.setAttribute(SessionParameters.locals.getName(), localService.getAllWithLanguage());
-        session.setAttribute(SessionParameters.languages.getName(), languagesService.getAll());
+        request.setAttribute(SessionParameters.locals.getName(), localService.getAllWithLanguage());
+        request.setAttribute(SessionParameters.languages.getName(), languagesService.getAll());
+        request.setAttribute(SessionParameters.errors.getName(), CurrentSession.Instance.getErrors());
         RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.locals.getName());
         dispatcher.forward(request, response);
     }
@@ -53,7 +55,7 @@ public class LocalController extends BaseController {
         list(request, response);
     }
 
-    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
         Long id = Long.parseLong(request.getParameter("id"));
 
         Local local = localService.getById(id);

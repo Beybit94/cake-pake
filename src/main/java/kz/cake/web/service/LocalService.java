@@ -2,8 +2,11 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.Languages;
 import kz.cake.web.entity.Local;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.helpers.constants.ActionNames;
+import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.LocalDto;
 import kz.cake.web.repository.LocalRepository;
 import kz.cake.web.service.base.BaseService;
@@ -28,7 +31,7 @@ public class LocalService extends BaseService<Local, LocalRepository> {
     }
 
     @Override
-    public void delete(Local entity) {
+    public void delete(Local entity) throws CustomValidationException {
         super.delete(entity);
         CacheProvider.remove("Locals");
         CacheProvider.remove("LocalsWithLanguage");
@@ -48,7 +51,7 @@ public class LocalService extends BaseService<Local, LocalRepository> {
                 .collect(Collectors.toList()));
     }
 
-    public Optional<Local> getByCode(String code) {
+    public Optional<Local> findByCode(String code) {
         if (CacheProvider.contains("Locals")) {
             List<Local> list = CacheProvider.get("Locals");
             return list.stream()
@@ -56,7 +59,7 @@ public class LocalService extends BaseService<Local, LocalRepository> {
                     .findFirst();
         } else {
             getAll();
-            Optional<Local> item = repository.getByCode(code);
+            Optional<Local> item = repository.findByCode(code);
             if (!item.isPresent()) Optional.ofNullable(null);
             return Optional.of(item.get());
         }

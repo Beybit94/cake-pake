@@ -1,18 +1,20 @@
 package kz.cake.web.controller;
 
 import kz.cake.web.helpers.UrlRouter;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.SessionParameters;
+import kz.cake.web.model.ValidationErrorDto;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainController extends HttpServlet {
-    private final Logger logger = LogManager.getLogger(MainController.class);
-
     public MainController() {
         super();
     }
@@ -27,7 +29,11 @@ public class MainController extends HttpServlet {
         try {
             UrlRouter.Instance.route(req, resp);
         } catch (Exception e) {
-            logger.error(e);
+            e.printStackTrace();
+            List<ValidationErrorDto> errorList = Arrays.asList(new ValidationErrorDto(e.getMessage()));
+            req.setAttribute(SessionParameters.errors.getName(), errorList);
+            RequestDispatcher dispatcher = req.getRequestDispatcher(PageNames.error.getName());
+            dispatcher.forward(req, resp);
         }
     }
 }

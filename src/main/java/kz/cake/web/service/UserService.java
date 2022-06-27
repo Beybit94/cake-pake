@@ -2,6 +2,7 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.UserDto;
@@ -53,7 +54,7 @@ public class UserService extends BaseService<User, UserRepository> {
         });
     }
 
-    public void delete(User user){
+    public void delete(User user) throws CustomValidationException {
         repository.delete(user);
     }
 }

@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.util.Optional;
 
 public class LanguagesRepository extends BaseRepository<Languages> {
-    private final Logger logger = LogManager.getLogger(LanguagesService.class);
-
     public LanguagesRepository() {
         supplier = () -> new Languages();
     }

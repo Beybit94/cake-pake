@@ -1,17 +1,26 @@
 package kz.cake.web.service;
 
 import kz.cake.web.entity.ProductCategory;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
+import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.ProductCategoryDto;
+import kz.cake.web.model.ProductDto;
+import kz.cake.web.model.ProductFilterDto;
 import kz.cake.web.repository.ProductCategoryRepository;
 import kz.cake.web.service.base.DictionaryService;
 
+import java.util.List;
+
 public class ProductCategoryService extends DictionaryService<ProductCategory, ProductCategoryRepository> {
+    private final ProductService productService;
+
     public ProductCategoryService() {
         super();
         this.repository = new ProductCategoryRepository();
         this.supplier = () -> new ProductCategory();
+        productService = new ProductService();
     }
 
     @Override
@@ -39,7 +48,12 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     }
 
     @Override
-    public void delete(DictionaryDto dictionary) {
+    public void delete(DictionaryDto dictionary) throws CustomValidationException {
+        List<ProductDto> find = productService.find(new ProductFilterDto());
+        if (!find.isEmpty()) {
+            throw new CustomValidationException("error.activeRecord", ActionNames.ProductsizeList);
+        }
+
         ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
         super.delete(new ProductCategory.Builder()
                 .id(productCategoryDto.getId())
@@ -55,14 +69,14 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     @Override
     protected ProductCategoryDto mapWithLocal(ProductCategory m) {
         ProductCategoryDto dictionaryDto = new ProductCategoryDto(m.getId(), m.getParent(), m.getCode(), m.isActive());
-        localService.getByCode(m.getCode()).ifPresent(p -> {
+        localService.findByCode(m.getCode()).ifPresent(p -> {
             dictionaryDto.setText(p.getMessage());
         });
 
         if (m.getParent() != null) {
             DictionaryDto parent = getById(m.getParent());
             dictionaryDto.setParentCode(parent.getCode());
-            localService.getByCode(parent.getCode()).ifPresent(p -> {
+            localService.findByCode(parent.getCode()).ifPresent(p -> {
                 dictionaryDto.setParentText(p.getMessage());
             });
         }

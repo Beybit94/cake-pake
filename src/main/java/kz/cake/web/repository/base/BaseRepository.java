@@ -2,6 +2,7 @@ package kz.cake.web.repository.base;
 
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.base.Base;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -14,7 +15,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class BaseRepository<T extends Base> implements CrudRepository<T> {
-    private final Logger logger = LogManager.getLogger(BaseRepository.class);
+    protected final Logger logger = LogManager.getLogger(this.getClass());
     protected Supplier<T> supplier;
 
     public void createTable(T table) {
@@ -80,7 +81,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(T entity) throws CustomValidationException {
         String sql = entity.getDeleteSql();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();

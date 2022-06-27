@@ -2,6 +2,7 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.Local;
 import kz.cake.web.entity.OrderStatus;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.repository.OrderStatusRepository;
 import kz.cake.web.service.base.DictionaryService;
@@ -28,7 +29,7 @@ public class OrderStatusService extends DictionaryService<OrderStatus, OrderStat
     @Override
     protected DictionaryDto mapWithLocal(OrderStatus m) {
         DictionaryDto dictionaryDto = new DictionaryDto(m.getId(), m.getCode(), m.isActive());
-        Optional<Local> local = localService.getByCode(m.getCode());
+        Optional<Local> local = localService.findByCode(m.getCode());
         if (local.isPresent()) {
             dictionaryDto.setText(local.get().getMessage());
         }

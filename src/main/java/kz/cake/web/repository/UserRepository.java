@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository extends BaseRepository<User> {
-    private final Logger logger = LogManager.getLogger(UserRepository.class);
-
     public UserRepository() {
         supplier = () -> new User();
     }
