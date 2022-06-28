@@ -11,12 +11,12 @@ public abstract class BaseDictionary<T> extends Base<T> {
         this.code = code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getCode() {
         return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
@@ -30,6 +30,7 @@ public abstract class BaseDictionary<T> extends Base<T> {
                 "id bigserial PRIMARY KEY," +
                 "code varchar(100) NOT NULL," +
                 "active boolean DEFAULT true not null" +
-                ");", getTableName());
+                ");" +
+                "CREATE UNIQUE INDEX unique_code_%d ON %s(code) WHERE active;", getTableName(), System.currentTimeMillis(), getTableName());
     }
 }

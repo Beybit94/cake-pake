@@ -37,7 +37,8 @@ public class ProductCategory extends BaseDictionary<Long> {
                 "parent bigint NULL," +
                 "code varchar(100) NOT NULL," +
                 "active boolean DEFAULT true not null" +
-                ");", getTableName());
+                ");" +
+                "CREATE UNIQUE INDEX unique_code_%d ON %s(code,parent) WHERE active;", getTableName(), System.currentTimeMillis(), getTableName());
     }
 
     public static class Builder {

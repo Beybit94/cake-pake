@@ -2,7 +2,6 @@ package kz.cake.web.helpers;
 
 import kz.cake.web.controller.*;
 import kz.cake.web.controller.base.BaseController;
-import kz.cake.web.exceptions.ControllerNotFoundException;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.ValidationErrorDto;
@@ -12,7 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,7 @@ public class UrlRouter {
     static {
         routes.put("Languages", new LanguagesController());
         routes.put("Local", new LocalController());
-        //routes.put("City", new CityController());
+        routes.put("City", new CityController());
         routes.put("User", new UserController());
         routes.put("Productsize", new ProductSizeController());
         routes.put("Productcategory", new ProductCategoryController());
@@ -41,8 +41,11 @@ public class UrlRouter {
             BaseController controller = routes.get(controllerName);
             controller.execute(actions[1], request, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            List<ValidationErrorDto> errorList = Arrays.asList(new ValidationErrorDto(e.getLocalizedMessage()));
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            List<ValidationErrorDto> errorList = Arrays.asList(new ValidationErrorDto(sw.toString()));
             request.setAttribute(SessionParameters.errors.getName(), errorList);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.error.getName());
             dispatcher.forward(request, response);
@@ -57,8 +60,11 @@ public class UrlRouter {
             BaseController controller = routes.get(controllerName);
             controller.execute(actions[1], request, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            List<ValidationErrorDto> errorList = Arrays.asList(new ValidationErrorDto(e.getLocalizedMessage()));
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            List<ValidationErrorDto> errorList = Arrays.asList(new ValidationErrorDto(sw.toString()));
             request.setAttribute(SessionParameters.errors.getName(), errorList);
             RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.error.getName());
             dispatcher.forward(request, response);

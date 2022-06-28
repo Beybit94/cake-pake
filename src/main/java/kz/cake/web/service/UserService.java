@@ -9,6 +9,7 @@ import kz.cake.web.model.UserDto;
 import kz.cake.web.repository.UserRepository;
 import kz.cake.web.service.base.BaseService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class UserService extends BaseService<User, UserRepository> {
     public List<UserDto> getAllWithRole() {
         List<UserDto> userList = new ArrayList<>();
         for (User user : getAll()) {
-            if(user.getUsername().equals(CurrentSession.Instance.getCurrentUser().getUserName())) continue;
+            if (user.getUsername().equals(CurrentSession.Instance.getCurrentUser().getUserName())) continue;
 
             UserDto userDto = new UserDto();
             userDto.setUser(user);
@@ -46,12 +47,14 @@ public class UserService extends BaseService<User, UserRepository> {
         return userList;
     }
 
-    public void setRole(String userName, String roleCode){
-        findUserByName(userName).ifPresent(u->{
-            roleService.findByCode(roleCode).ifPresent(r->{
-                userRoleService.save(new UserRole(u.getId(),r.getId()));
-            });
-        });
+    public void setRole(String userName, String roleCode) throws SQLException, IllegalAccessException {
+        Optional<User> user = findUserByName(userName);
+        if (user.isPresent()) {
+            Optional<DictionaryDto> role = roleService.findByCode(roleCode);
+            if (role.isPresent()) {
+                userRoleService.save(new UserRole(user.get().getId(), role.get().getId()));
+            }
+        }
     }
 
     public void delete(User user) throws CustomValidationException {

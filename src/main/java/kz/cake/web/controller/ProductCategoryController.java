@@ -14,8 +14,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class ProductCategoryController extends BaseController {
     protected final LocalService localService;
@@ -34,7 +34,7 @@ public class ProductCategoryController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         String code = request.getParameter("code");
         Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));
 
@@ -47,7 +47,7 @@ public class ProductCategoryController extends BaseController {
         list(request, response);
     }
 
-    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         Long id = Long.parseLong(request.getParameter("id"));
         String code = request.getParameter("code");
         Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));

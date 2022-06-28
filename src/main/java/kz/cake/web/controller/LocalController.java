@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LocalController extends BaseController {
     private final LocalService localService;
@@ -33,7 +34,7 @@ public class LocalController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         localService.save(new Local.Builder()
                 .code(request.getParameter("code"))
                 .message(request.getParameter("text"))
@@ -43,7 +44,7 @@ public class LocalController extends BaseController {
         list(request, response);
     }
 
-    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         Long id = Long.parseLong(request.getParameter("id"));
 
         Local local = localService.getById(id);

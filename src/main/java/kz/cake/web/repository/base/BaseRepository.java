@@ -32,7 +32,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public void create(T entity) {
+    public void create(T entity) throws SQLException, IllegalAccessException {
         String sql = entity.getCreateSql();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
@@ -41,6 +41,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         } finally {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }
@@ -66,7 +67,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public void update(T entity) {
+    public void update(T entity) throws SQLException, IllegalAccessException {
         String sql = entity.getUpdateSql();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
@@ -75,6 +76,7 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             logger.error(e);
+            throw e;
         } finally {
             BasicConnectionPool.Instance.releaseConnection(connection);
         }

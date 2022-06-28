@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Cake - <<fmt:message key="label.error"/></title>
+    <title>Cake - <fmt:message key="label.error"/></title>
     <jsp:include page="css.jsp"/>
 </head>
 <body>

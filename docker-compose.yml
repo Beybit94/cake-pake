@@ -1,5 +1,6 @@
 services:
   web:
+    container_name: web
     image: cake-pake:latest
     ports:
       - "8080:8080"
@@ -16,7 +17,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - parking-net
+      - cake
   db:
     container_name: db
     image: postgres
@@ -34,7 +35,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - parking-net
+      - cake
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -45,9 +46,9 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
-      - parking-net
+      - cake
     restart: always
 networks:
-  parking-net:
+  cake:
     external: true
 version: '2.1'

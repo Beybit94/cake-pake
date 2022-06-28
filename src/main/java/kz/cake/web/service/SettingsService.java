@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
                         initTables();
                         try {
                             initData();
-                        } catch (NoSuchAlgorithmException e) {
+                        } catch (NoSuchAlgorithmException | SQLException | IllegalAccessException e) {
                             e.printStackTrace();
                         }
                     }
@@ -66,7 +67,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
                     initTables();
                     try {
                         initData();
-                    } catch (NoSuchAlgorithmException e) {
+                    } catch (NoSuchAlgorithmException | SQLException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
@@ -130,7 +131,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         }
     }
 
-    private void initData() throws NoSuchAlgorithmException {
+    private void initData() throws NoSuchAlgorithmException, SQLException, IllegalAccessException {
 
         //region Language
         LanguagesService languagesService = new LanguagesService();
@@ -231,23 +232,35 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         localService.save(new Local.Builder().code("meat").languageId(ru.get().getId()).message("мясной").build());
         localService.save(new Local.Builder().code("other").languageId(ru.get().getId()).message("другое").build());
 
-        productCategoryService.findByCode("cake").ifPresent(m->{
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("biscuit").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("bento").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("trifle").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("whoopee").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+        productCategoryService.findByCode("cake").ifPresent(m -> {
+            try {
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("biscuit").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("bento").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("trifle").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("whoopee").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-        productCategoryService.findByCode("cheesecake").ifPresent(m->{
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("classic").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("chocolate").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("spanish").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+        productCategoryService.findByCode("cheesecake").ifPresent(m -> {
+            try {
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("classic").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("chocolate").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("spanish").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-        productCategoryService.findByCode("pie").ifPresent(m->{
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("classic").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("meat").active(true).build());
-            productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+        productCategoryService.findByCode("pie").ifPresent(m -> {
+            try {
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("classic").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("meat").active(true).build());
+                productCategoryService.save(new ProductCategory.Builder().parent(m.getId()).code("other").active(true).build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         //endregion
 

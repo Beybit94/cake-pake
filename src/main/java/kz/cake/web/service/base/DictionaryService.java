@@ -7,6 +7,7 @@ import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.repository.base.DictionaryRepository;
 import kz.cake.web.service.LocalService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -20,7 +21,7 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
         this.localService = new LocalService();
     }
 
-    public void save(DictionaryDto dictionary) {
+    public void save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
         T1 entity = supplier.get();
         entity.setId(dictionary.getId());
         entity.setActive(dictionary.isActive());

@@ -5,6 +5,7 @@ import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.repository.LanguagesRepository;
 import kz.cake.web.service.base.BaseService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class LanguagesService extends BaseService<Languages, LanguagesRepository
     }
 
     @Override
-    public void save(Languages entity) {
+    public void save(Languages entity) throws SQLException, IllegalAccessException {
         super.save(entity);
         CacheProvider.remove("Languages");
     }

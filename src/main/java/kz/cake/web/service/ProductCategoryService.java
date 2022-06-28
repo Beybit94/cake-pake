@@ -11,6 +11,7 @@ import kz.cake.web.model.ProductFilterDto;
 import kz.cake.web.repository.ProductCategoryRepository;
 import kz.cake.web.service.base.DictionaryService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ProductCategoryService extends DictionaryService<ProductCategory, ProductCategoryRepository> {
@@ -34,7 +35,7 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     }
 
     @Override
-    public void save(DictionaryDto dictionary) {
+    public void save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
         ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
         super.save(new ProductCategory.Builder()
                 .id(productCategoryDto.getId())

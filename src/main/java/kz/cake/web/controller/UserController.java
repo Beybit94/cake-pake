@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class UserController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         String username = request.getParameter("username");
         userService.save(new User.Builder()
                 .name(username)
@@ -54,13 +55,14 @@ public class UserController extends BaseController {
         list(request, response);
     }
 
-    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user -> {
-            user.setAddress(request.getParameter("address"));
-            user.setSex(request.getParameter("sex"));
-            userService.save(user);
-        });
+        Optional<User> user = userService.findUserByName(username);
+        if (user.isPresent()) {
+            user.get().setAddress(request.getParameter("address"));
+            user.get().setSex(request.getParameter("sex"));
+            userService.save(user.get());
+        }
         list(request, response);
     }
 
@@ -114,7 +116,7 @@ public class UserController extends BaseController {
         }
     }
 
-    public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         List<ValidationErrorDto> errorList = new ArrayList<>();
         if (!request.getParameter("password").equals(request.getParameter("confirm"))) {
             errorList.add(new ValidationErrorDto("error.passwordNotMatch"));
@@ -168,22 +170,24 @@ public class UserController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void reset(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void reset(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user -> {
+        Optional<User> user = userService.findUserByName(username);
+        if (user.isPresent()) {
             String hash = StringUtils.encryptPassword(request.getParameter("password"));
-            user.setPassword(hash);
-            userService.save(user);
-        });
+            user.get().setPassword(hash);
+            userService.save(user.get());
+        }
         UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
     }
 
-    public void unblock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void unblock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         String username = request.getParameter("username");
-        userService.findUserByName(username).ifPresent(user -> {
-            user.setActive(true);
-            userService.save(user);
-        });
+        Optional<User> user = userService.findUserByName(username);
+        if (user.isPresent()) {
+            user.get().setActive(true);
+            userService.save(user.get());
+        }
         UrlRouter.Instance.route(ActionNames.UserList.getName(), request, response);
     }
 }

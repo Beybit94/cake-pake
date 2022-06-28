@@ -11,6 +11,7 @@ import kz.cake.web.model.LocalDto;
 import kz.cake.web.repository.LocalRepository;
 import kz.cake.web.service.base.BaseService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class LocalService extends BaseService<Local, LocalRepository> {
     }
 
     @Override
-    public void save(Local entity) {
+    public void save(Local entity) throws SQLException, IllegalAccessException {
         super.save(entity);
         CacheProvider.remove("Locals");
         CacheProvider.remove("LocalsWithLanguage");
