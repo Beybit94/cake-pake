@@ -21,15 +21,15 @@ public abstract class DictionaryService<T1 extends BaseDictionary, T2 extends Di
         this.localService = new LocalService();
     }
 
-    public void save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
+    public T1 save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
+        CacheProvider.remove(cacheKey());
+        CacheProvider.remove(cacheKeyWithLocal());
+
         T1 entity = supplier.get();
         entity.setId(dictionary.getId());
         entity.setActive(dictionary.isActive());
         entity.setCode(dictionary.getCode());
-        super.save(entity);
-
-        CacheProvider.remove(cacheKey());
-        CacheProvider.remove(cacheKeyWithLocal());
+        return super.save(entity);
     }
 
     public void delete(DictionaryDto dictionary) throws CustomValidationException {

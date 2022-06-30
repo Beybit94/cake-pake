@@ -4,8 +4,8 @@ import kz.cake.web.entity.base.Base;
 
 public class ProductPhoto extends Base<Long> {
     private Long productId;
-    private String thumbnail;
     private String image;
+    private String thumbnail;
 
     public ProductPhoto() {
         super();
@@ -24,7 +24,7 @@ public class ProductPhoto extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,active,product_id,thumbnail,image";
+        return "id,active,product_id,image,thumbnail";
     }
 
     @Override
@@ -32,23 +32,19 @@ public class ProductPhoto extends Base<Long> {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                 "id bigserial PRIMARY KEY," +
                 "product_id bigint NOT NULL," +
-                "thumbnail varchar(255) NOT NULL," +
                 "image varchar(255) NOT NULL," +
+                "thumbnail varchar(255) NULL," +
                 "active boolean DEFAULT true not null," +
                 "FOREIGN KEY (product_id) REFERENCES web.products (id)" +
                 ");", getTableName());
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
     public String getImage() {
         return image;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public static class Builder {

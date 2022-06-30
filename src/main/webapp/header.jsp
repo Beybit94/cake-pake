@@ -55,16 +55,29 @@
                     </div>
                 </c:if>
                 <c:if test="${sessionScope.user.roles.contains('manager')}">
-                    <a class="p-2 text-dark" href="#">Products</a>
-                    <a class="p-2 text-dark" href="#">Orders</a>
+                    <form class="form-inline" action="${ActionNames.ProductMy.name}" method="post"
+                          style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.myProducts"/></button>
+                    </form>
+                    <form class="form-inline" action="${ActionNames.OrderMy.name}" method="post"
+                          style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orders"/></button>
+                    </form>
+                    <form class="form-inline" action="${ActionNames.UserProfile.name}" method="post"
+                          style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
+                    </form>
                 </c:if>
                 <c:if test="${sessionScope.user.roles.contains('user')}">
-                    <a class="p-2 text-dark" href="#">Order history</a>
+                    <form class="form-inline" action="${ActionNames.OrderHistory.name}" method="post"
+                          style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orderHistory"/></button>
+                    </form>
+                    <form class="form-inline" action="${ActionNames.UserProfile.name}" method="post"
+                          style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
+                    </form>
                 </c:if>
-                <form class="form-inline" action="${ActionNames.UserProfile.name}" method="post"
-                      style="margin-left: 5px;">
-                    <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
-                </form>
                 <form class="form-inline" action="${ActionNames.UserLogout.name}" method="post"
                       style="margin-left: 5px;">
                     <button type="submit" class="btn btn-secondary"><fmt:message key="button.logout"/></button>

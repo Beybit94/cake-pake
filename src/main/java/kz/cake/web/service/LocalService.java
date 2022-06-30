@@ -5,8 +5,6 @@ import kz.cake.web.entity.Local;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.helpers.CurrentSession;
-import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.LocalDto;
 import kz.cake.web.repository.LocalRepository;
 import kz.cake.web.service.base.BaseService;
@@ -25,10 +23,10 @@ public class LocalService extends BaseService<Local, LocalRepository> {
     }
 
     @Override
-    public void save(Local entity) throws SQLException, IllegalAccessException {
-        super.save(entity);
+    public Local save(Local entity) throws SQLException, IllegalAccessException {
         CacheProvider.remove("Locals");
         CacheProvider.remove("LocalsWithLanguage");
+        return super.save(entity);
     }
 
     @Override

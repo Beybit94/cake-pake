@@ -29,9 +29,9 @@ public class LanguagesService extends BaseService<Languages, LanguagesRepository
     }
 
     @Override
-    public void save(Languages entity) throws SQLException, IllegalAccessException {
-        super.save(entity);
+    public Languages save(Languages entity) throws SQLException, IllegalAccessException {
         CacheProvider.remove("Languages");
+        return super.save(entity);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class CurrentSession {
     public static final CurrentSession Instance = new CurrentSession();
     private CurrentUserDto currentUser;
     private Long currentLanguageId;
+    private String currentLanguageCode;
     private List<ValidationErrorDto> errors;
 
     public CurrentUserDto getCurrentUser() {
@@ -25,6 +26,14 @@ public class CurrentSession {
 
     public void setCurrentLanguageId(Long id) {
         currentLanguageId = id;
+    }
+
+    public String getCurrentLanguageCode() {
+        return currentLanguageCode;
+    }
+
+    public void setCurrentLanguageCode(String currentLanguageCode) {
+        this.currentLanguageCode = currentLanguageCode;
     }
 
     public List<ValidationErrorDto> getErrors() {

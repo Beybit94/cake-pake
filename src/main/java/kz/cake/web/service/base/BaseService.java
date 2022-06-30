@@ -10,11 +10,11 @@ import java.util.List;
 public abstract class BaseService<T1 extends Base, T2 extends BaseRepository> {
     public T2 repository;
 
-    public void save(T1 entity) throws SQLException, IllegalAccessException {
+    public T1 save(T1 entity) throws SQLException, IllegalAccessException {
         if (entity.getId() == null || (Long) entity.getId() == 0) {
-            repository.create(entity);
+            return (T1) repository.create(entity);
         } else {
-            repository.update(entity);
+            return (T1) repository.update(entity);
         }
     }
 

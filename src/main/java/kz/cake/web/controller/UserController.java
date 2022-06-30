@@ -128,25 +128,24 @@ public class UserController extends BaseController {
         }
 
         if (errorList.isEmpty()) {
-            userService.save(new User.Builder()
+            User newUser = userService.save(new User.Builder()
                     .name(request.getParameter("username"))
                     .password(StringUtils.encryptPassword(request.getParameter("password")))
                     .active(true)
                     .build());
-            user = userService.findUserByName(request.getParameter("username"));
 
             RoleService roleService = new RoleService();
             UserRoleService userRoleService = new UserRoleService();
 
             Optional<DictionaryDto> role = roleService.findByCode(request.getParameter("role"));
             if (role.isPresent()) {
-                userRoleService.save(new UserRole(user.get().getId(), role.get().getId()));
+                userRoleService.save(new UserRole(newUser.getId(), role.get().getId()));
             }
 
             HttpSession session = request.getSession(true);
             CurrentUserDto currentUser = new CurrentUserDto();
-            currentUser.setUserId(user.get().getId());
-            currentUser.setUserName(user.get().getUsername());
+            currentUser.setUserId(newUser.getId());
+            currentUser.setUserName(newUser.getUsername());
 
             userRoleService.findByUserId(currentUser.getUserId()).forEach(ur -> {
                 currentUser.getRoles().add(roleService.getByIdWithLocal(ur.getRoleId()).getCode());

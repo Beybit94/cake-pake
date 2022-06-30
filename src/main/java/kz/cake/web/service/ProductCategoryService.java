@@ -3,25 +3,21 @@ package kz.cake.web.service;
 import kz.cake.web.entity.ProductCategory;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
-import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.ProductCategoryDto;
-import kz.cake.web.model.ProductDto;
-import kz.cake.web.model.ProductFilterDto;
+import kz.cake.web.model.SelectOptionGroupDto;
 import kz.cake.web.repository.ProductCategoryRepository;
 import kz.cake.web.service.base.DictionaryService;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductCategoryService extends DictionaryService<ProductCategory, ProductCategoryRepository> {
-    private final ProductService productService;
-
     public ProductCategoryService() {
         super();
         this.repository = new ProductCategoryRepository();
         this.supplier = () -> new ProductCategory();
-        productService = new ProductService();
     }
 
     @Override
@@ -35,26 +31,21 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     }
 
     @Override
-    public void save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
+    public ProductCategory save(DictionaryDto dictionary) throws SQLException, IllegalAccessException {
+        CacheProvider.remove(cacheKey());
+        CacheProvider.remove(cacheKeyWithLocal());
+
         ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
-        super.save(new ProductCategory.Builder()
+        return super.save(new ProductCategory.Builder()
                 .id(productCategoryDto.getId())
                 .parent(productCategoryDto.getParent())
                 .code(productCategoryDto.getCode())
                 .active(productCategoryDto.isActive())
                 .build());
-
-        CacheProvider.remove(cacheKey());
-        CacheProvider.remove(cacheKeyWithLocal());
     }
 
     @Override
     public void delete(DictionaryDto dictionary) throws CustomValidationException {
-        List<ProductDto> find = productService.find(new ProductFilterDto());
-        if (!find.isEmpty()) {
-            throw new CustomValidationException("error.activeRecord", ActionNames.ProductsizeList);
-        }
-
         ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
         super.delete(new ProductCategory.Builder()
                 .id(productCategoryDto.getId())
@@ -65,6 +56,26 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
 
         CacheProvider.remove(cacheKey());
         CacheProvider.remove(cacheKeyWithLocal());
+    }
+
+    public List<SelectOptionGroupDto> getSelectedOptionGroup() {
+        return getDictionaryWithLocal()
+                .stream()
+                .map(m -> (ProductCategoryDto) m)
+                .filter(m -> m.getParent() == null)
+                .map(m -> mapToSelect(m))
+                .collect(Collectors.toList());
+
+    }
+
+    public List<ProductCategoryDto> findByParent(Long id) {
+        return getDictionaryWithLocal().stream()
+                .filter(m -> {
+                    ProductCategoryDto productCategoryDto = (ProductCategoryDto) m;
+                    return productCategoryDto.getParent() != null && productCategoryDto.getParent().equals(id);
+                })
+                .map(m -> (ProductCategoryDto) m)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,5 +103,20 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
             dictionaryDto.setParentCode(parent.getCode());
         }
         return dictionaryDto;
+    }
+
+    protected SelectOptionGroupDto mapToSelect(ProductCategoryDto m) {
+        SelectOptionGroupDto selectOptionGroupDto = new SelectOptionGroupDto();
+        selectOptionGroupDto.setId(m.getId());
+        selectOptionGroupDto.setText(m.getText());
+        selectOptionGroupDto.setChildren(findByParent(m.getId()).stream()
+                .map(c -> {
+                    SelectOptionGroupDto selectOptionGroupDto1 = new SelectOptionGroupDto();
+                    selectOptionGroupDto1.setId(c.getId());
+                    selectOptionGroupDto1.setText(c.getText());
+                    return selectOptionGroupDto1;
+                })
+                .collect(Collectors.toList()));
+        return selectOptionGroupDto;
     }
 }

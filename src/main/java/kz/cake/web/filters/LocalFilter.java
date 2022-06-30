@@ -9,10 +9,12 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
 
 public class LocalFilter implements Filter {
     private static final String code = "code";
     private final LanguagesService languagesService = new LanguagesService();
+
     private String defaultLanguage;
 
     @Override
@@ -31,12 +33,15 @@ public class LocalFilter implements Filter {
             languagesService.findByCode(defaultLanguage).ifPresent(l -> {
                 session.setAttribute(SessionParameters.languageId.getName(), l.getId());
                 CurrentSession.Instance.setCurrentLanguageId(l.getId());
+                CurrentSession.Instance.setCurrentLanguageCode(defaultLanguage);
             });
+            Locale.setDefault(new Locale(defaultLanguage));
         } else if (!defaultLanguage.equals(language)) {
             session.setAttribute(SessionParameters.language.getName(), language);
             languagesService.findByCode(language).ifPresent(l -> {
                 session.setAttribute(SessionParameters.languageId.getName(), l.getId());
                 CurrentSession.Instance.setCurrentLanguageId(l.getId());
+                CurrentSession.Instance.setCurrentLanguageCode(language);
             });
         }
 

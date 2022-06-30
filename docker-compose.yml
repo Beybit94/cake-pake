@@ -10,6 +10,9 @@ services:
       - url=jdbc:postgresql://db:5432/cake
       - username=postgres
       - password=postgres
+      - images_path=/files/pictures
+    volumes:
+      - "C:/Users/akabe/Pictures:/files/pictures:rw"
     logging:
       options:
         max-size: 50m

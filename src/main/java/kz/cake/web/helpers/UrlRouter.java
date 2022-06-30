@@ -23,11 +23,14 @@ public class UrlRouter {
     public static final Map<String, BaseController> routes = new HashMap<>();
 
     static {
-        routes.put("Languages", new LanguagesController());
-        routes.put("Local", new LocalController());
         routes.put("City", new CityController());
         routes.put("User", new UserController());
+        routes.put("Local", new LocalController());
+        routes.put("Order", new OrderController());
+        routes.put("Product", new ProductController());
+        routes.put("Languages", new LanguagesController());
         routes.put("Productsize", new ProductSizeController());
+        routes.put("Productphoto", new ProductphotoController());
         routes.put("Productcategory", new ProductCategoryController());
     }
 

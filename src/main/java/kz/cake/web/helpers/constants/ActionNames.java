@@ -31,10 +31,19 @@ public enum ActionNames {
     ProductcategoryList("ProductcategoryList"),
     ProductcategoryAdd("ProductcategoryAdd"),
     ProductcategoryEdit("ProductcategoryEdit"),
-    ProductcategoryRemove("ProductcategoryRemove");
+    ProductcategoryRemove("ProductcategoryRemove"),
+    ProductMy("ProductMy"),
+    ProductAdd("ProductAdd"),
+    ProductEdit("ProductEdit"),
+    ProductRead("ProductRead"),
+    ProductDetail("ProductDetail"),
+    ProductRemove("ProductRemove"),
+    ProductphotoRemove("ProductphotoRemove"),
+    OrderMy("OrderMy"),
+    OrderHistory("OrderHistory");
 
-    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
-    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile);
+    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile, OrderHistory, ProductDetail);
+    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, ProductphotoRemove, OrderMy);
 
     String name;
 

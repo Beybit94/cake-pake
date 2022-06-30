@@ -32,13 +32,24 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public void create(T entity) throws SQLException, IllegalAccessException {
+    public T create(T entity) throws SQLException, IllegalAccessException {
         String sql = entity.getCreateSql();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setQueryParameters(preparedStatement, entity, true);
-            preparedStatement.executeUpdate();
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) throw new SQLException();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getLong(1));
+                    return entity;
+                } else {
+                    throw new SQLException();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -67,13 +78,17 @@ public abstract class BaseRepository<T extends Base> implements CrudRepository<T
     }
 
     @Override
-    public void update(T entity) throws SQLException, IllegalAccessException {
+    public T update(T entity) throws SQLException, IllegalAccessException {
         String sql = entity.getUpdateSql();
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setQueryParameters(preparedStatement, entity, true);
-            preparedStatement.executeUpdate();
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) throw new SQLException();
+
+            return entity;
         } catch (Exception e) {
             logger.error(e);
             throw e;

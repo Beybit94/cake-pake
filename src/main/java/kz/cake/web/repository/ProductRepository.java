@@ -7,4 +7,6 @@ public class ProductRepository extends BaseRepository<Product> {
     public ProductRepository() {
         supplier = () -> new Product();
     }
+
+
 }

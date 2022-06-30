@@ -12,7 +12,11 @@ public enum PageNames {
     roles("roles.jsp"),
     city("city.jsp"),
     product_size("product-size.jsp"),
-    product_category("product-category.jsp");
+    product_category("product-category.jsp"),
+    my_product("my-product.jsp"),
+    edit_product("edit-product.jsp"),
+    my_order("my-order.jsp"),
+    order_history("order-history.jsp");
 
     String name;
 

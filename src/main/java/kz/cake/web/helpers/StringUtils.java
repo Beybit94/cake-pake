@@ -1,11 +1,18 @@
 package kz.cake.web.helpers;
 
+import kz.cake.web.entity.Languages;
+import kz.cake.web.helpers.constants.Language;
+import kz.cake.web.service.LanguagesService;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
-public abstract class StringUtils {
+public class StringUtils {
     public static String encryptPassword(String param) {
         MessageDigest md = null;
         try {
@@ -33,10 +40,6 @@ public abstract class StringUtils {
         return attributes[0] + Character.toUpperCase(attributes[1].charAt(0)) + attributes[1].substring(1);
     }
 
-    public static String getSetterName(String field) {
-        return "set" + Character.toUpperCase(field.charAt(0)) + field.substring(1);
-    }
-
     public static String skipFirstElement(String param) {
         String[] arr = param.split(",");
         String result = "";
@@ -48,5 +51,17 @@ public abstract class StringUtils {
             }
         }
         return result;
+    }
+
+    public static String currencyFormat(BigDecimal price) {
+        Locale locale;
+        if(CurrentSession.Instance.getCurrentLanguageCode().equals(Language.en)){
+            locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(),"US");
+        }else{
+            locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(),"RU");
+        }
+
+        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+        return format.format(price);
     }
 }
