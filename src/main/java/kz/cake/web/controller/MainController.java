@@ -23,7 +23,15 @@ public class MainController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        String url = req.getRequestURI();
+        String[] path = url.split("/");
+
+        String action = path[path.length - 1];
+        if (action.length() <= 0 || action.indexOf('.') > 0) {
+            super.doGet(req, resp);
+        } else {
+            UrlRouter.Instance.route(req, resp);
+        }
     }
 
     @Override

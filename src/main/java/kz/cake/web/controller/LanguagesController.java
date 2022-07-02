@@ -4,6 +4,7 @@ import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.UrlRouter;
+import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
@@ -34,7 +35,7 @@ public class LanguagesController extends BaseController {
         CacheProvider.clear();
 
         if (redirect == null || redirect.isEmpty()) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.main.getName());
+            RequestDispatcher dispatcher = request.getRequestDispatcher(ActionNames.ProductList.getName());
             dispatcher.forward(request, response);
         } else {
             UrlRouter.Instance.route(redirect, request, response);

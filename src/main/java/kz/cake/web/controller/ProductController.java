@@ -6,7 +6,6 @@ import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
-import kz.cake.web.model.ProductDto;
 import kz.cake.web.model.ProductFilterDto;
 import kz.cake.web.model.ProductPhotoDto;
 import kz.cake.web.service.CityService;
@@ -39,6 +38,16 @@ public class ProductController extends BaseController {
         productService = new ProductService();
         productSizeService = new ProductSizeService();
         productCategoryService = new ProductCategoryService();
+    }
+
+    public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProductFilterDto productFilterDto = new ProductFilterDto();
+        request.setAttribute(SessionParameters.products.getName(), productService.find(productFilterDto));
+        request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
+        request.setAttribute(SessionParameters.productSizes.getName(), productSizeService.getDictionaryWithLocal());
+        request.setAttribute(SessionParameters.productCategories.getName(), productCategoryService.getSelectedOptionGroup());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.main.getName());
+        dispatcher.forward(request, response);
     }
 
     public void my(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

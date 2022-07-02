@@ -6,6 +6,7 @@ public enum PageNames {
     access_denied("access_denied.jsp"),
     login("login.jsp"),
     register("register.jsp"),
+    profile("profile.jsp"),
     users("users.jsp"),
     languages("languages.jsp"),
     locals("locals.jsp"),

@@ -17,3 +17,4 @@
 <script src="${contextPath}/static/bootstrap/bootstrap.js"></script>
 <script src="${contextPath}/static/datatable/datatables.min.js"></script>
 <script src="${contextPath}/static/select2/select2.js"></script>
+<script src="${contextPath}/static/jquery-ui/jquery-ui.min.js"></script>

@@ -10,7 +10,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <a href="${contextPath}/${PageNames.main.name}" class="my-0 mr-md-auto font-weight-normal">Home</a>
+    <form class="form-inline my-0 mr-md-auto font-weight-normal" action="${ActionNames.ProductList.name}" method="post">
+        <button type="submit" class="btn btn-link text-dark">Home</button>
+    </form>
 
     <div class="d-flex flex-row justify-content-end">
         <c:choose>
@@ -63,7 +65,7 @@
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orders"/></button>
                     </form>
-                    <form class="form-inline" action="${ActionNames.UserProfile.name}" method="post"
+                    <form class="form-inline" action="${ActionNames.AuthProfile.name}" method="post"
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
                     </form>
@@ -73,12 +75,12 @@
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orderHistory"/></button>
                     </form>
-                    <form class="form-inline" action="${ActionNames.UserProfile.name}" method="post"
+                    <form class="form-inline" action="${ActionNames.AuthProfile.name}" method="post"
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
                     </form>
                 </c:if>
-                <form class="form-inline" action="${ActionNames.UserLogout.name}" method="post"
+                <form class="form-inline" action="${ActionNames.AuthLogout.name}" method="post"
                       style="margin-left: 5px;">
                     <button type="submit" class="btn btn-secondary"><fmt:message key="button.logout"/></button>
                 </form>

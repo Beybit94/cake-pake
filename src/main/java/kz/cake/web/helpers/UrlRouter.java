@@ -23,6 +23,7 @@ public class UrlRouter {
     public static final Map<String, BaseController> routes = new HashMap<>();
 
     static {
+        routes.put("Auth", new AuthController());
         routes.put("City", new CityController());
         routes.put("User", new UserController());
         routes.put("Local", new LocalController());

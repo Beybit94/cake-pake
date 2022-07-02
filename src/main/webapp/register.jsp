@@ -17,7 +17,7 @@
 <body>
 <div class="container">
     <jsp:include page="header.jsp">
-        <jsp:param name="redirect" value="${ActionNames.UserRegister.name}"/>
+        <jsp:param name="redirect" value="${ActionNames.AuthRegister.name}"/>
     </jsp:include>
     <div class="row">
         <div class="col-6 mx-auto">
@@ -32,7 +32,7 @@
                 </c:forEach>
             </c:if>
 
-            <form action="${ActionNames.UserRegister.name}" method="post">
+            <form action="${ActionNames.AuthRegister.name}" method="post">
                 <input type="hidden" class="form-control" name="role" id="role" value="user" />
 
                 <div class="form-group">

@@ -6,10 +6,11 @@ import java.util.List;
 public enum ActionNames {
     LanguagesChange("LanguagesChange"),
     LanguagesList("LanguagesList"),
-    UserLogin("UserLogin"),
-    UserRegister("UserRegister"),
-    UserLogout("UserLogout"),
-    UserProfile("UserProfile"),
+    AuthLogin("AuthLogin"),
+    AuthRegister("AuthRegister"),
+    AuthLogout("AuthLogout"),
+    AuthProfile("AuthProfile"),
+    AuthChange("AuthChange"),
     UserList("UserList"),
     UserAdd("UserAdd"),
     UserEdit("UserEdit"),
@@ -32,6 +33,7 @@ public enum ActionNames {
     ProductcategoryAdd("ProductcategoryAdd"),
     ProductcategoryEdit("ProductcategoryEdit"),
     ProductcategoryRemove("ProductcategoryRemove"),
+    ProductList("ProductList"),
     ProductMy("ProductMy"),
     ProductAdd("ProductAdd"),
     ProductEdit("ProductEdit"),
@@ -42,8 +44,8 @@ public enum ActionNames {
     OrderMy("OrderMy"),
     OrderHistory("OrderHistory");
 
-    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile, OrderHistory, ProductDetail);
-    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, UserLogin, UserRegister, UserLogout, UserProfile, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, ProductphotoRemove, OrderMy);
+    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, OrderHistory, ProductList, ProductDetail);
+    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, ProductphotoRemove, ProductList, ProductDetail, OrderMy);
 
     String name;
 

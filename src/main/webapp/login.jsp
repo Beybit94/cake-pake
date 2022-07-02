@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <jsp:include page="header.jsp">
-        <jsp:param name="redirect" value="${ActionNames.UserLogin.name}"/>
+        <jsp:param name="redirect" value="${ActionNames.AuthLogin.name}"/>
     </jsp:include>
     <div class="row">
         <div class="col-6 mx-auto">
@@ -33,7 +33,7 @@
                 </c:forEach>
             </c:if>
 
-            <form action="${ActionNames.UserLogin.name}" method="post">
+            <form action="${ActionNames.AuthLogin.name}" method="post">
                 <div class="form-group">
                     <label for="username"><b><fmt:message key="label.login"/></b></label>
                     <input type="text" class="form-control" name="username" id="username" required>
