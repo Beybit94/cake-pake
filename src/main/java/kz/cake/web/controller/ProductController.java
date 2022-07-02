@@ -17,6 +17,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,17 +42,18 @@ public class ProductController extends BaseController {
     }
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProductFilterDto productFilterDto = new ProductFilterDto();
+        HttpSession session = request.getSession(true);
+        ProductFilterDto productFilterDto = session.getAttribute("filter") != null ? (ProductFilterDto) session.getAttribute("filter") : new ProductFilterDto();
 
         if (request.getParameter("fromPrice") != null && !request.getParameter("fromPrice").isEmpty()) {
             productFilterDto.setFromPrice(new BigDecimal(request.getParameter("fromPrice")));
-        }else{
+        } else if (productFilterDto.getFromPrice() == null) {
             productFilterDto.setFromPrice(new BigDecimal(2000));
         }
 
         if (request.getParameter("toPrice") != null && !request.getParameter("toPrice").isEmpty()) {
             productFilterDto.setToPrice(new BigDecimal(request.getParameter("toPrice")));
-        }else{
+        } else if (productFilterDto.getToPrice() == null) {
             productFilterDto.setToPrice(new BigDecimal(10000));
         }
 
@@ -65,6 +67,7 @@ public class ProductController extends BaseController {
             productFilterDto.setCategoryId(Long.parseLong(request.getParameter("productCategory")));
         }
 
+        session.setAttribute("filter", productFilterDto);
         request.setAttribute(SessionParameters.filter.getName(), productFilterDto);
         request.setAttribute(SessionParameters.products.getName(), productService.find(productFilterDto));
         request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
@@ -74,8 +77,11 @@ public class ProductController extends BaseController {
         dispatcher.forward(request, response);
     }
 
-    public void detail(HttpServletRequest request, HttpServletResponse response){
-
+    public void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
+        request.setAttribute(SessionParameters.item.getName(), productService.getById(id));
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.detail_product.getName());
+        dispatcher.forward(request, response);
     }
 
     public void my(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

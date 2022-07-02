@@ -110,11 +110,11 @@
                                     <li><fmt:message key="label.productSize"/> : ${item.productSize.text}</li>
                                     <li><fmt:message key="label.productCategory"/> : ${item.productCategory.text}</li>
                                 </ul>
-                                <from method="POST" action="${ActionNames.ProductDetail.name}">
+                                <form method="post" action="${ActionNames.ProductDetail.name}">
                                     <input type="hidden" name="id" value="${item.id}"/>
                                     <button type="submit" class="btn btn-lg btn-block btn-outline-primary"><fmt:message key="button.detail"/>
                                     </button>
-                                </from>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -32,14 +32,15 @@
                 </c:forEach>
             </c:if>
 
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="${ActionNames.ProductMy.name}">Home</a></li>
+                    <li class="breadcrumb-item active">${item.name}</li>
+                </ol>
+            </nav>
+
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex flex-row justify-content-between">
-                        <form class="form-inline" action="${ActionNames.ProductMy.name}" method="post"
-                              style="margin-left: 5px;">
-                            <button type="submit" class="btn btn-secondary"><fmt:message key="button.back"/></button>
-                        </form>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -229,7 +230,7 @@
             const loader = $(".loader" + index);
             loader.show();
             $.ajax({
-                url: "${contextPath}/${ActionNames.ProductphotoRemove.name}",
+                url: "${contextPath}/${ActionNames.PhotoRemove.name}",
                 method: "POST",
                 data: {id: id},
                 success: function () {

@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class ProductComment extends Base<Long> {
     private Long userId;
-    private String comment;
     private Long productId;
+    private String comment;
     private Timestamp commentDate;
 
     public ProductComment() {
@@ -29,7 +29,7 @@ public class ProductComment extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,user_id,product_id,comment,comment_date,active";
+        return "id,active,user_id,product_id,comment,comment_date";
     }
 
     @Override
@@ -94,5 +94,15 @@ public class ProductComment extends Base<Long> {
         public ProductComment build() {
             return new ProductComment(userId, comment, productId, commentDate);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ProductComment{" +
+                "userId=" + userId +
+                ", productId=" + productId +
+                ", comment='" + comment + '\'' +
+                ", commentDate=" + commentDate +
+                '}';
     }
 }

@@ -25,14 +25,14 @@ public enum ActionNames {
     CityAdd("CityAdd"),
     CityEdit("CityEdit"),
     CityRemove("CityRemove"),
-    ProductsizeList("ProductsizeList"),
-    ProductsizeAdd("ProductsizeAdd"),
-    ProductsizeEdit("ProductsizeEdit"),
-    ProductsizeRemove("ProductsizeRemove"),
-    ProductcategoryList("ProductcategoryList"),
-    ProductcategoryAdd("ProductcategoryAdd"),
-    ProductcategoryEdit("ProductcategoryEdit"),
-    ProductcategoryRemove("ProductcategoryRemove"),
+    SizeList("SizeList"),
+    SizeAdd("SizeAdd"),
+    SizeEdit("SizeEdit"),
+    SizeRemove("SizeRemove"),
+    CategoryList("CategoryList"),
+    CategoryAdd("CategoryAdd"),
+    CategoryEdit("CategoryEdit"),
+    CategoryRemove("CategoryRemove"),
     ProductList("ProductList"),
     ProductMy("ProductMy"),
     ProductAdd("ProductAdd"),
@@ -40,12 +40,13 @@ public enum ActionNames {
     ProductRead("ProductRead"),
     ProductDetail("ProductDetail"),
     ProductRemove("ProductRemove"),
-    ProductphotoRemove("ProductphotoRemove"),
+    PhotoRemove("PhotoRemove"),
+    CommentAdd("CommentAdd"),
     OrderMy("OrderMy"),
     OrderHistory("OrderHistory");
 
-    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, OrderHistory, ProductList, ProductDetail);
-    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, ProductphotoRemove, ProductList, ProductDetail, OrderMy);
+    public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, OrderHistory, ProductList, ProductDetail, CommentAdd);
+    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, PhotoRemove, ProductList, ProductDetail, OrderMy);
 
     String name;
 

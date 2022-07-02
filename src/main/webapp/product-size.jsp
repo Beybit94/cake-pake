@@ -17,7 +17,7 @@
 <body>
 <div class="container">
     <jsp:include page="header.jsp">
-        <jsp:param name="redirect" value="${ActionNames.ProductsizeList.name}"/>
+        <jsp:param name="redirect" value="${ActionNames.SizeList.name}"/>
     </jsp:include>
     <div class="row">
         <div class="col-12 mx-auto">
@@ -60,7 +60,7 @@
                                     <div class="modal fade" id="updateModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="${ActionNames.ProductsizeEdit.name}" method="post">
+                                                <form action="${ActionNames.SizeEdit.name}" method="post">
                                                     <input type="hidden" name="id" value="${item.id}"/>
                                                     <div class="modal-body">
                                                         <div class="form-group">
@@ -87,7 +87,7 @@
                                     <div class="modal fade" id="deleteModal${item.id}" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="${ActionNames.ProductsizeRemove.name}" method="post">
+                                                <form action="${ActionNames.SizeRemove.name}" method="post">
                                                     <input type="hidden" name="id" value="${item.id}"/>
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
@@ -110,7 +110,7 @@
                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <form action="${ActionNames.ProductsizeAdd.name}" method="post">
+                            <form action="${ActionNames.SizeAdd.name}" method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label>

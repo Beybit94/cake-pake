@@ -16,6 +16,7 @@ public enum PageNames {
     product_category("product-category.jsp"),
     my_product("my-product.jsp"),
     edit_product("edit-product.jsp"),
+    detail_product("detail-product.jsp"),
     my_order("my-order.jsp"),
     order_history("order-history.jsp");
 

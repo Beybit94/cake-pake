@@ -29,10 +29,11 @@ public class UrlRouter {
         routes.put("Local", new LocalController());
         routes.put("Order", new OrderController());
         routes.put("Product", new ProductController());
+        routes.put("Size", new ProductSizeController());
+        routes.put("Photo", new ProductphotoController());
         routes.put("Languages", new LanguagesController());
-        routes.put("Productsize", new ProductSizeController());
-        routes.put("Productphoto", new ProductphotoController());
-        routes.put("Productcategory", new ProductCategoryController());
+        routes.put("Comment", new ProductCommentController());
+        routes.put("Category", new ProductCategoryController());
     }
 
     public void route(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

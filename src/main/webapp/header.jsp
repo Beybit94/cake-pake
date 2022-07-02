@@ -44,12 +44,12 @@
                                         key="page.city"/></button>
                             </form>
                             <div class="dropdown-divider"></div>
-                            <form class="form-inline" action="${ActionNames.ProductsizeList.name}" method="post">
+                            <form class="form-inline" action="${ActionNames.SizeList.name}" method="post">
                                 <button type="submit" class="btn btn-link text-dark"><fmt:message
                                         key="page.productSize"/></button>
                             </form>
                             <div class="dropdown-divider"></div>
-                            <form class="form-inline" action="${ActionNames.ProductcategoryList.name}" method="post">
+                            <form class="form-inline" action="${ActionNames.CategoryList.name}" method="post">
                                 <button type="submit" class="btn btn-link text-dark"><fmt:message
                                         key="page.productCategory"/></button>
                             </form>

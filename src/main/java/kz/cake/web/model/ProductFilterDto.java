@@ -75,4 +75,18 @@ public class ProductFilterDto {
     public void setMaxPrice(BigDecimal maxPrice) {
         this.maxPrice = maxPrice;
     }
+
+    @Override
+    public String toString() {
+        return "ProductFilterDto{" +
+                "userId=" + userId +
+                ", cityId=" + cityId +
+                ", sizeId=" + sizeId +
+                ", categoryId=" + categoryId +
+                ", fromPrice=" + fromPrice +
+                ", toPrice=" + toPrice +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                '}';
+    }
 }

@@ -12,7 +12,6 @@ import kz.cake.web.repository.ProductRepository;
 import kz.cake.web.service.base.BaseService;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,6 +22,7 @@ public class ProductService extends BaseService<Product, ProductRepository> {
     private final CityService cityService;
     private final ProductSizeService productSizeService;
     private final ProductPhotoService productPhotoService;
+    private final ProductCommentService productCommentService;
     private final ProductCategoryService productCategoryService;
 
     public ProductService() {
@@ -31,6 +31,7 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         cityService = new CityService();
         productSizeService = new ProductSizeService();
         productPhotoService = new ProductPhotoService();
+        productCommentService = new ProductCommentService();
         productCategoryService = new ProductCategoryService();
     }
 
@@ -70,6 +71,7 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
         productDto.setPriceText(StringUtils.currencyFormat(product.getPrice()));
+        productDto.setComments(productCommentService.getByProductId(product.getId()));
 
         if (product.getUserId() != null) {
             User user = userService.read(product.getUserId());

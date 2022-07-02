@@ -5,7 +5,6 @@ import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
 
@@ -18,6 +17,7 @@ import java.io.IOException;
 
 public class LanguagesController extends BaseController {
     private final LanguagesService languagesService;
+
     public LanguagesController() {
         languagesService = new LanguagesService();
     }
@@ -31,6 +31,7 @@ public class LanguagesController extends BaseController {
         languagesService.findByCode(code).ifPresent(l -> {
             session.setAttribute(SessionParameters.languageId.getName(), l.getId());
             CurrentSession.Instance.setCurrentLanguageId(l.getId());
+            CurrentSession.Instance.setCurrentLanguageCode(code);
         });
         CacheProvider.clear();
 
