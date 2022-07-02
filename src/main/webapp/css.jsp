@@ -4,4 +4,3 @@
 <link href="<c:url value="/static/bootstrap/bootstrap.css" />" rel="stylesheet">
 <link href="<c:url value="/static/datatable/datatables.min.css" />" rel="stylesheet">
 <link href="<c:url value="/static/select2/select2.css" />" rel="stylesheet">
-<link href="<c:url value="/static/jquery-ui/jquery-ui.min.css" />" rel="stylesheet">

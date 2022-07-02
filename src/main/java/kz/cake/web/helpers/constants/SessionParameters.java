@@ -13,7 +13,8 @@ public enum SessionParameters {
     productCategories("productCategories"),
     products("products"),
     item("item"),
-    orders("orders");
+    orders("orders"),
+    filter("filter");
 
     String name;
 

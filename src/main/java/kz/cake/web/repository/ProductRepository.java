@@ -1,11 +1,16 @@
 package kz.cake.web.repository;
 
+import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.OrderDetail;
 import kz.cake.web.entity.Product;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.repository.base.BaseRepository;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Optional;
 
 public class ProductRepository extends BaseRepository<Product> {
@@ -24,4 +29,5 @@ public class ProductRepository extends BaseRepository<Product> {
         }
         super.delete(entity);
     }
+
 }

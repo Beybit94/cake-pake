@@ -42,12 +42,40 @@ public class ProductController extends BaseController {
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProductFilterDto productFilterDto = new ProductFilterDto();
+
+        if (request.getParameter("fromPrice") != null && !request.getParameter("fromPrice").isEmpty()) {
+            productFilterDto.setFromPrice(new BigDecimal(request.getParameter("fromPrice")));
+        }else{
+            productFilterDto.setFromPrice(new BigDecimal(2000));
+        }
+
+        if (request.getParameter("toPrice") != null && !request.getParameter("toPrice").isEmpty()) {
+            productFilterDto.setToPrice(new BigDecimal(request.getParameter("toPrice")));
+        }else{
+            productFilterDto.setToPrice(new BigDecimal(10000));
+        }
+
+        if (request.getParameter("city") != null && !request.getParameter("city").isEmpty()) {
+            productFilterDto.setCityId(Long.parseLong(request.getParameter("city")));
+        }
+        if (request.getParameter("productSize") != null && !request.getParameter("productSize").isEmpty()) {
+            productFilterDto.setSizeId(Long.parseLong(request.getParameter("productSize")));
+        }
+        if (request.getParameter("productCategory") != null && !request.getParameter("productCategory").isEmpty()) {
+            productFilterDto.setCategoryId(Long.parseLong(request.getParameter("productCategory")));
+        }
+
+        request.setAttribute(SessionParameters.filter.getName(), productFilterDto);
         request.setAttribute(SessionParameters.products.getName(), productService.find(productFilterDto));
         request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
         request.setAttribute(SessionParameters.productSizes.getName(), productSizeService.getDictionaryWithLocal());
         request.setAttribute(SessionParameters.productCategories.getName(), productCategoryService.getSelectedOptionGroup());
         RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.main.getName());
         dispatcher.forward(request, response);
+    }
+
+    public void detail(HttpServletRequest request, HttpServletResponse response){
+
     }
 
     public void my(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,6 +9,8 @@ public class ProductFilterDto {
     private Long categoryId;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
+    private BigDecimal minPrice;
+    private BigDecimal maxPrice;
 
     public Long getUserId() {
         return userId;
@@ -56,5 +58,21 @@ public class ProductFilterDto {
 
     public void setToPrice(BigDecimal toPrice) {
         this.toPrice = toPrice;
+    }
+
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(BigDecimal minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public BigDecimal getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(BigDecimal maxPrice) {
+        this.maxPrice = maxPrice;
     }
 }

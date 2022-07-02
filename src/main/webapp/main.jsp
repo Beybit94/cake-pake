@@ -13,17 +13,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Cake - Home</title>
     <jsp:include page="css.jsp"/>
-    <style>
-        #from-handle, #to-handle {
-            width: 70px;
-            height: 35px;
-            top: 50%;
-            margin-top: -15px;
-            text-align: center;
-            line-height: 30px;
-            outline: none;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -32,7 +21,7 @@
     </jsp:include>
     <div class="row">
         <div class="col-12">
-            <div class="pricing-header mx-auto">
+            <div class="pricing-header mx-auto pb-4 border-bottom">
                 <form method="POST" action="${ActionNames.ProductList.name}">
                     <div class="row">
                         <div class="col-4">
@@ -40,8 +29,10 @@
                                 <fmt:message key="label.city"/>
                             </label>
                             <select name="city" class="form-control local" style="width: 100%">
+                                <option value=""></option>
                                 <c:forEach items="${cities}" var="city">
-                                    <option value="${city.id}">
+                                    <option value="${city.id}" <c:if
+                                            test="${city.id == filter.cityId}"> selected </c:if>>
                                             ${city.text}
                                     </option>
                                 </c:forEach>
@@ -52,8 +43,10 @@
                                 <fmt:message key="label.productSize"/>
                             </label>
                             <select name="productSize" class="form-control local" style="width: 100%">
+                                <option value=""></option>
                                 <c:forEach items="${productSizes}" var="productSize">
-                                    <option value="${productSize.id}">
+                                    <option value="${productSize.id}" <c:if
+                                            test="${productSize.id == filter.sizeId}"> selected </c:if>>
                                             ${productSize.text}
                                     </option>
                                 </c:forEach>
@@ -64,10 +57,12 @@
                                 <fmt:message key="label.productCategory"/>
                             </label>
                             <select name="productCategory" class="form-control local" style="width: 100%">
+                                <option value=""></option>
                                 <c:forEach items="${productCategories}" var="productCategory">
                                     <optgroup label="${productCategory.text}">
                                         <c:forEach items="${productCategory.children}" var="children">
-                                            <option value="${children.id}">
+                                            <option value="${children.id}" <c:if
+                                                    test="${children.id == filter.categoryId}"> selected </c:if>>
                                                     ${children.text}
                                             </option>
                                         </c:forEach>
@@ -77,66 +72,57 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-6 align-self-center align-content-center ml-2 mr-5">
-                            <div id="slider-range">
-                                <div id="from-handle" class="ui-slider-handle"></div>
-                                <div id="to-handle" class="ui-slider-handle"></div>
-                            </div>
-                            <input type="hidden" id="fromPrice" name="fromPrice">
-                            <input type="hidden" id="toPrice" name="toPrice">
+                        <div class="col-4">
+                            <label><fmt:message key="label.from"/></label>
+                            <input type="number" class="form-control" name="fromPrice" value="${filter.fromPrice}">
                         </div>
                         <div class="col-4">
+                            <label><fmt:message key="label.to"/></label>
+                            <input type="number" class="form-control" name="toPrice" value="${filter.toPrice}">
+                        </div>
+                        <div class="col-4 text-left d-flex align-items-end">
                             <button type="submit" class="btn btn-primary"><fmt:message
                                     key="button.search"/></button>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="card-deck">
+            <div class="card-deck pt-4">
                 <c:forEach var="item" items="${products}">
-                    <div class="card box-shadow">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">Free</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>10 users included</li>
-                                <li>2 GB of storage</li>
-                                <li>Email support</li>
-                                <li>Help center access</li>
-                            </ul>
-                            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free
-                            </button>
+                    <div class="col-md-4">
+                        <div class="card box-shadow">
+                            <div class="card-header">
+                                <h4 class="my-0 font-weight-normal">${item.name}</h4>
+                            </div>
+                            <div class="card-body">
+                                <c:choose>
+                                    <c:when test="${item.photos[0] eq null}">
+                                        <img class="card-img-top " src="${contextPath}/static/img/no_image.png"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="card-img-top" src="${contextPath}/files${item.photos[0].path}"
+                                             width="100%" height="100%"/>
+                                    </c:otherwise>
+                                </c:choose>
+                                <h1 class="card-title">${item.priceText}</h1>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li><fmt:message key="label.city"/> : ${item.city.text}</li>
+                                    <li><fmt:message key="label.productSize"/> : ${item.productSize.text}</li>
+                                    <li><fmt:message key="label.productCategory"/> : ${item.productCategory.text}</li>
+                                </ul>
+                                <from method="POST" action="${ActionNames.ProductDetail.name}">
+                                    <input type="hidden" name="id" value="${item.id}"/>
+                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary"><fmt:message key="button.detail"/>
+                                    </button>
+                                </from>
+                            </div>
                         </div>
                     </div>
                 </c:forEach>
             </div>
         </div>
     </div>
-
 </div>
 <jsp:include page="footer.jsp"/>
 </body>
-<script type="text/javascript">
-    const fromHandle = $("#from-handle");
-    const toHandel = $("#to-handle");
-    $("#slider-range").slider({
-        range: true,
-        min: 2000,
-        max: 50000,
-        step: 1000,
-        values: [2000, 10000],
-        create: function () {
-            fromHandle.text($(this).slider("values")[0]);
-            toHandel.text($(this).slider("values")[1]);
-        },
-        slide: function (event, ui) {
-            $('#fromPrice').val(ui.values[0]);
-            fromHandle.text(ui.values[0]);
-            $('#toPrice').val(ui.values[1]);
-            toHandel.text(ui.values[1]);
-        }
-    });
-</script>
 </html>
