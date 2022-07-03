@@ -2,16 +2,16 @@ package kz.cake.web.model;
 
 import java.io.InputStream;
 
-public class ProductPhotoDto {
+public class PhotoDto {
     private Long id;
     private String name;
     private String path;
     private InputStream fileContent;
 
-    public ProductPhotoDto() {
+    public PhotoDto() {
     }
 
-    public ProductPhotoDto(Long id, String path) {
+    public PhotoDto(Long id, String path) {
         this.id = id;
         this.path = path;
     }

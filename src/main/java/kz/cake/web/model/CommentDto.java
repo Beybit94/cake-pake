@@ -2,7 +2,7 @@ package kz.cake.web.model;
 
 import kz.cake.web.entity.User;
 
-public class ProductCommentDto {
+public class CommentDto {
     private Long productId;
     private String comment;
     private String commentDate;

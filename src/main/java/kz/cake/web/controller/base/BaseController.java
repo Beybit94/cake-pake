@@ -32,6 +32,7 @@ public abstract class BaseController {
                 throw e;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
     }

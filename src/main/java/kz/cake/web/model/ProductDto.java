@@ -1,6 +1,5 @@
 package kz.cake.web.model;
 
-import kz.cake.web.entity.ProductComment;
 import kz.cake.web.entity.User;
 
 import java.math.BigDecimal;
@@ -16,9 +15,9 @@ public class ProductDto {
     private User user;
     private DictionaryDto city;
     private DictionaryDto productSize;
-    private DictionaryDto productCategory;
-    private List<ProductPhotoDto> photos = new ArrayList();
-    private List<ProductCommentDto> comments = new ArrayList();
+    private CategoryDto productCategory;
+    private List<PhotoDto> photos = new ArrayList();
+    private List<CommentDto> comments = new ArrayList();
 
     public ProductDto() {
     }
@@ -87,27 +86,27 @@ public class ProductDto {
         this.productSize = productSize;
     }
 
-    public DictionaryDto getProductCategory() {
+    public CategoryDto getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(DictionaryDto productCategory) {
+    public void setProductCategory(CategoryDto productCategory) {
         this.productCategory = productCategory;
     }
 
-    public List<ProductPhotoDto> getPhotos() {
+    public List<PhotoDto> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<ProductPhotoDto> photos) {
+    public void setPhotos(List<PhotoDto> photos) {
         this.photos = photos;
     }
 
-    public List<ProductCommentDto> getComments() {
+    public List<CommentDto> getComments() {
         return comments;
     }
 
-    public void setComments(List<ProductCommentDto> comments) {
+    public void setComments(List<CommentDto> comments) {
         this.comments = comments;
     }
 }

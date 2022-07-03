@@ -48,4 +48,14 @@ public class DictionaryDto {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return "DictionaryDto{" +
+                "id=" + id +
+                ", active=" + active +
+                ", code='" + code + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

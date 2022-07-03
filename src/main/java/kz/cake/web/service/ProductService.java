@@ -4,10 +4,7 @@ import kz.cake.web.entity.Product;
 import kz.cake.web.entity.ProductPhoto;
 import kz.cake.web.entity.User;
 import kz.cake.web.helpers.StringUtils;
-import kz.cake.web.model.DictionaryDto;
-import kz.cake.web.model.ProductDto;
-import kz.cake.web.model.ProductFilterDto;
-import kz.cake.web.model.ProductPhotoDto;
+import kz.cake.web.model.*;
 import kz.cake.web.repository.ProductRepository;
 import kz.cake.web.service.base.BaseService;
 
@@ -35,11 +32,11 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         productCategoryService = new ProductCategoryService();
     }
 
-    public void save(Product entity, List<ProductPhotoDto> photos) throws SQLException, IllegalAccessException, IOException {
+    public void save(Product entity, List<PhotoDto> photos) throws SQLException, IllegalAccessException, IOException {
         Product product = super.save(entity);
 
-        for (ProductPhotoDto productPhotoDto : photos) {
-            productPhotoService.save(productPhotoDto, product.getId());
+        for (PhotoDto photoDto : photos) {
+            productPhotoService.save(photoDto, product.getId());
         }
     }
 
@@ -89,12 +86,12 @@ public class ProductService extends BaseService<Product, ProductRepository> {
         }
 
         if (product.getCategoryId() != null) {
-            DictionaryDto productCategory = productCategoryService.getByIdWithLocal(product.getCategoryId());
+            CategoryDto productCategory = (CategoryDto) productCategoryService.getByIdWithLocal(product.getCategoryId());
             productDto.setProductCategory(productCategory);
         }
 
         for (ProductPhoto productPhoto : productPhotoService.getAllByProduct(product.getId())) {
-            productDto.getPhotos().add(new ProductPhotoDto(productPhoto.getId(), productPhoto.getImage()));
+            productDto.getPhotos().add(new PhotoDto(productPhoto.getId(), productPhoto.getImage()));
         }
 
         return productDto;

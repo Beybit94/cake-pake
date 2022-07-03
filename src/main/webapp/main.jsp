@@ -97,22 +97,27 @@
                             <div class="card-body">
                                 <c:choose>
                                     <c:when test="${item.photos[0] eq null}">
-                                        <img class="card-img-top " src="${contextPath}/static/img/no_image.png"/>
+                                        <img class="card-img-top " src="${contextPath}/static/img/no_image.png" height="200"/>
                                     </c:when>
                                     <c:otherwise>
-                                        <img class="card-img-top" src="${contextPath}/files${item.photos[0].path}"
-                                             width="100%" height="100%"/>
+                                        <img class="card-img-top" src="${contextPath}/files${item.photos[0].path}" height="200"/>
                                     </c:otherwise>
                                 </c:choose>
                                 <h1 class="card-title">${item.priceText}</h1>
-                                <ul class="list-unstyled mt-3 mb-4">
-                                    <li><fmt:message key="label.city"/> : ${item.city.text}</li>
-                                    <li><fmt:message key="label.productSize"/> : ${item.productSize.text}</li>
-                                    <li><fmt:message key="label.productCategory"/> : ${item.productCategory.text}</li>
-                                </ul>
+                                <p>
+                                    <span class="badge badge-light ml-1">${item.city.text}</span>
+                                    <span class="badge badge-light ml-1">${item.productSize.text}</span>
+                                    <span class="badge badge-light">${item.productCategory.parentText} - ${item.productCategory.text}</span>
+                                </p>
+                                <c:if test="${sessionScope.user != null && sessionScope.user.roles.contains('user')}">
+                                    <button type="button" class="btn btn-lg btn-block btn-dark mt-1" onclick="addToCart(${item.id})"><fmt:message
+                                            key="button.addToCart"/>
+                                    </button>
+                                </c:if>
                                 <form method="post" action="${ActionNames.ProductDetail.name}">
                                     <input type="hidden" name="id" value="${item.id}"/>
-                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary"><fmt:message key="button.detail"/>
+                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary"><fmt:message
+                                            key="button.detail"/>
                                     </button>
                                 </form>
                             </div>

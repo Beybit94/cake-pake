@@ -1,14 +1,14 @@
 package kz.cake.web.model;
 
-public class ProductCategoryDto extends DictionaryDto {
+public class CategoryDto extends DictionaryDto {
     private Long parent;
     private String parentCode;
     private String parentText;
 
-    public ProductCategoryDto() {
+    public CategoryDto() {
     }
 
-    public ProductCategoryDto(Long id, Long parent, String code, boolean active) {
+    public CategoryDto(Long id, Long parent, String code, boolean active) {
         this.id = id;
         this.parent = parent;
         this.code = code;

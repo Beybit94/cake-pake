@@ -7,7 +7,7 @@ import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.ProductFilterDto;
-import kz.cake.web.model.ProductPhotoDto;
+import kz.cake.web.model.PhotoDto;
 import kz.cake.web.service.CityService;
 import kz.cake.web.service.ProductCategoryService;
 import kz.cake.web.service.ProductService;
@@ -54,17 +54,25 @@ public class ProductController extends BaseController {
         if (request.getParameter("toPrice") != null && !request.getParameter("toPrice").isEmpty()) {
             productFilterDto.setToPrice(new BigDecimal(request.getParameter("toPrice")));
         } else if (productFilterDto.getToPrice() == null) {
-            productFilterDto.setToPrice(new BigDecimal(10000));
+            productFilterDto.setToPrice(new BigDecimal(12000));
         }
 
         if (request.getParameter("city") != null && !request.getParameter("city").isEmpty()) {
             productFilterDto.setCityId(Long.parseLong(request.getParameter("city")));
+        } else {
+            productFilterDto.setCityId(null);
         }
+
         if (request.getParameter("productSize") != null && !request.getParameter("productSize").isEmpty()) {
             productFilterDto.setSizeId(Long.parseLong(request.getParameter("productSize")));
+        } else {
+            productFilterDto.setSizeId(null);
         }
+
         if (request.getParameter("productCategory") != null && !request.getParameter("productCategory").isEmpty()) {
             productFilterDto.setCategoryId(Long.parseLong(request.getParameter("productCategory")));
+        } else {
+            productFilterDto.setCategoryId(null);
         }
 
         session.setAttribute("filter", productFilterDto);
@@ -109,12 +117,12 @@ public class ProductController extends BaseController {
                 .active(true)
                 .build();
 
-        List<ProductPhotoDto> photos = new ArrayList<>();
+        List<PhotoDto> photos = new ArrayList<>();
         List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
-            ProductPhotoDto photo = new ProductPhotoDto();
+            PhotoDto photo = new PhotoDto();
             photo.setName(fileName);
             photo.setFileContent(fileContent);
             photos.add(photo);
@@ -148,12 +156,12 @@ public class ProductController extends BaseController {
                 .active(true)
                 .build();
 
-        List<ProductPhotoDto> photos = new ArrayList<>();
+        List<PhotoDto> photos = new ArrayList<>();
         List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
-            ProductPhotoDto photo = new ProductPhotoDto();
+            PhotoDto photo = new PhotoDto();
             photo.setName(fileName);
             photo.setFileContent(fileContent);
             photos.add(photo);

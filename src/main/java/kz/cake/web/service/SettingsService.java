@@ -5,8 +5,7 @@ import kz.cake.web.entity.*;
 import kz.cake.web.entity.base.Base;
 import kz.cake.web.entity.base.BaseDictionary;
 import kz.cake.web.helpers.StringUtils;
-import kz.cake.web.helpers.constants.Language;
-import kz.cake.web.model.DictionaryDto;
+import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.repository.SettingsRepository;
 import kz.cake.web.repository.base.BaseRepository;
 import kz.cake.web.service.base.BaseService;
@@ -79,7 +78,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         List<String> systemSecondary = Arrays.asList("Local");
 
         List<String> users = Arrays.asList("User");
-        List<String> products = Arrays.asList("Product");
+        List<String> products = Arrays.asList("Product","Order");
         List<String> dictionaries = Arrays.asList("Role", "City", "OrderStatus", "ProductSize", "ProductCategory");
 
         Reflections reflections = new Reflections("kz.cake.web");
@@ -135,8 +134,8 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
 
         //region Language
         LanguagesService languagesService = new LanguagesService();
-        Languages en = languagesService.save(new Languages.Builder().code(Language.en).active(true).build());
-        Languages ru = languagesService.save(new Languages.Builder().code(Language.ru).active(true).build());
+        Languages en = languagesService.save(new Languages.Builder().code(LocaleCodes.languageEn.getName()).active(true).build());
+        Languages ru = languagesService.save(new Languages.Builder().code(LocaleCodes.languageRu.getName()).active(true).build());
         //endregion
 
         //region Roles
@@ -185,9 +184,11 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         //endregion
 
         //region Order status
+        localService.save(new Local.Builder().code("draft").languageId(en.getId()).message("Draft").build());
         localService.save(new Local.Builder().code("new").languageId(en.getId()).message("New").build());
         localService.save(new Local.Builder().code("inprogress").languageId(en.getId()).message("In progress").build());
         localService.save(new Local.Builder().code("completed").languageId(en.getId()).message("Completed").build());
+        localService.save(new Local.Builder().code("draft").languageId(ru.getId()).message("Черновик").build());
         localService.save(new Local.Builder().code("new").languageId(ru.getId()).message("Новый").build());
         localService.save(new Local.Builder().code("inprogress").languageId(ru.getId()).message("В процессе").build());
         localService.save(new Local.Builder().code("completed").languageId(ru.getId()).message("Завершен").build());
@@ -196,6 +197,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         orderStatusService.save(new OrderStatus.Builder().code("new").active(true).build());
         orderStatusService.save(new OrderStatus.Builder().code("inprogress").active(true).build());
         orderStatusService.save(new OrderStatus.Builder().code("completed").active(true).build());
+        orderStatusService.save(new OrderStatus.Builder().code("draft").active(true).build());
         //endregion
 
         //region Product size

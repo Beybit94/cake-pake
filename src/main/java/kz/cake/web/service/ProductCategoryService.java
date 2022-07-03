@@ -4,7 +4,7 @@ import kz.cake.web.entity.ProductCategory;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.model.DictionaryDto;
-import kz.cake.web.model.ProductCategoryDto;
+import kz.cake.web.model.CategoryDto;
 import kz.cake.web.model.SelectOptionGroupDto;
 import kz.cake.web.repository.ProductCategoryRepository;
 import kz.cake.web.service.base.DictionaryService;
@@ -35,23 +35,23 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
         CacheProvider.remove(cacheKey());
         CacheProvider.remove(cacheKeyWithLocal());
 
-        ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
+        CategoryDto categoryDto = (CategoryDto) dictionary;
         return super.save(new ProductCategory.Builder()
-                .id(productCategoryDto.getId())
-                .parent(productCategoryDto.getParent())
-                .code(productCategoryDto.getCode())
-                .active(productCategoryDto.isActive())
+                .id(categoryDto.getId())
+                .parent(categoryDto.getParent())
+                .code(categoryDto.getCode())
+                .active(categoryDto.isActive())
                 .build());
     }
 
     @Override
     public void delete(DictionaryDto dictionary) throws CustomValidationException {
-        ProductCategoryDto productCategoryDto = (ProductCategoryDto) dictionary;
+        CategoryDto categoryDto = (CategoryDto) dictionary;
         super.delete(new ProductCategory.Builder()
-                .id(productCategoryDto.getId())
-                .parent(productCategoryDto.getParent())
-                .code(productCategoryDto.getCode())
-                .active(productCategoryDto.isActive())
+                .id(categoryDto.getId())
+                .parent(categoryDto.getParent())
+                .code(categoryDto.getCode())
+                .active(categoryDto.isActive())
                 .build());
 
         CacheProvider.remove(cacheKey());
@@ -61,26 +61,26 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     public List<SelectOptionGroupDto> getSelectedOptionGroup() {
         return getDictionaryWithLocal()
                 .stream()
-                .map(m -> (ProductCategoryDto) m)
+                .map(m -> (CategoryDto) m)
                 .filter(m -> m.getParent() == null)
                 .map(m -> mapToSelect(m))
                 .collect(Collectors.toList());
 
     }
 
-    public List<ProductCategoryDto> findByParent(Long id) {
+    public List<CategoryDto> findByParent(Long id) {
         return getDictionaryWithLocal().stream()
                 .filter(m -> {
-                    ProductCategoryDto productCategoryDto = (ProductCategoryDto) m;
-                    return productCategoryDto.getParent() != null && productCategoryDto.getParent().equals(id);
+                    CategoryDto categoryDto = (CategoryDto) m;
+                    return categoryDto.getParent() != null && categoryDto.getParent().equals(id);
                 })
-                .map(m -> (ProductCategoryDto) m)
+                .map(m -> (CategoryDto) m)
                 .collect(Collectors.toList());
     }
 
     @Override
-    protected ProductCategoryDto mapWithLocal(ProductCategory m) {
-        ProductCategoryDto dictionaryDto = new ProductCategoryDto(m.getId(), m.getParent(), m.getCode(), m.isActive());
+    protected CategoryDto mapWithLocal(ProductCategory m) {
+        CategoryDto dictionaryDto = new CategoryDto(m.getId(), m.getParent(), m.getCode(), m.isActive());
         localService.findByCode(m.getCode()).ifPresent(p -> {
             dictionaryDto.setText(p.getMessage());
         });
@@ -96,8 +96,8 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
     }
 
     @Override
-    protected ProductCategoryDto map(ProductCategory m) {
-        ProductCategoryDto dictionaryDto = new ProductCategoryDto(m.getId(), m.getParent(), m.getCode(), m.isActive());
+    protected CategoryDto map(ProductCategory m) {
+        CategoryDto dictionaryDto = new CategoryDto(m.getId(), m.getParent(), m.getCode(), m.isActive());
         if (m.getParent() != null) {
             DictionaryDto parent = getById(m.getParent());
             dictionaryDto.setParentCode(parent.getCode());
@@ -105,7 +105,7 @@ public class ProductCategoryService extends DictionaryService<ProductCategory, P
         return dictionaryDto;
     }
 
-    protected SelectOptionGroupDto mapToSelect(ProductCategoryDto m) {
+    protected SelectOptionGroupDto mapToSelect(CategoryDto m) {
         SelectOptionGroupDto selectOptionGroupDto = new SelectOptionGroupDto();
         selectOptionGroupDto.setId(m.getId());
         selectOptionGroupDto.setText(m.getText());

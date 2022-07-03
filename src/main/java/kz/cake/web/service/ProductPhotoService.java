@@ -2,7 +2,7 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.ProductPhoto;
 import kz.cake.web.exceptions.CustomValidationException;
-import kz.cake.web.model.ProductPhotoDto;
+import kz.cake.web.model.PhotoDto;
 import kz.cake.web.repository.ProductPhotoRepository;
 import kz.cake.web.service.base.BaseService;
 
@@ -26,7 +26,7 @@ public class ProductPhotoService extends BaseService<ProductPhoto, ProductPhotoR
         imagePath = env.get("images_path");
     }
 
-    public ProductPhoto save(ProductPhotoDto photo, Long productId) throws IOException, SQLException, IllegalAccessException {
+    public ProductPhoto save(PhotoDto photo, Long productId) throws IOException, SQLException, IllegalAccessException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int year = calendar.get(Calendar.YEAR);

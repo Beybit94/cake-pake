@@ -1,6 +1,6 @@
 package kz.cake.web.helpers;
 
-import kz.cake.web.helpers.constants.Language;
+import kz.cake.web.helpers.constants.LocaleCodes;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,8 +11,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -59,7 +57,7 @@ public class StringUtils {
 
     public static String currencyFormat(BigDecimal price) {
         Locale locale;
-        if (CurrentSession.Instance.getCurrentLanguageCode().equals(Language.en)) {
+        if (CurrentSession.Instance.getCurrentLanguageCode().equals(LocaleCodes.languageEn.getName())) {
             locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(), "US");
         } else {
             locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(), "RU");
@@ -71,14 +69,14 @@ public class StringUtils {
 
     public static String localDateString(Timestamp timestamp) {
         Locale locale;
-        if (CurrentSession.Instance.getCurrentLanguageCode().equals(Language.en)) {
+        if (CurrentSession.Instance.getCurrentLanguageCode().equals(LocaleCodes.languageEn.getName())) {
             locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(), "US");
         } else {
             locale = new Locale(CurrentSession.Instance.getCurrentLanguageCode(), "RU");
         }
 
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm",locale);
-        Date date=new Date(timestamp.getTime());
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm", locale);
+        Date date = new Date(timestamp.getTime());
         return formatter.format(date);
     }
 }

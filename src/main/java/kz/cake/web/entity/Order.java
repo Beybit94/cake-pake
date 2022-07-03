@@ -2,29 +2,25 @@ package kz.cake.web.entity;
 
 import kz.cake.web.entity.base.Base;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class Order extends Base<Long> {
     private Long userId;
-    private Long orderDetailId;
     private Long orderStatusId;
     private Timestamp orderDate;
     private Timestamp shippingDate;
-    private BigDecimal total;
 
     public Order() {
         super();
     }
 
-    private Order(Long userId, Long orderDetailId, Long orderStatusId, Timestamp orderDate, Timestamp shippingDate, BigDecimal total) {
+    private Order(Long id, boolean active, Long userId, Long orderStatusId, Timestamp orderDate, Timestamp shippingDate) {
+        this.id = id;
+        this.active = active;
         this.userId = userId;
-        this.orderDetailId = orderDetailId;
         this.orderStatusId = orderStatusId;
         this.orderDate = orderDate;
         this.shippingDate = shippingDate;
-        this.total = total;
     }
 
     @Override
@@ -34,32 +30,16 @@ public class Order extends Base<Long> {
 
     @Override
     public String getParameters() {
-        return "id,active,user_id,order_detail_id,order_status_id,order_date,shipping_date,total";
+        return "id,active,user_id,order_status_id,order_date,shipping_date";
     }
 
     @Override
     public String getCreateTableSql() {
-        return String.format("CREATE TABLE IF NOT EXISTS %s (" +
-                "id bigserial PRIMARY KEY," +
-                "user_id bigint NOT NULL," +
-                "order_detail_id bigint NOT NULL," +
-                "order_status_id bigint NOT NULL," +
-                "order_date timestamp NOT NULL DEFAULT now()," +
-                "shipping_date timestamp," +
-                "total numeric," +
-                "active boolean not null DEFAULT true," +
-                "FOREIGN KEY (user_id) REFERENCES web.users (id)," +
-                "FOREIGN KEY (order_detail_id) REFERENCES web.order_details (id)," +
-                "FOREIGN KEY (order_status_id) REFERENCES web.order_status (id)" +
-                ");", getTableName());
+        return String.format("CREATE TABLE IF NOT EXISTS %s (" + "id bigserial PRIMARY KEY," + "user_id bigint NOT NULL," + "order_status_id bigint NOT NULL," + "order_date timestamp NOT NULL DEFAULT now()," + "shipping_date timestamp," + "active boolean not null DEFAULT true," + "FOREIGN KEY (user_id) REFERENCES web.users (id)," + "FOREIGN KEY (order_status_id) REFERENCES web.order_status (id)" + ");", getTableName());
     }
 
     public Long getUserId() {
         return userId;
-    }
-
-    public Long getOrderDetailId() {
-        return orderDetailId;
     }
 
     public Long getOrderStatusId() {
@@ -74,25 +54,39 @@ public class Order extends Base<Long> {
         return shippingDate;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "userId=" + userId +
+                ", orderStatusId=" + orderStatusId +
+                ", orderDate=" + orderDate +
+                ", shippingDate=" + shippingDate +
+                ", id=" + id +
+                ", active=" + active +
+                '}';
     }
 
     public static class Builder {
+        private Long id;
+
+        private boolean active;
         private Long userId;
-        private Long orderDetailId;
         private Long orderStatusId;
         private Timestamp orderDate;
         private Timestamp shippingDate;
-        private BigDecimal total;
 
-        public Builder userId(Long userId) {
-            this.userId = userId;
+        public Builder id(Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder orderDetailId(Long orderDetailId) {
-            this.orderDetailId = orderDetailId;
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder userId(Long userId) {
+            this.userId = userId;
             return this;
         }
 
@@ -111,13 +105,8 @@ public class Order extends Base<Long> {
             return this;
         }
 
-        public Builder total(BigDecimal total) {
-            this.total = total;
-            return this;
-        }
-
         public Order build() {
-            return new Order(userId, orderDetailId, orderStatusId, orderDate, shippingDate, total);
+            return new Order(id, active, userId, orderStatusId, orderDate, shippingDate);
         }
     }
 }

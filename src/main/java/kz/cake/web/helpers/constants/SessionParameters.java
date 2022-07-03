@@ -14,7 +14,8 @@ public enum SessionParameters {
     products("products"),
     item("item"),
     orders("orders"),
-    filter("filter");
+    filter("filter"),
+    orderDraft("orderDraft");
 
     String name;
 

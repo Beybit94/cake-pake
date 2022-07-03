@@ -44,14 +44,24 @@
                        </div>
                    </div>
                    <div class="col-6">
-                       <ul class="list-group">
+                       <ul class="list-group list-group-flush">
+                           <c:if test="${sessionScope.user != null && sessionScope.user.roles.contains('user')}">
+                               <li class="list-group-item">
+                                   <form method="post" action="${ActionNames.OrderAdd.name}">
+                                       <input type="hidden" name="id" value="${item.id}"/>
+                                       <button type="submit" class="btn btn-lg btn-block btn-dark"><fmt:message
+                                               key="button.addToCart"/>
+                                       </button>
+                                   </form>
+                               </li>
+                           </c:if>
                            <li class="list-group-item"><fmt:message key="label.productPrice"/>
                                : ${item.priceText}</li>
                            <li class="list-group-item"><fmt:message key="label.city"/> : ${item.city.text}</li>
                            <li class="list-group-item"><fmt:message key="label.productSize"/>
                                : ${item.productSize.text}</li>
                            <li class="list-group-item"><fmt:message key="label.productCategory"/>
-                               : ${item.productCategory.text}</li>
+                               : ${item.productCategory.parentText} - ${item.productCategory.text}</li>
                        </ul>
                        <div class="row">
                            <div class="col-12 mt-2">

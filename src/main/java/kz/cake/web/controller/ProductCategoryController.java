@@ -6,7 +6,7 @@ import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.DictionaryDto;
-import kz.cake.web.model.ProductCategoryDto;
+import kz.cake.web.model.CategoryDto;
 import kz.cake.web.service.LocalService;
 import kz.cake.web.service.ProductCategoryService;
 
@@ -38,7 +38,7 @@ public class ProductCategoryController extends BaseController {
         String code = request.getParameter("code");
         Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));
 
-        ProductCategoryDto dictionary = new ProductCategoryDto();
+        CategoryDto dictionary = new CategoryDto();
         dictionary.setCode(code);
         dictionary.setParent(parent);
         dictionary.setActive(true);
@@ -52,7 +52,7 @@ public class ProductCategoryController extends BaseController {
         String code = request.getParameter("code");
         Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));
 
-        ProductCategoryDto dictionary = (ProductCategoryDto) productCategoryService.getById(id);
+        CategoryDto dictionary = (CategoryDto) productCategoryService.getById(id);
         dictionary.setCode(code);
         dictionary.setParent(parent);
         productCategoryService.save(dictionary);

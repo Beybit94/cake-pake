@@ -1,5 +1,6 @@
 <%@ page import="kz.cake.web.helpers.constants.PageNames" %>
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.LocaleCodes" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -23,7 +24,7 @@
                         key="page.login"/></a>
             </c:when>
             <c:otherwise>
-                <c:if test="${sessionScope.user.roles.contains('admin')}">
+                <c:if test="${sessionScope.user.roles.contains(LocaleCodes.roleAdmin.name)}">
                     <form class="form-inline" action="${ActionNames.UserList.name}" method="post"
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-link text-dark"><fmt:message
@@ -56,10 +57,11 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${sessionScope.user.roles.contains('manager')}">
+                <c:if test="${sessionScope.user.roles.contains(LocaleCodes.roleManager.name)}">
                     <form class="form-inline" action="${ActionNames.ProductMy.name}" method="post"
                           style="margin-left: 5px;">
-                        <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.myProducts"/></button>
+                        <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                key="page.myProducts"/></button>
                     </form>
                     <form class="form-inline" action="${ActionNames.OrderMy.name}" method="post"
                           style="margin-left: 5px;">
@@ -70,10 +72,20 @@
                         <button type="submit" class="btn btn-outline-primary">${sessionScope.user.userName}</button>
                     </form>
                 </c:if>
-                <c:if test="${sessionScope.user.roles.contains('user')}">
+                <c:if test="${sessionScope.user.roles.contains(LocaleCodes.roleUser.name)}">
+                    <form class="form-inline" action="${ActionNames.OrderHistory.name}" method="post">
+                        <button type="button" class="btn btn-outline-dark">
+                            <fmt:message key="button.cart"/>
+                            <c:if test="${sessionScope.orderDraft ne null}">
+                                <span class="badge badge-dark"
+                                      id="shoppingCart">${sessionScope.orderDraft.orderDetail.size()}</span>
+                            </c:if>
+                        </button>
+                    </form>
                     <form class="form-inline" action="${ActionNames.OrderHistory.name}" method="post"
                           style="margin-left: 5px;">
-                        <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orderHistory"/></button>
+                        <button type="submit" class="btn btn-link text-dark"><fmt:message
+                                key="page.orderHistory"/></button>
                     </form>
                     <form class="form-inline" action="${ActionNames.AuthProfile.name}" method="post"
                           style="margin-left: 5px;">
@@ -93,19 +105,21 @@
             <div class="form-group">
                 <select class="form-control" name="code" onchange="javascript:$('#changeLangForm').submit()">
                     <c:choose>
-                        <c:when test="${sessionScope.language eq 'en'}">
-                            <option value="en" selected><fmt:message key="label.en"/></option>
+                        <c:when test="${sessionScope.language eq LocaleCodes.languageEn.name}">
+                            <option value="${LocaleCodes.languageEn.name}" selected><fmt:message
+                                    key="label.en"/></option>
                         </c:when>
                         <c:otherwise>
-                            <option value="en"><fmt:message key="label.en"/></option>
+                            <option value="${LocaleCodes.languageEn.name}"><fmt:message key="label.en"/></option>
                         </c:otherwise>
                     </c:choose>
                     <c:choose>
-                        <c:when test="${sessionScope.language eq 'ru'}">
-                            <option value="ru" selected><fmt:message key="label.ru"/></option>
+                        <c:when test="${sessionScope.language eq LocaleCodes.languageRu.name}">
+                            <option value="${LocaleCodes.languageRu.name}" selected><fmt:message
+                                    key="label.ru"/></option>
                         </c:when>
                         <c:otherwise>
-                            <option value="ru"><fmt:message key="label.ru"/></option>
+                            <option value="${LocaleCodes.languageRu.name}"><fmt:message key="label.ru"/></option>
                         </c:otherwise>
                     </c:choose>
                 </select>
@@ -113,3 +127,15 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    function addToCart(id) {
+        $.ajax({
+            url: "${contextPath}/${ActionNames.OrderAdd.name}",
+            method: "POST",
+            data: {id: id},
+            success: function (data) {
+                $('#shoppingCart').text(data.orderDetail.length );
+            }
+        })
+    }
+</script>

@@ -6,14 +6,14 @@ import kz.cake.web.entity.UserRole;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.constants.ActionNames;
+import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.CurrentUserDto;
 import kz.cake.web.model.DictionaryDto;
+import kz.cake.web.model.OrderDto;
 import kz.cake.web.model.ValidationErrorDto;
-import kz.cake.web.service.RoleService;
-import kz.cake.web.service.UserRoleService;
-import kz.cake.web.service.UserService;
+import kz.cake.web.service.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,9 +28,11 @@ import java.util.Optional;
 
 public class AuthController extends BaseController {
     private final UserService userService;
+    private final OrderService orderService;
 
     public AuthController() {
         userService = new UserService();
+        orderService = new OrderService();
     }
 
     public void profile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,8 +71,10 @@ public class AuthController extends BaseController {
                 currentUser.getRoles().add(role.getCode());
             });
 
-            session.setAttribute(SessionParameters.user.getName(), currentUser);
             CurrentSession.Instance.setCurrentUser(currentUser);
+            session.setAttribute(SessionParameters.user.getName(), currentUser);
+            session.setAttribute(SessionParameters.orderDraft.getName(), orderService.getDraft().orElse(new OrderDto()));
+
             RequestDispatcher dispatcher = request.getRequestDispatcher(ActionNames.ProductList.getName());
             dispatcher.forward(request, response);
         } else {
@@ -121,8 +125,10 @@ public class AuthController extends BaseController {
                 currentUser.getRoles().add(roleService.getByIdWithLocal(ur.getRoleId()).getCode());
             });
 
-            session.setAttribute(SessionParameters.user.getName(), currentUser);
             CurrentSession.Instance.setCurrentUser(currentUser);
+            session.setAttribute(SessionParameters.user.getName(), currentUser);
+            session.setAttribute(SessionParameters.orderDraft.getName(), orderService.getDraft().orElse(new OrderDto()));
+
             RequestDispatcher dispatcher = request.getRequestDispatcher(ActionNames.ProductList.getName());
             dispatcher.forward(request, response);
         } else {

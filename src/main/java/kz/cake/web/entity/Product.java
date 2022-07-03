@@ -86,6 +86,21 @@ public class Product extends Base<Long> {
         return cityId;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", userId=" + userId +
+                ", categoryId=" + categoryId +
+                ", sizeId=" + sizeId +
+                ", cityId=" + cityId +
+                ", id=" + id +
+                ", active=" + active +
+                '}';
+    }
+
     public static class Builder {
         private Long id;
         private String name;
