@@ -26,7 +26,6 @@
                <div class="row">
                    <div class="col-6">
                        <div class="slider">
-                           <img class="img-thumbnail" src="${contextPath}/static/img/no_image.png"/>
                            <c:choose>
                                <c:when test="${item.photos[0] eq null}">
                                    <img class="img-thumbnail" src="${contextPath}/static/img/no_image.png"/>
