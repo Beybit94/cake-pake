@@ -73,8 +73,8 @@
                     </form>
                 </c:if>
                 <c:if test="${sessionScope.user.roles.contains(LocaleCodes.roleUser.name)}">
-                    <form class="form-inline" action="${ActionNames.OrderHistory.name}" method="post">
-                        <button type="button" class="btn btn-outline-dark">
+                    <form class="form-inline" action="${ActionNames.CartView.name}" method="post">
+                        <button type="submit" class="btn btn-outline-dark">
                             <fmt:message key="button.cart"/>
                             <c:if test="${sessionScope.orderDraft ne null}">
                                 <span class="badge badge-dark"
@@ -128,13 +128,44 @@
     </div>
 </div>
 <script type="text/javascript">
-    function addToCart(id) {
+    function addToCart(id, callback) {
         $.ajax({
-            url: "${contextPath}/${ActionNames.OrderAdd.name}",
+            url: "${contextPath}/${ActionNames.CartAdd.name}",
             method: "POST",
             data: {id: id},
             success: function (data) {
                 $('#shoppingCart').text(data.orderDetail.length );
+                if(callback){
+                    callback();
+                }
+            }
+        })
+    }
+
+    function removeFromCart(id, callback) {
+        $.ajax({
+            url: "${contextPath}/${ActionNames.CartRemove.name}",
+            method: "POST",
+            data: {id: id},
+            success: function (data) {
+                $('#shoppingCart').text(data.orderDetail.length );
+                if(callback){
+                    callback();
+                }
+            }
+        })
+    }
+
+    function removeFromOrder(id, callback) {
+        $.ajax({
+            url: "${contextPath}/${ActionNames.CartDelete.name}",
+            method: "POST",
+            data: {id: id},
+            success: function (data) {
+                $('#shoppingCart').text(data.orderDetail.length );
+                if(callback){
+                    callback();
+                }
             }
         })
     }

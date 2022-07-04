@@ -18,7 +18,8 @@ public enum PageNames {
     edit_product("edit-product.jsp"),
     detail_product("detail-product.jsp"),
     my_order("my-order.jsp"),
-    order_history("order-history.jsp");
+    order_history("order-history.jsp"),
+    shopping_cart("shopping-cart.jsp");
 
     String name;
 

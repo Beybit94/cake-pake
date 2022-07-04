@@ -44,7 +44,7 @@ public class ProductPhotoRepository extends BaseRepository<ProductPhoto> {
         String sql = String.format("delete from %s where id=%d", entity.getTableName(), entity.getId());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (Exception e) {
             logger.error(e);
         } finally {

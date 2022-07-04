@@ -7,12 +7,12 @@ public class OrderDetailDto {
     private boolean active;
     private Long orderId;
     private int quantity = 0;
-    private Product product;
+    private ProductDto product;
 
     public OrderDetailDto() {
     }
 
-    public OrderDetailDto(Product product) {
+    public OrderDetailDto(ProductDto product) {
         this.product = product;
     }
 
@@ -48,11 +48,11 @@ public class OrderDetailDto {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
+    public ProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductDto product) {
         this.product = product;
     }
 

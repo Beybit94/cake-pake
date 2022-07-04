@@ -110,7 +110,7 @@
                                     <span class="badge badge-light">${item.productCategory.parentText} - ${item.productCategory.text}</span>
                                 </p>
                                 <c:if test="${sessionScope.user != null && sessionScope.user.roles.contains('user')}">
-                                    <button type="button" class="btn btn-lg btn-block btn-dark mt-1" onclick="addToCart(${item.id})"><fmt:message
+                                    <button type="button" class="btn btn-lg btn-block btn-dark mt-1 mb-1" onclick="addToCart(${item.id})"><fmt:message
                                             key="button.addToCart"/>
                                     </button>
                                 </c:if>

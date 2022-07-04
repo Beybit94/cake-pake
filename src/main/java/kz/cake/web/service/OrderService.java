@@ -2,6 +2,7 @@ package kz.cake.web.service;
 
 import kz.cake.web.entity.Order;
 import kz.cake.web.entity.OrderDetail;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.model.DictionaryDto;
@@ -27,24 +28,38 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         orderStatusService = new OrderStatusService();
     }
 
-    public void save(OrderDto orderDto) throws SQLException, IllegalAccessException {
+    public void save(OrderDto orderDto) throws SQLException, IllegalAccessException, CustomValidationException {
         Order order = super.save(new Order.Builder()
                 .id(orderDto.getId())
                 .userId(CurrentSession.Instance.getCurrentUser().getUserId())
                 .orderStatusId(orderDto.getOrderStatus().getId())
+                .address(orderDto.getAddress())
+                .paymentType(orderDto.getPaymentType())
                 .orderDate(orderDto.getOrderDate())
                 .shippingDate(orderDto.getShippingDate())
                 .active(orderDto.isActive())
                 .build());
 
         for (OrderDetailDto orderDetailDto : orderDto.getOrderDetail()) {
-            orderDetailService.save(new OrderDetail.Builder()
+            OrderDetail orderDetail = new OrderDetail.Builder()
                     .id(orderDetailDto.getId())
                     .orderId(order.getId())
                     .productId(orderDetailDto.getProduct().getId())
                     .quantity(orderDetailDto.getQuantity())
                     .active(true)
-                    .build());
+                    .build();
+
+            if (orderDetail.getQuantity() <= 0) {
+                orderDetailService.delete(orderDetail);
+            } else {
+                orderDetailService.save(new OrderDetail.Builder()
+                        .id(orderDetailDto.getId())
+                        .orderId(order.getId())
+                        .productId(orderDetailDto.getProduct().getId())
+                        .quantity(orderDetailDto.getQuantity())
+                        .active(true)
+                        .build());
+            }
         }
     }
 
@@ -70,7 +85,9 @@ public class OrderService extends BaseService<Order, OrderRepository> {
     private OrderDto map(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setActive(orderDto.isActive());
+        orderDto.setActive(order.isActive());
+        orderDto.setAddress(order.getAddress());
+        orderDto.setPaymentType(order.getPaymentType());
         orderDto.setOrderDate(order.getOrderDate());
         orderDto.setShippingDate(order.getShippingDate());
 

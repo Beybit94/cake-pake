@@ -26,6 +26,7 @@ public class UrlRouter {
         routes.put("Auth", new AuthController());
         routes.put("City", new CityController());
         routes.put("User", new UserController());
+        routes.put("Cart", new CartController());
         routes.put("Local", new LocalController());
         routes.put("Order", new OrderController());
         routes.put("Product", new ProductController());

@@ -8,9 +8,9 @@ import java.util.List;
 
 public class OrderDto {
     private Long id;
-
     private boolean active;
-
+    private String address;
+    private String paymentType;
     private Timestamp orderDate;
     private Timestamp shippingDate;
     private String orderDateText;
@@ -22,9 +22,7 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Timestamp orderDate, Timestamp shippingDate, DictionaryDto orderStatus, List<OrderDetailDto> orderDetail) {
-        this.orderDate = orderDate;
-        this.shippingDate = shippingDate;
+    public OrderDto(DictionaryDto orderStatus, List<OrderDetailDto> orderDetail) {
         this.orderStatus = orderStatus;
         this.orderDetail = orderDetail;
         this.active = true;
@@ -44,6 +42,22 @@ public class OrderDto {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Timestamp getOrderDate() {

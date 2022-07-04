@@ -28,7 +28,7 @@ public class OrderDetailService extends BaseService<OrderDetail, OrderDetailRepo
         orderDetailDto.setQuantity(orderDetail.getQuantity());
 
         if (orderDetail.getProductId() != null) {
-            orderDetailDto.setProduct(productService.read(orderDetail.getProductId()));
+            orderDetailDto.setProduct(productService.getById(orderDetail.getProductId()));
         }
 
         return orderDetailDto;

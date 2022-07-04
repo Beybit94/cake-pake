@@ -47,12 +47,9 @@
                        <ul class="list-group list-group-flush">
                            <c:if test="${sessionScope.user != null && sessionScope.user.roles.contains('user')}">
                                <li class="list-group-item">
-                                   <form method="post" action="${ActionNames.OrderAdd.name}">
-                                       <input type="hidden" name="id" value="${item.id}"/>
-                                       <button type="submit" class="btn btn-lg btn-block btn-dark"><fmt:message
-                                               key="button.addToCart"/>
-                                       </button>
-                                   </form>
+                                   <button type="button" class="btn btn-lg btn-block btn-dark" onclick="addToCart(${item.id})"><fmt:message
+                                           key="button.addToCart"/>
+                                   </button>
                                </li>
                            </c:if>
                            <li class="list-group-item"><fmt:message key="label.productPrice"/>

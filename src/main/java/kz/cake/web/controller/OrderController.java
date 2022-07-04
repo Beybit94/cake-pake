@@ -2,9 +2,12 @@ package kz.cake.web.controller;
 
 import com.google.gson.Gson;
 import kz.cake.web.controller.base.BaseController;
+import kz.cake.web.entity.Order;
 import kz.cake.web.entity.OrderStatus;
 import kz.cake.web.entity.Product;
 import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.helpers.UrlRouter;
+import kz.cake.web.helpers.constants.ActionNames;
 import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.helpers.constants.PageNames;
 import kz.cake.web.helpers.constants.SessionParameters;
@@ -43,47 +46,22 @@ public class OrderController extends BaseController {
         orderStatusService = new OrderStatusService();
     }
 
-    public void cart(HttpServletRequest request, HttpServletResponse response) {
-
-    }
-
-    public void add(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException, IllegalAccessException {
+    public void add(HttpServletRequest request, HttpServletResponse response) throws SQLException, IllegalAccessException, ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
-        Product product = productService.read(id);
+        DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusNew.getName()).get();
 
-        DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusDraft.getName()).get();
-        OrderDto draft = orderService.getDraft()
-                .orElse(
-                        new OrderDto(
-                                new Timestamp(System.currentTimeMillis()),
-                                null,
-                                status,
-                                Arrays.asList(new OrderDetailDto(product))
-                        )
-                );
-
-        if (draft.getOrderDetail().stream().filter(m -> m.getProduct().getId().equals(product.getId())).findAny().isPresent()) {
-            draft.getOrderDetail().stream().forEach(m -> {
-                if (m.getProduct().getId().equals(product.getId())) {
-                    m.setQuantity(m.getQuantity() + 1);
-                }
-            });
-        } else {
-            OrderDetailDto newOrderDetail = new OrderDetailDto(product);
-            newOrderDetail.setQuantity(1);
-            draft.getOrderDetail().add(newOrderDetail);
-        }
-
-        orderService.save(draft);
+        Order order = orderService.read(id);
+        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
+        order.setAddress(request.getParameter("address"));
+        order.setPaymentType(request.getParameter("payment"));
+        order.setOrderStatusId(status.getId());
+        order.setActive(true);
+        orderService.save(order);
 
         HttpSession session = request.getSession(true);
-        session.setAttribute(SessionParameters.orderDraft.getName(), draft);
+        session.setAttribute(SessionParameters.orderDraft.getName(), new OrderDto());
 
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        out.print(new Gson().toJson(draft));
-        out.flush();
-
+        UrlRouter.Instance.route(ActionNames.CartView.getName(), request, response);
     }
 
     public void my(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

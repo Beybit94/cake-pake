@@ -11,7 +11,6 @@ public enum LocaleCodes {
     cityAstana("Astana"),
     statusDraft("draft"),
     statusNew("new"),
-    statusInprogress("inprogress"),
     statusCompleted("completed"),
     sizeLarge("large"),
     sizeMedium("medium"),
