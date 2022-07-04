@@ -48,11 +48,12 @@ public enum ActionNames {
     CartRemove("CartRemove"),
     CartDelete("CartDelete"),
     OrderAdd("OrderAdd"),
-    OrderMy("OrderMy"),
+    OrderComplete("OrderComplete"),
+    OrderList("OrderList"),
     OrderHistory("OrderHistory");
 
     public static final List<ActionNames> userPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, OrderHistory, OrderAdd, CartView, CartList, CartAdd, CartRemove, CartDelete, ProductList, ProductDetail, CommentAdd);
-    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, PhotoRemove, ProductList, ProductDetail, OrderMy);
+    public static final List<ActionNames> managerPermissions = Arrays.asList(LanguagesChange, AuthLogin, AuthRegister, AuthLogout, AuthProfile, AuthChange, ProductMy, ProductAdd, ProductEdit, ProductRemove, ProductRead, PhotoRemove, ProductList, ProductDetail, OrderList, OrderComplete);
 
     String name;
 

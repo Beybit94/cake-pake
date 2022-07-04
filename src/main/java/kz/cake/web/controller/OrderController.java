@@ -64,15 +64,27 @@ public class OrderController extends BaseController {
         UrlRouter.Instance.route(ActionNames.CartView.getName(), request, response);
     }
 
-    public void my(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(SessionParameters.errors.getName(), CurrentSession.Instance.getErrors());
-        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.my_order.getName());
+    public void complete(HttpServletRequest request, HttpServletResponse response) throws SQLException, IllegalAccessException, ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("id"));
+        DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusCompleted.getName()).get();
+
+        Order order = orderService.read(id);
+        order.setShippingDate(new Timestamp(System.currentTimeMillis()));
+        order.setOrderStatusId(status.getId());
+        orderService.save(order);
+
+        UrlRouter.Instance.route(ActionNames.OrderList.getName(), request, response);
+    }
+
+    public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(SessionParameters.orders.getName(), orderService.getOrders());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.orders.getName());
         dispatcher.forward(request, response);
     }
 
     public void history(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(SessionParameters.errors.getName(), CurrentSession.Instance.getErrors());
-        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.order_history.getName());
+        request.setAttribute(SessionParameters.orders.getName(), orderService.getOrderHistory());
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.history.getName());
         dispatcher.forward(request, response);
     }
 }

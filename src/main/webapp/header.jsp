@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-link text-dark"><fmt:message
                                 key="page.myProducts"/></button>
                     </form>
-                    <form class="form-inline" action="${ActionNames.OrderMy.name}" method="post"
+                    <form class="form-inline" action="${ActionNames.OrderList.name}" method="post"
                           style="margin-left: 5px;">
                         <button type="submit" class="btn btn-link text-dark"><fmt:message key="page.orders"/></button>
                     </form>

@@ -4,6 +4,7 @@ import kz.cake.web.entity.Order;
 import kz.cake.web.entity.OrderDetail;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
+import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.OrderDetailDto;
@@ -78,11 +79,17 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         return Optional.ofNullable(orderDto);
     }
 
-    public List<OrderDto> getAllWithoutDraft() {
-        return super.getAll().stream().map(m -> map(m)).collect(Collectors.toList());
+    public List<OrderDto> getOrders() {
+        return repository.getAll().stream().map(m -> map(m)).collect(Collectors.toList());
+    }
+
+    public List<OrderDto> getOrderHistory() {
+        return repository.getHistory().stream().map(m -> map(m)).collect(Collectors.toList());
     }
 
     private OrderDto map(Order order) {
+        System.out.println(order.toString());
+
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setActive(order.isActive());
@@ -90,6 +97,14 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         orderDto.setPaymentType(order.getPaymentType());
         orderDto.setOrderDate(order.getOrderDate());
         orderDto.setShippingDate(order.getShippingDate());
+
+        if(order.getOrderDate()!=null){
+            orderDto.setOrderDateText(StringUtils.localDateString(order.getOrderDate()));
+        }
+
+        if(order.getShippingDate()!=null){
+            orderDto.setShippingDateText(StringUtils.localDateString(order.getShippingDate()));
+        }
 
         if (order.getUserId() != null) {
             orderDto.setUser(userService.read(order.getUserId()));

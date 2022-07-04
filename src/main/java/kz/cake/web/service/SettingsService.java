@@ -78,7 +78,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         List<String> systemSecondary = Arrays.asList("Local");
 
         List<String> users = Arrays.asList("User");
-        List<String> products = Arrays.asList("Product","Order");
+        List<String> products = Arrays.asList("Product", "Order");
         List<String> dictionaries = Arrays.asList("Role", "City", "OrderStatus", "ProductSize", "ProductCategory");
 
         Reflections reflections = new Reflections("kz.cake.web");
@@ -140,17 +140,17 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
 
         //region Roles
         LocalService localService = new LocalService();
-        localService.save(new Local.Builder().code("admin").languageId(en.getId()).message("admin").build());
-        localService.save(new Local.Builder().code("manager").languageId(en.getId()).message("manager").build());
-        localService.save(new Local.Builder().code("user").languageId(en.getId()).message("user").build());
-        localService.save(new Local.Builder().code("admin").languageId(ru.getId()).message("админ").build());
-        localService.save(new Local.Builder().code("manager").languageId(ru.getId()).message("менеджер").build());
-        localService.save(new Local.Builder().code("user").languageId(ru.getId()).message("пользователь").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleAdmin.getName()).languageId(en.getId()).message("admin").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleManager.getName()).languageId(en.getId()).message("manager").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleUser.getName()).languageId(en.getId()).message("user").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleAdmin.getName()).languageId(ru.getId()).message("админ").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleManager.getName()).languageId(ru.getId()).message("менеджер").build());
+        localService.save(new Local.Builder().code(LocaleCodes.roleUser.getName()).languageId(ru.getId()).message("пользователь").build());
 
         RoleService roleService = new RoleService();
-        Role adminRole = roleService.save(new Role.Builder().code("admin").active(true).build());
-        Role managerRole = roleService.save(new Role.Builder().code("manager").active(true).build());
-        Role userRole = roleService.save(new Role.Builder().code("user").active(true).build());
+        Role adminRole = roleService.save(new Role.Builder().code(LocaleCodes.roleAdmin.getName()).active(true).build());
+        Role managerRole = roleService.save(new Role.Builder().code(LocaleCodes.roleManager.getName()).active(true).build());
+        Role userRole = roleService.save(new Role.Builder().code(LocaleCodes.roleUser.getName()).active(true).build());
         //endregion
 
         //region User
@@ -158,7 +158,7 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         UserRoleService userRoleService = new UserRoleService();
 
         User adminUser = userService.save(new User.Builder()
-                .name("admin")
+                .name(LocaleCodes.userAdmin.getName())
                 .password(StringUtils.encryptPassword("admin"))
                 .active(true)
                 .build());
@@ -173,94 +173,91 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         //endregion
 
         //region City
-        localService.save(new Local.Builder().code("Almaty").languageId(en.getId()).message("Almaty").build());
-        localService.save(new Local.Builder().code("Astana").languageId(en.getId()).message("Astana").build());
-        localService.save(new Local.Builder().code("Almaty").languageId(ru.getId()).message("Алматы").build());
-        localService.save(new Local.Builder().code("Astana").languageId(ru.getId()).message("Астана").build());
+        localService.save(new Local.Builder().code(LocaleCodes.cityAlmaty.getName()).languageId(en.getId()).message("Almaty").build());
+        localService.save(new Local.Builder().code(LocaleCodes.cityAstana.getName()).languageId(en.getId()).message("Astana").build());
+        localService.save(new Local.Builder().code(LocaleCodes.cityAlmaty.getName()).languageId(ru.getId()).message("Алматы").build());
+        localService.save(new Local.Builder().code(LocaleCodes.cityAstana.getName()).languageId(ru.getId()).message("Астана").build());
 
         CityService cityService = new CityService();
-        cityService.save(new City.Builder().code("Almaty").active(true).build());
-        cityService.save(new City.Builder().code("Astana").active(true).build());
+        cityService.save(new City.Builder().code(LocaleCodes.cityAlmaty.getName()).active(true).build());
+        cityService.save(new City.Builder().code(LocaleCodes.cityAstana.getName()).active(true).build());
         //endregion
 
         //region Order status
-        localService.save(new Local.Builder().code("draft").languageId(en.getId()).message("Draft").build());
-        localService.save(new Local.Builder().code("new").languageId(en.getId()).message("New").build());
-        localService.save(new Local.Builder().code("inprogress").languageId(en.getId()).message("In progress").build());
-        localService.save(new Local.Builder().code("completed").languageId(en.getId()).message("Completed").build());
-        localService.save(new Local.Builder().code("draft").languageId(ru.getId()).message("Черновик").build());
-        localService.save(new Local.Builder().code("new").languageId(ru.getId()).message("Новый").build());
-        localService.save(new Local.Builder().code("inprogress").languageId(ru.getId()).message("В процессе").build());
-        localService.save(new Local.Builder().code("completed").languageId(ru.getId()).message("Завершен").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusDraft.getName()).languageId(en.getId()).message("Draft").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusNew.getName()).languageId(en.getId()).message("New").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusCompleted.getName()).languageId(en.getId()).message("Completed").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusDraft.getName()).languageId(ru.getId()).message("Черновик").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusNew.getName()).languageId(ru.getId()).message("Новый").build());
+        localService.save(new Local.Builder().code(LocaleCodes.statusCompleted.getName()).languageId(ru.getId()).message("Завершен").build());
 
         OrderStatusService orderStatusService = new OrderStatusService();
-        orderStatusService.save(new OrderStatus.Builder().code("new").active(true).build());
-        orderStatusService.save(new OrderStatus.Builder().code("inprogress").active(true).build());
-        orderStatusService.save(new OrderStatus.Builder().code("completed").active(true).build());
-        orderStatusService.save(new OrderStatus.Builder().code("draft").active(true).build());
+        orderStatusService.save(new OrderStatus.Builder().code(LocaleCodes.statusNew.getName()).active(true).build());
+        orderStatusService.save(new OrderStatus.Builder().code(LocaleCodes.statusCompleted.getName()).active(true).build());
+        orderStatusService.save(new OrderStatus.Builder().code(LocaleCodes.statusDraft.getName()).active(true).build());
         //endregion
 
         //region Product size
-        localService.save(new Local.Builder().code("large").languageId(en.getId()).message("large").build());
-        localService.save(new Local.Builder().code("medium").languageId(en.getId()).message("medium").build());
-        localService.save(new Local.Builder().code("small").languageId(en.getId()).message("small").build());
-        localService.save(new Local.Builder().code("large").languageId(ru.getId()).message("большой").build());
-        localService.save(new Local.Builder().code("medium").languageId(ru.getId()).message("средний").build());
-        localService.save(new Local.Builder().code("small").languageId(ru.getId()).message("маленький").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeLarge.getName()).languageId(en.getId()).message("large").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeMedium.getName()).languageId(en.getId()).message("medium").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeSmall.getName()).languageId(en.getId()).message("small").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeLarge.getName()).languageId(ru.getId()).message("большой").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeMedium.getName()).languageId(ru.getId()).message("средний").build());
+        localService.save(new Local.Builder().code(LocaleCodes.sizeSmall.getName()).languageId(ru.getId()).message("маленький").build());
 
         ProductSizeService productSizeService = new ProductSizeService();
-        productSizeService.save(new ProductSize.Builder().code("large").active(true).build());
-        productSizeService.save(new ProductSize.Builder().code("medium").active(true).build());
-        productSizeService.save(new ProductSize.Builder().code("small").active(true).build());
+        ProductSize l = productSizeService.save(new ProductSize.Builder().code(LocaleCodes.sizeLarge.getName()).active(true).build());
+        ProductSize m = productSizeService.save(new ProductSize.Builder().code(LocaleCodes.sizeMedium.getName()).active(true).build());
+        ProductSize s = productSizeService.save(new ProductSize.Builder().code(LocaleCodes.sizeSmall.getName()).active(true).build());
         //endregion
 
         //region Product category
-        localService.save(new Local.Builder().code("cake").languageId(en.getId()).message("cake").build());
-        localService.save(new Local.Builder().code("cheesecake").languageId(en.getId()).message("cheesecake").build());
-        localService.save(new Local.Builder().code("pie").languageId(en.getId()).message("pie").build());
-        localService.save(new Local.Builder().code("cake").languageId(ru.getId()).message("торт").build());
-        localService.save(new Local.Builder().code("cheesecake").languageId(ru.getId()).message("чизкейк").build());
-        localService.save(new Local.Builder().code("pie").languageId(ru.getId()).message("пирог").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryCake.getName()).languageId(en.getId()).message("cake").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryCheesecake.getName()).languageId(en.getId()).message("cheesecake").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryPie.getName()).languageId(en.getId()).message("pie").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryCake.getName()).languageId(ru.getId()).message("торт").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryCheesecake.getName()).languageId(ru.getId()).message("чизкейк").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryPie.getName()).languageId(ru.getId()).message("пирог").build());
 
         ProductCategoryService productCategoryService = new ProductCategoryService();
-        ProductCategory cake = productCategoryService.save(new ProductCategory.Builder().code("cake").active(true).build());
-        ProductCategory cheesecake = productCategoryService.save(new ProductCategory.Builder().code("cheesecake").active(true).build());
-        ProductCategory pie = productCategoryService.save(new ProductCategory.Builder().code("pie").active(true).build());
+        ProductCategory cake = productCategoryService.save(new ProductCategory.Builder().code(LocaleCodes.categoryCake.getName()).active(true).build());
+        ProductCategory cheesecake = productCategoryService.save(new ProductCategory.Builder().code(LocaleCodes.categoryCheesecake.getName()).active(true).build());
+        ProductCategory pie = productCategoryService.save(new ProductCategory.Builder().code(LocaleCodes.categoryPie.getName()).active(true).build());
 
-        localService.save(new Local.Builder().code("biscuit").languageId(en.getId()).message("biscuit").build());
-        localService.save(new Local.Builder().code("bento").languageId(en.getId()).message("bento").build());
-        localService.save(new Local.Builder().code("trifle").languageId(en.getId()).message("trifle").build());
-        localService.save(new Local.Builder().code("whoopee").languageId(en.getId()).message("whoopee").build());
-        localService.save(new Local.Builder().code("spanish").languageId(en.getId()).message("spanish").build());
-        localService.save(new Local.Builder().code("classic").languageId(en.getId()).message("classic").build());
-        localService.save(new Local.Builder().code("chocolate").languageId(en.getId()).message("chocolate").build());
-        localService.save(new Local.Builder().code("meat").languageId(en.getId()).message("meat").build());
-        localService.save(new Local.Builder().code("other").languageId(en.getId()).message("other").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryBiscuit.getName()).languageId(en.getId()).message("biscuit").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryBento.getName()).languageId(en.getId()).message("bento").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryTrifle.getName()).languageId(en.getId()).message("trifle").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryWhoopee.getName()).languageId(en.getId()).message("whoopee").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categorySpanish.getName()).languageId(en.getId()).message("spanish").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryClassic.getName()).languageId(en.getId()).message("classic").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryChocolate.getName()).languageId(en.getId()).message("chocolate").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryMeat.getName()).languageId(en.getId()).message("meat").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryOther.getName()).languageId(en.getId()).message("other").build());
 
-        localService.save(new Local.Builder().code("biscuit").languageId(ru.getId()).message("бисквит").build());
-        localService.save(new Local.Builder().code("bento").languageId(ru.getId()).message("бенто").build());
-        localService.save(new Local.Builder().code("trifle").languageId(ru.getId()).message("трайфл").build());
-        localService.save(new Local.Builder().code("whoopee").languageId(ru.getId()).message("вупипай").build());
-        localService.save(new Local.Builder().code("spanish").languageId(ru.getId()).message("испанский").build());
-        localService.save(new Local.Builder().code("classic").languageId(ru.getId()).message("классический").build());
-        localService.save(new Local.Builder().code("chocolate").languageId(ru.getId()).message("шоколадный").build());
-        localService.save(new Local.Builder().code("meat").languageId(ru.getId()).message("мясной").build());
-        localService.save(new Local.Builder().code("other").languageId(ru.getId()).message("другое").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryBiscuit.getName()).languageId(ru.getId()).message("бисквит").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryBento.getName()).languageId(ru.getId()).message("бенто").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryTrifle.getName()).languageId(ru.getId()).message("трайфл").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryWhoopee.getName()).languageId(ru.getId()).message("вупипай").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categorySpanish.getName()).languageId(ru.getId()).message("испанский").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryClassic.getName()).languageId(ru.getId()).message("классический").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryChocolate.getName()).languageId(ru.getId()).message("шоколадный").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryMeat.getName()).languageId(ru.getId()).message("мясной").build());
+        localService.save(new Local.Builder().code(LocaleCodes.categoryOther.getName()).languageId(ru.getId()).message("другое").build());
 
-        productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code("biscuit").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code("bento").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code("trifle").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code("whoopee").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code("other").active(true).build());
+        ProductCategory biscuit = productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code(LocaleCodes.categoryBiscuit.getName()).active(true).build());
+        ProductCategory bento = productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code(LocaleCodes.categoryBento.getName()).active(true).build());
+        ProductCategory trifle = productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code(LocaleCodes.categoryTrifle.getName()).active(true).build());
+        ProductCategory whoopee = productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code(LocaleCodes.categoryWhoopee.getName()).active(true).build());
+        ProductCategory other_cake = productCategoryService.save(new ProductCategory.Builder().parent(cake.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
 
-        productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code("classic").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code("chocolate").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code("spanish").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code("other").active(true).build());
+        ProductCategory classic_chees = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryClassic.getName()).active(true).build());
+        ProductCategory chocolate = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryChocolate.getName()).active(true).build());
+        ProductCategory spanish = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categorySpanish.getName()).active(true).build());
+        ProductCategory other_chees = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
 
-        productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code("classic").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code("meat").active(true).build());
-        productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code("other").active(true).build());
+        ProductCategory classic_pie = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryClassic.getName()).active(true).build());
+        ProductCategory meat = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryMeat.getName()).active(true).build());
+        ProductCategory other_pie = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
         //endregion
 
         save(new Settings.Builder()
