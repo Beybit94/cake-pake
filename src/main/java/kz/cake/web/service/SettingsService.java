@@ -13,6 +13,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -164,12 +165,26 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
                 .build());
         userRoleService.save(new UserRole(adminUser.getId(), adminRole.getId()));
 
-        User managerUser = userService.save(new User.Builder()
-                .name("manager")
+        User kulikovUser = userService.save(new User.Builder()
+                .name(LocaleCodes.userKulikov.getName())
                 .password(StringUtils.encryptPassword("test"))
                 .active(true)
                 .build());
-        userRoleService.save(new UserRole(managerRole.getId(), managerUser.getId()));
+        userRoleService.save(new UserRole(kulikovUser.getId(), managerRole.getId()));
+
+        User qulpinayUser = userService.save(new User.Builder()
+                .name(LocaleCodes.userQulpinay.getName())
+                .password(StringUtils.encryptPassword("test"))
+                .active(true)
+                .build());
+        userRoleService.save(new UserRole(qulpinayUser.getId(), managerRole.getId()));
+
+        User bekaUser = userService.save(new User.Builder()
+                .name(LocaleCodes.userBeka.getName())
+                .password(StringUtils.encryptPassword("test"))
+                .active(true)
+                .build());
+        userRoleService.save(new UserRole(bekaUser.getId(), userRole.getId()));
         //endregion
 
         //region City
@@ -179,8 +194,8 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         localService.save(new Local.Builder().code(LocaleCodes.cityAstana.getName()).languageId(ru.getId()).message("Астана").build());
 
         CityService cityService = new CityService();
-        cityService.save(new City.Builder().code(LocaleCodes.cityAlmaty.getName()).active(true).build());
-        cityService.save(new City.Builder().code(LocaleCodes.cityAstana.getName()).active(true).build());
+        City almaty = cityService.save(new City.Builder().code(LocaleCodes.cityAlmaty.getName()).active(true).build());
+        City astana = cityService.save(new City.Builder().code(LocaleCodes.cityAstana.getName()).active(true).build());
         //endregion
 
         //region Order status
@@ -253,11 +268,116 @@ public class SettingsService extends BaseService<Settings, SettingsRepository> {
         ProductCategory classic_chees = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryClassic.getName()).active(true).build());
         ProductCategory chocolate = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryChocolate.getName()).active(true).build());
         ProductCategory spanish = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categorySpanish.getName()).active(true).build());
-        ProductCategory other_chees = productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
+        productCategoryService.save(new ProductCategory.Builder().parent(cheesecake.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
 
         ProductCategory classic_pie = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryClassic.getName()).active(true).build());
         ProductCategory meat = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryMeat.getName()).active(true).build());
-        ProductCategory other_pie = productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
+        productCategoryService.save(new ProductCategory.Builder().parent(pie.getId()).code(LocaleCodes.categoryOther.getName()).active(true).build());
+        //endregion
+
+
+        //region Product
+        ProductService productService = new ProductService();
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Сливочный торт")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(10000))
+                .sizeId(l.getId())
+                .cityId(almaty.getId())
+                .categoryId(biscuit.getId())
+                .userId(kulikovUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Бенто торт")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(6000))
+                .sizeId(l.getId())
+                .cityId(almaty.getId())
+                .categoryId(bento.getId())
+                .userId(kulikovUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Трайфл")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(5000))
+                .sizeId(l.getId())
+                .cityId(almaty.getId())
+                .categoryId(trifle.getId())
+                .userId(kulikovUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Вупипай")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(11000))
+                .sizeId(l.getId())
+                .cityId(almaty.getId())
+                .categoryId(whoopee.getId())
+                .userId(kulikovUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Напалеон")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(12000))
+                .sizeId(l.getId())
+                .cityId(almaty.getId())
+                .categoryId(other_cake.getId())
+                .userId(kulikovUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Классический чизкейк")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(5000))
+                .sizeId(l.getId())
+                .cityId(astana.getId())
+                .categoryId(classic_chees.getId())
+                .userId(qulpinayUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Шоколадный чизкейк")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(5000))
+                .sizeId(l.getId())
+                .cityId(astana.getId())
+                .categoryId(chocolate.getId())
+                .userId(qulpinayUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Испанский чизкейк")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(8000))
+                .sizeId(l.getId())
+                .cityId(astana.getId())
+                .categoryId(spanish.getId())
+                .userId(qulpinayUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Классический пирог")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(5000))
+                .sizeId(l.getId())
+                .cityId(astana.getId())
+                .categoryId(classic_pie.getId())
+                .userId(qulpinayUser.getId())
+                .build());
+        productService.save(new Product.Builder()
+                .active(true)
+                .name("Мясной пирог")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a magna quis erat faucibus interdum. Suspendisse pharetra rhoncus nibh non congue. Duis mauris urna, tempus sed varius vitae, lobortis vitae tellus. Vivamus porta, lacus sit amet congue finibus, turpis purus tincidunt ante, id volutpat sem mi a enim. Nam a pulvinar purus. Ut pharetra sollicitudin lectus at viverra. Suspendisse sed mauris sed mauris gravida posuere sit amet ut magna. In in augue eu erat ultricies ornare. Sed sapien tortor, viverra ac dolor eget, dictum feugiat risus. Nunc venenatis sodales vulputate. Nam vitae est odio. Nullam nec quam posuere, blandit purus malesuada, semper turpis. Integer nec velit dolor. Morbi blandit blandit mauris, nec bibendum lacus dictum sit amet. Cras non magna at lectus sagittis hendrerit.")
+                .price(new BigDecimal(5000))
+                .sizeId(l.getId())
+                .cityId(astana.getId())
+                .categoryId(meat.getId())
+                .userId(qulpinayUser.getId())
+                .build());
         //endregion
 
         save(new Settings.Builder()
