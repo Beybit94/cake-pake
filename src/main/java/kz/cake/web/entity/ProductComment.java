@@ -15,7 +15,9 @@ public class ProductComment extends Base<Long> {
         super();
     }
 
-    private ProductComment(Long userId, String comment, Long productId, Timestamp date) {
+    private ProductComment(Long id, boolean active, Long userId, String comment, Long productId, Timestamp date) {
+        this.id = id;
+        this.active = active;
         this.userId = userId;
         this.comment = comment;
         this.productId = productId;
@@ -63,12 +65,24 @@ public class ProductComment extends Base<Long> {
     }
 
     public static class Builder {
+        private Long id;
+        private boolean active;
         private Long userId;
         private String comment;
         private Long productId;
         private Timestamp commentDate;
 
         public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
         }
 
         public Builder userId(Long userId) {
@@ -92,7 +106,7 @@ public class ProductComment extends Base<Long> {
         }
 
         public ProductComment build() {
-            return new ProductComment(userId, comment, productId, commentDate);
+            return new ProductComment(id, active, userId, comment, productId, commentDate);
         }
     }
 

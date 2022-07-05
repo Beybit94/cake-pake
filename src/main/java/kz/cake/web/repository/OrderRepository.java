@@ -2,6 +2,7 @@ package kz.cake.web.repository;
 
 import kz.cake.web.database.BasicConnectionPool;
 import kz.cake.web.entity.Order;
+import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.repository.base.BaseRepository;
 
@@ -48,10 +49,12 @@ public class OrderRepository extends BaseRepository<Order> {
     @Override
     public List<Order> getAll() {
         List<Order> list = new ArrayList<>();
-        String sql = String.format("select * from web.orders " +
-                "where active=true " +
-                "and order_status_id in (select id from web.order_status where code <> 'draft') " +
-                "and id in (select order_id from web.order_details where product_id in (select id from web.products where user_id=%d and active=true))", CurrentSession.Instance.getCurrentUser().getUserId());
+        String sql = String.format("select o.* from web.orders o " +
+                "left join web.users u on u.id = o.user_id " +
+                "where o.active=true " +
+                "and u.active=true " +
+                "and o.order_status_id in (select id from web.order_status where code <> 'draft') " +
+                "and o.id in (select order_id from web.order_details where product_id in (select id from web.products where user_id=%d and active=true))", CurrentSession.Instance.getCurrentUser().getUserId());
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -79,7 +82,10 @@ public class OrderRepository extends BaseRepository<Order> {
 
     public List<Order> getHistory() {
         List<Order> list = new ArrayList<>();
-        String sql = String.format("select * from web.orders where active=true and order_status_id in (select id from web.order_status where code <> 'draft') and user_id=%d", CurrentSession.Instance.getCurrentUser().getUserId());
+        String sql = String.format("select * from web.orders " +
+                "where active=true " +
+                "and order_status_id in (select id from web.order_status where code <> 'draft') " +
+                "and user_id=%d", CurrentSession.Instance.getCurrentUser().getUserId());
 
         Connection connection = BasicConnectionPool.Instance.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

@@ -88,8 +88,6 @@ public class OrderService extends BaseService<Order, OrderRepository> {
     }
 
     private OrderDto map(Order order) {
-        System.out.println(order.toString());
-
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setActive(order.isActive());
@@ -98,11 +96,11 @@ public class OrderService extends BaseService<Order, OrderRepository> {
         orderDto.setOrderDate(order.getOrderDate());
         orderDto.setShippingDate(order.getShippingDate());
 
-        if(order.getOrderDate()!=null){
+        if (order.getOrderDate() != null) {
             orderDto.setOrderDateText(StringUtils.localDateString(order.getOrderDate()));
         }
 
-        if(order.getShippingDate()!=null){
+        if (order.getShippingDate() != null) {
             orderDto.setShippingDateText(StringUtils.localDateString(order.getShippingDate()));
         }
 
