@@ -13,6 +13,7 @@
 - Магазин 1: пользователь `kulikov` пароль `test`
 - Магазин 2: пользователь `qulpinay` пароль `test`
 - Клиент: пользователь `beka` пароль `test`
+- Псомотреть лог `docker logs -f -t web`
 
 ## База
 - pgAdmin `http://localhost:5050/`
@@ -21,3 +22,4 @@
 - [Название сервера на усмотрение](https://skr.sh/sElEq2bSKDZ?a)
 - [Host: `db`, port: `5432`, database: `cake`, username/password: `postgres`](https://skr.sh/sElcMRj4Knc?a)
 - [Таблицы в схеме `web`](https://skr.sh/sElEzLrJEAk?a)
+- Псомотреть лог `docker logs -f -t db`
