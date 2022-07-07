@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -28,7 +29,7 @@
                             <label>
                                 <fmt:message key="label.city"/>
                             </label>
-                            <select name="city" class="form-control local" style="width: 100%">
+                            <select name="${RequestParameters.city.name}" class="form-control local" style="width: 100%">
                                 <option value=""></option>
                                 <c:forEach items="${cities}" var="city">
                                     <option value="${city.id}" <c:if
@@ -42,7 +43,7 @@
                             <label>
                                 <fmt:message key="label.productSize"/>
                             </label>
-                            <select name="productSize" class="form-control local" style="width: 100%">
+                            <select name="${RequestParameters.productSize.name}" class="form-control local" style="width: 100%">
                                 <option value=""></option>
                                 <c:forEach items="${productSizes}" var="productSize">
                                     <option value="${productSize.id}" <c:if
@@ -56,7 +57,7 @@
                             <label>
                                 <fmt:message key="label.productCategory"/>
                             </label>
-                            <select name="productCategory" class="form-control local" style="width: 100%">
+                            <select name="${RequestParameters.productCategory.name}" class="form-control local" style="width: 100%">
                                 <option value=""></option>
                                 <c:forEach items="${productCategories}" var="productCategory">
                                     <optgroup label="${productCategory.text}">
@@ -74,11 +75,11 @@
                     <div class="row mt-2">
                         <div class="col-4">
                             <label><fmt:message key="label.from"/></label>
-                            <input type="number" class="form-control" name="fromPrice" value="${filter.fromPrice}">
+                            <input type="number" class="form-control" name="${RequestParameters.fromPrice.name}" value="${filter.fromPrice}">
                         </div>
                         <div class="col-4">
                             <label><fmt:message key="label.to"/></label>
-                            <input type="number" class="form-control" name="toPrice" value="${filter.toPrice}">
+                            <input type="number" class="form-control" name="${RequestParameters.toPrice.name}" value="${filter.toPrice}">
                         </div>
                         <div class="col-4 text-left d-flex align-items-end">
                             <button type="submit" class="btn btn-primary"><fmt:message
@@ -115,7 +116,7 @@
                                     </button>
                                 </c:if>
                                 <form method="post" action="${ActionNames.ProductDetail.name}">
-                                    <input type="hidden" name="id" value="${item.id}"/>
+                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                     <button type="submit" class="btn btn-lg btn-block btn-outline-primary"><fmt:message
                                             key="button.detail"/>
                                     </button>

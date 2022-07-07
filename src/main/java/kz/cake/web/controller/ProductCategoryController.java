@@ -4,6 +4,7 @@ import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.CategoryDto;
@@ -35,8 +36,8 @@ public class ProductCategoryController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String code = request.getParameter("code");
-        Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));
+        String code = request.getParameter(RequestParameters.code.getName());
+        Long parent = request.getParameter(RequestParameters.parent.getName()) == null || request.getParameter(RequestParameters.parent.getName()).isEmpty() ? null : Long.parseLong(request.getParameter(RequestParameters.parent.getName()));
 
         CategoryDto dictionary = new CategoryDto();
         dictionary.setCode(code);
@@ -48,9 +49,9 @@ public class ProductCategoryController extends BaseController {
     }
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        Long id = Long.parseLong(request.getParameter("id"));
-        String code = request.getParameter("code");
-        Long parent = request.getParameter("parent") == null || request.getParameter("parent").isEmpty() ? null : Long.parseLong(request.getParameter("parent"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
+        String code = request.getParameter(RequestParameters.code.getName());
+        Long parent = request.getParameter(RequestParameters.parent.getName()) == null || request.getParameter(RequestParameters.parent.getName()).isEmpty() ? null : Long.parseLong(request.getParameter(RequestParameters.parent.getName()));
 
         CategoryDto dictionary = (CategoryDto) productCategoryService.getById(id);
         dictionary.setCode(code);
@@ -61,7 +62,7 @@ public class ProductCategoryController extends BaseController {
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         DictionaryDto dictionary = productCategoryService.getById(id);
         productCategoryService.delete(dictionary);
 

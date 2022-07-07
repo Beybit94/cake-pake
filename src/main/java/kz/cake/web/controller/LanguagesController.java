@@ -5,6 +5,7 @@ import kz.cake.web.helpers.CacheProvider;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.ActionNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
 
@@ -23,8 +24,8 @@ public class LanguagesController extends BaseController {
     }
 
     public void change(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String code = request.getParameter("code");
-        String redirect = request.getParameter("redirect");
+        String code = request.getParameter(RequestParameters.code.getName());
+        String redirect = request.getParameter(RequestParameters.redirect.getName());
 
         HttpSession session = request.getSession(true);
         session.setAttribute(SessionParameters.language.getName(), code);

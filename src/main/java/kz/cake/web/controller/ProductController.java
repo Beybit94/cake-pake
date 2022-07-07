@@ -5,6 +5,7 @@ import kz.cake.web.entity.Product;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.ProductFilterDto;
 import kz.cake.web.model.PhotoDto;
@@ -43,39 +44,39 @@ public class ProductController extends BaseController {
 
     public void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        ProductFilterDto productFilterDto = session.getAttribute("filter") != null ? (ProductFilterDto) session.getAttribute("filter") : new ProductFilterDto();
+        ProductFilterDto productFilterDto = session.getAttribute(SessionParameters.filter.getName()) != null ? (ProductFilterDto) session.getAttribute(SessionParameters.filter.getName()) : new ProductFilterDto();
 
-        if (request.getParameter("fromPrice") != null && !request.getParameter("fromPrice").isEmpty()) {
-            productFilterDto.setFromPrice(new BigDecimal(request.getParameter("fromPrice")));
+        if (request.getParameter(RequestParameters.fromPrice.getName()) != null && !request.getParameter(RequestParameters.fromPrice.getName()).isEmpty()) {
+            productFilterDto.setFromPrice(new BigDecimal(request.getParameter(RequestParameters.fromPrice.getName())));
         } else if (productFilterDto.getFromPrice() == null) {
             productFilterDto.setFromPrice(new BigDecimal(2000));
         }
 
-        if (request.getParameter("toPrice") != null && !request.getParameter("toPrice").isEmpty()) {
-            productFilterDto.setToPrice(new BigDecimal(request.getParameter("toPrice")));
+        if (request.getParameter(RequestParameters.toPrice.getName()) != null && !request.getParameter(RequestParameters.toPrice.getName()).isEmpty()) {
+            productFilterDto.setToPrice(new BigDecimal(request.getParameter(RequestParameters.toPrice.getName())));
         } else if (productFilterDto.getToPrice() == null) {
             productFilterDto.setToPrice(new BigDecimal(12000));
         }
 
-        if (request.getParameter("city") != null && !request.getParameter("city").isEmpty()) {
-            productFilterDto.setCityId(Long.parseLong(request.getParameter("city")));
+        if (request.getParameter(RequestParameters.city.getName()) != null && !request.getParameter(RequestParameters.city.getName()).isEmpty()) {
+            productFilterDto.setCityId(Long.parseLong(request.getParameter(RequestParameters.city.getName())));
         } else {
             productFilterDto.setCityId(null);
         }
 
-        if (request.getParameter("productSize") != null && !request.getParameter("productSize").isEmpty()) {
-            productFilterDto.setSizeId(Long.parseLong(request.getParameter("productSize")));
+        if (request.getParameter(RequestParameters.productSize.getName()) != null && !request.getParameter(RequestParameters.productSize.getName()).isEmpty()) {
+            productFilterDto.setSizeId(Long.parseLong(request.getParameter(RequestParameters.productSize.getName())));
         } else {
             productFilterDto.setSizeId(null);
         }
 
-        if (request.getParameter("productCategory") != null && !request.getParameter("productCategory").isEmpty()) {
-            productFilterDto.setCategoryId(Long.parseLong(request.getParameter("productCategory")));
+        if (request.getParameter(RequestParameters.productCategory.getName()) != null && !request.getParameter(RequestParameters.productCategory.getName()).isEmpty()) {
+            productFilterDto.setCategoryId(Long.parseLong(request.getParameter(RequestParameters.productCategory.getName())));
         } else {
             productFilterDto.setCategoryId(null);
         }
 
-        session.setAttribute("filter", productFilterDto);
+        session.setAttribute(SessionParameters.filter.getName(), productFilterDto);
         request.setAttribute(SessionParameters.filter.getName(), productFilterDto);
         request.setAttribute(SessionParameters.products.getName(), productService.find(productFilterDto));
         request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
@@ -86,7 +87,7 @@ public class ProductController extends BaseController {
     }
 
     public void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         request.setAttribute(SessionParameters.item.getName(), productService.getById(id));
         RequestDispatcher dispatcher = request.getRequestDispatcher(PageNames.detail_product.getName());
         dispatcher.forward(request, response);
@@ -107,18 +108,18 @@ public class ProductController extends BaseController {
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException, SQLException, IllegalAccessException {
         Product product = new Product.Builder()
-                .name(request.getParameter("name"))
-                .description(request.getParameter("description"))
-                .price(new BigDecimal(request.getParameter("price")))
+                .name(request.getParameter(RequestParameters.productName.getName()))
+                .description(request.getParameter(RequestParameters.description.getName()))
+                .price(new BigDecimal(request.getParameter(RequestParameters.price.getName())))
                 .userId(CurrentSession.Instance.getCurrentUser().getUserId())
-                .cityId(Long.parseLong(request.getParameter("city")))
-                .sizeId(Long.parseLong(request.getParameter("productSize")))
-                .categoryId(Long.parseLong(request.getParameter("productCategory")))
+                .cityId(Long.parseLong(request.getParameter(RequestParameters.city.getName())))
+                .sizeId(Long.parseLong(request.getParameter(RequestParameters.productSize.getName())))
+                .categoryId(Long.parseLong(request.getParameter(RequestParameters.productCategory.getName())))
                 .active(true)
                 .build();
 
         List<PhotoDto> photos = new ArrayList<>();
-        List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
+        List<Part> fileParts = request.getParts().stream().filter(part -> "file" .equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
@@ -132,7 +133,7 @@ public class ProductController extends BaseController {
     }
 
     public void read(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
 
         request.setAttribute(SessionParameters.item.getName(), productService.getById(id));
         request.setAttribute(SessionParameters.cities.getName(), cityService.getDictionaryWithLocal());
@@ -145,19 +146,19 @@ public class ProductController extends BaseController {
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException, SQLException, IllegalAccessException {
         Product product = new Product.Builder()
-                .id(Long.parseLong(request.getParameter("id")))
-                .name(request.getParameter("name"))
-                .description(request.getParameter("description"))
-                .price(new BigDecimal(request.getParameter("price")))
+                .id(Long.parseLong(request.getParameter(RequestParameters.id.getName())))
+                .name(request.getParameter(RequestParameters.productName.getName()))
+                .description(request.getParameter(RequestParameters.description.getName()))
+                .price(new BigDecimal(request.getParameter(RequestParameters.price.getName())))
                 .userId(CurrentSession.Instance.getCurrentUser().getUserId())
-                .cityId(Long.parseLong(request.getParameter("city")))
-                .sizeId(Long.parseLong(request.getParameter("productSize")))
-                .categoryId(Long.parseLong(request.getParameter("productCategory")))
+                .cityId(Long.parseLong(request.getParameter(RequestParameters.city.getName())))
+                .sizeId(Long.parseLong(request.getParameter(RequestParameters.productSize.getName())))
+                .categoryId(Long.parseLong(request.getParameter(RequestParameters.productCategory.getName())))
                 .active(true)
                 .build();
 
         List<PhotoDto> photos = new ArrayList<>();
-        List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
+        List<Part> fileParts = request.getParts().stream().filter(part -> "file" .equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
@@ -171,7 +172,7 @@ public class ProductController extends BaseController {
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         Product product = productService.read(id);
         productService.delete(product);
 

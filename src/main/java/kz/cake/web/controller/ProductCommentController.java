@@ -5,6 +5,7 @@ import kz.cake.web.entity.ProductComment;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.UrlRouter;
 import kz.cake.web.helpers.constants.ActionNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.service.ProductCommentService;
 
 import javax.servlet.ServletException;
@@ -22,11 +23,11 @@ public class ProductCommentController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         productCommentService.save(new ProductComment.Builder()
                 .productId(id)
                 .userId(CurrentSession.Instance.getCurrentUser().getUserId())
-                .comment(request.getParameter("comment"))
+                .comment(request.getParameter(RequestParameters.comment.getName()))
                 .commentDate(new Timestamp(System.currentTimeMillis()))
                 .build());
         UrlRouter.Instance.route(ActionNames.ProductDetail.getName(), request, response);

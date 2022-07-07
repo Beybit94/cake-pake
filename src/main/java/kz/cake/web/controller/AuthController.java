@@ -5,10 +5,7 @@ import kz.cake.web.entity.User;
 import kz.cake.web.entity.UserRole;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.StringUtils;
-import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.constants.LocaleCodes;
-import kz.cake.web.helpers.constants.PageNames;
-import kz.cake.web.helpers.constants.SessionParameters;
+import kz.cake.web.helpers.constants.*;
 import kz.cake.web.model.CurrentUserDto;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.OrderDto;
@@ -43,14 +40,14 @@ public class AuthController extends BaseController {
 
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ValidationErrorDto> errorList = new ArrayList<>();
-        Optional<User> user = userService.findUserByName(request.getParameter("username"));
+        Optional<User> user = userService.findUserByName(request.getParameter(RequestParameters.username.getName()));
         if (!user.isPresent()) {
             errorList.add(new ValidationErrorDto("error.userNotFound"));
         } else {
             if (!user.get().isActive()) {
                 errorList.add(new ValidationErrorDto("error.userNotActive"));
             } else {
-                String hash = StringUtils.encryptPassword(request.getParameter("password"));
+                String hash = StringUtils.encryptPassword(request.getParameter(RequestParameters.password.getName()));
                 if (!user.get().getPassword().equals(hash)) {
                     errorList.add(new ValidationErrorDto("error.passwordNotCorrect"));
                 }
@@ -86,32 +83,32 @@ public class AuthController extends BaseController {
 
     public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         List<ValidationErrorDto> errorList = new ArrayList<>();
-        if (request.getParameter("password").isEmpty()) {
+        if (request.getParameter(RequestParameters.password.getName()).isEmpty()) {
             errorList.add(new ValidationErrorDto("error.passwordNotCorrect"));
         }
-        if (request.getParameter("password").length() < 4) {
+        if (request.getParameter(RequestParameters.password.getName()).length() < 4) {
             errorList.add(new ValidationErrorDto("error.passwordNotCorrect"));
         }
-        if (!request.getParameter("password").equals(request.getParameter("confirm"))) {
+        if (!request.getParameter(RequestParameters.password.getName()).equals(request.getParameter(RequestParameters.confirm.getName()))) {
             errorList.add(new ValidationErrorDto("error.passwordNotMatch"));
         }
 
-        Optional<User> user = userService.findUserByName(request.getParameter("username"));
+        Optional<User> user = userService.findUserByName(request.getParameter(RequestParameters.username.getName()));
         if (user.isPresent()) {
             errorList.add(new ValidationErrorDto("error.userExist"));
         }
 
         if (errorList.isEmpty()) {
             User newUser = userService.save(new User.Builder()
-                    .name(request.getParameter("username"))
-                    .password(StringUtils.encryptPassword(request.getParameter("password")))
+                    .name(request.getParameter(RequestParameters.username.getName()))
+                    .password(StringUtils.encryptPassword(request.getParameter(RequestParameters.password.getName())))
                     .active(true)
                     .build());
 
             RoleService roleService = new RoleService();
             UserRoleService userRoleService = new UserRoleService();
 
-            Optional<DictionaryDto> role = roleService.findByCode(request.getParameter("role"));
+            Optional<DictionaryDto> role = roleService.findByCode(request.getParameter(RequestParameters.role.getName()));
             if (role.isPresent()) {
                 userRoleService.save(new UserRole(newUser.getId(), role.get().getId()));
             }
@@ -147,8 +144,8 @@ public class AuthController extends BaseController {
 
     public void change(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         User user = userService.read(CurrentSession.Instance.getCurrentUser().getUserId());
-        user.setSex(request.getParameter("sex"));
-        user.setAddress(request.getParameter("address"));
+        user.setSex(request.getParameter(RequestParameters.sex.getName()));
+        user.setAddress(request.getParameter(RequestParameters.address.getName()));
         userService.save(user);
         profile(request, response);
     }

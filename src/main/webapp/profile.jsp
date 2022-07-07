@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -35,11 +36,11 @@
             <form action="${ActionNames.AuthChange.name}" method="post">
                 <div class="form-group">
                     <label for="sex"><b><fmt:message key="label.sex"/></b></label>
-                    <input type="text" class="form-control" name="sex" id="sex" value="${user.sex}">
+                    <input type="text" class="form-control" name="${RequestParameters.sex.name}" id="sex" value="${user.sex}">
                 </div>
                 <div class="form-group">
                     <label for="address"><b><fmt:message key="label.address"/></b></label>
-                    <input type="text" class="form-control" name="address" id="address" value="${user.address}">
+                    <input type="text" class="form-control" name="${RequestParameters.address.name}" id="address" value="${user.address}">
                 </div>
 
                 <button type="submit" class="btn btn-primary"><fmt:message key="button.update"/></button>

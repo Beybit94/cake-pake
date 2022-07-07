@@ -4,6 +4,7 @@ import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.service.CityService;
@@ -34,7 +35,7 @@ public class CityController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String code = request.getParameter("code");
+        String code = request.getParameter(RequestParameters.code.getName());
 
         DictionaryDto dictionary = new DictionaryDto();
         dictionary.setCode(code);
@@ -45,8 +46,8 @@ public class CityController extends BaseController {
     }
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        Long id = Long.parseLong(request.getParameter("id"));
-        String code = request.getParameter("code");
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
+        String code = request.getParameter(RequestParameters.code.getName());
 
         DictionaryDto dictionary = cityService.getById(id);
         dictionary.setCode(code);
@@ -56,7 +57,7 @@ public class CityController extends BaseController {
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         DictionaryDto dictionary = cityService.getById(id);
         cityService.delete(dictionary);
 

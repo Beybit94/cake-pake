@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -71,21 +72,21 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.LocalEdit.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label><b><fmt:message key="label.code"/></b></label>
-                                                            <input type="text" class="form-control" name="code"
+                                                            <input type="text" class="form-control" name="${RequestParameters.code.name}"
                                                                    value="${item.code}" required/>
                                                         </div>
                                                         <div class="form-group">
                                                             <label><b><fmt:message key="label.text"/></b></label>
-                                                            <input type="text" class="form-control" name="text"
+                                                            <input type="text" class="form-control" name="${RequestParameters.text.name}"
                                                                    value="${item.text}" required/>
                                                         </div>
                                                         <div class="form-group">
                                                             <label><b><fmt:message key="label.language"/></b></label>
-                                                            <select name="languageId" class="form-control">
+                                                            <select name="${RequestParameters.languageId.name}" class="form-control">
                                                                 <c:forEach var="lang" items="${languages}">
                                                                     <option value="${lang.id}" <c:if
                                                                             test="${lang.code == item.language}"> selected </c:if>>
@@ -111,7 +112,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.LocalRemove.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"><fmt:message
                                                                 key="label.confirmDelete"/></h5>
@@ -142,15 +143,15 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.code"/></b></label>
-                                        <input type="text" class="form-control" name="code" required/>
+                                        <input type="text" class="form-control" name="${RequestParameters.code.name}" required/>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.text"/></b></label>
-                                        <input type="text" class="form-control" name="text" required/>
+                                        <input type="text" class="form-control" name="${RequestParameters.text.name}" required/>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.language"/></b></label>
-                                        <select name="languageId" class="form-control">
+                                        <select name="${RequestParameters.languageId.name}" class="form-control">
                                             <c:forEach var="lang" items="${languages}">
                                                 <option value="${lang.id}">
                                                         ${lang.code}

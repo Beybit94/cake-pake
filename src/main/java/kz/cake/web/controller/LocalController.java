@@ -5,6 +5,7 @@ import kz.cake.web.entity.Local;
 import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.service.LanguagesService;
 import kz.cake.web.service.LocalService;
@@ -36,28 +37,28 @@ public class LocalController extends BaseController {
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
         localService.save(new Local.Builder()
-                .code(request.getParameter("code"))
-                .message(request.getParameter("text"))
-                .languageId(Long.parseLong(request.getParameter("languageId")))
+                .code(request.getParameter(RequestParameters.code.getName()))
+                .message(request.getParameter(RequestParameters.text.getName()))
+                .languageId(Long.parseLong(request.getParameter(RequestParameters.languageId.getName())))
                 .active(true)
                 .build());
         list(request, response);
     }
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
 
         Local local = localService.getById(id);
-        local.setCode(request.getParameter("code"));
-        local.setMessage(request.getParameter("text"));
-        local.setLanguageId(Long.parseLong(request.getParameter("languageId")));
+        local.setCode(request.getParameter(RequestParameters.code.getName()));
+        local.setMessage(request.getParameter(RequestParameters.text.getName()));
+        local.setLanguageId(Long.parseLong(request.getParameter(RequestParameters.languageId.getName())));
         localService.save(local);
 
         list(request, response);
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
 
         Local local = localService.getById(id);
         localService.delete(local);

@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -75,16 +76,16 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <form action="${ActionNames.UserEdit.name}" method="post">
-                                                            <input type="hidden" name="id" value="${user.user.id}"/>
-                                                            <input type="hidden" name="username" value="${user.user.username}"/>
+                                                            <input type="hidden" name="${RequestParameters.id.name}" value="${user.user.id}"/>
+                                                            <input type="hidden" name="${RequestParameters.username.name}" value="${user.user.username}"/>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <label for="sex"><b><fmt:message key="label.sex"/></b></label>
-                                                                    <input type="text" class="form-control" name="sex" id="sex" value="${user.user.sex}">
+                                                                    <input type="text" class="form-control" name="${RequestParameters.sex.name}" id="sex" value="${user.user.sex}">
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="address"><b><fmt:message key="label.address"/></b></label>
-                                                                    <input type="text" class="form-control" name="address" id="address" value="${user.user.address}">
+                                                                    <input type="text" class="form-control" name="${RequestParameters.address.name}" id="address" value="${user.user.address}">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -99,8 +100,8 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <form action="${ActionNames.UserRemove.name}" method="post">
-                                                            <input type="hidden" name="id" value="${user.user.id}"/>
-                                                            <input type="hidden" name="username" value="${user.user.username}"/>
+                                                            <input type="hidden" name="${RequestParameters.id.name}" value="${user.user.id}"/>
+                                                            <input type="hidden" name="${RequestParameters.username.name}" value="${user.user.username}"/>
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
                                                             </div>
@@ -116,12 +117,12 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <form action="${ActionNames.UserReset.name}" method="post">
-                                                            <input type="hidden" name="id" value="${user.user.id}"/>
-                                                            <input type="hidden" name="username" value="${user.user.username}"/>
+                                                            <input type="hidden" name="${RequestParameters.id.name}" value="${user.user.id}"/>
+                                                            <input type="hidden" name="${RequestParameters.username.name}" value="${user.user.username}"/>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <label for="password"><b><fmt:message key="label.password"/></b></label>
-                                                                    <input type="password" class="form-control" name="password" id="password" required>
+                                                                    <input type="password" class="form-control" name="${RequestParameters.password.name}" id="password" required>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -135,8 +136,8 @@
                                         </c:when>
                                         <c:otherwise>
                                             <form class="form-inline" action="${ActionNames.UserUnblock.name}" method="post">
-                                                <input type="hidden" name="id" value="${user.user.id}"/>
-                                                <input type="hidden" name="username" value="${user.user.username}"/>
+                                                <input type="hidden" name="${RequestParameters.id.name}" value="${user.user.id}"/>
+                                                <input type="hidden" name="${RequestParameters.username.name}" value="${user.user.username}"/>
                                                 <button type="submit" class="btn btn-outline-warning"><fmt:message key="button.unblock"/></button>
                                             </form>
                                         </c:otherwise>
@@ -153,23 +154,23 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <form action="${ActionNames.UserAdd.name}" method="post">
-                                <input type="hidden" name="id" value=""/>
+                                <input type="hidden" name="${RequestParameters.id.name}" value=""/>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.login"/></b></label>
-                                        <input type="text" class="form-control" name="username" required>
+                                        <input type="text" class="form-control" name="${RequestParameters.username.name}" required>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.password"/></b></label>
-                                        <input type="password" class="form-control" name="password" required>
+                                        <input type="password" class="form-control" name="${RequestParameters.password.name}" required>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.sex"/></b></label>
-                                        <input type="text" class="form-control" name="sex">
+                                        <input type="text" class="form-control" name="${RequestParameters.sex.name}">
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.address"/></b></label>
-                                        <input type="text" class="form-control" name="address">
+                                        <input type="text" class="form-control" name="${RequestParameters.address.name}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">

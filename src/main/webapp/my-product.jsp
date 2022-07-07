@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -64,7 +65,7 @@
                                 <td>${item.productCategory.text}</td>
                                 <td class="d-flex flex-column justify-content-between align-content-start">
                                     <form class="form-inline" action="${ActionNames.ProductRead.name}" method="post">
-                                        <input type="hidden" name="id" value="${item.id}"/>
+                                        <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                         <button type="submit" class="btn btn-outline-primary mb-1"><fmt:message key="button.update"/></button>
                                     </form>
                                     <button type="button" class="btn btn-outline-danger mb-1" data-toggle="modal"
@@ -76,7 +77,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.ProductEdit.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="card col-4">
@@ -145,25 +146,25 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label><b><fmt:message key="label.productName"/></b></label>
-                                                            <input type="text" class="form-control" name="name"
+                                                            <input type="text" class="form-control" name="${RequestParameters.productName.name}"
                                                                    value="${item.name}" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label><b><fmt:message
                                                                     key="label.productPrice"/></b></label>
-                                                            <input type="number" class="form-control" name="price"
+                                                            <input type="number" class="form-control" name="${RequestParameters.price.name}"
                                                                    value="${item.price}" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label><b><fmt:message key="label.productDescription"/></b></label>
-                                                            <textarea name="description" class="form-control"
+                                                            <textarea name="${RequestParameters.description.name}" class="form-control"
                                                                       rows="3">${item.description}</textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <label>
                                                                 <fmt:message key="label.city"/>
                                                             </label>
-                                                            <select name="city" class="form-control local"
+                                                            <select name="${RequestParameters.city.name}" class="form-control local"
                                                                     style="width: 100%">
                                                                 <c:forEach items="${cities}" var="city">
                                                                     <option value="${city.id}" <c:if
@@ -177,7 +178,7 @@
                                                             <label>
                                                                 <fmt:message key="label.productSize"/>
                                                             </label>
-                                                            <select name="productSize" class="form-control local"
+                                                            <select name="${RequestParameters.productSize.name}" class="form-control local"
                                                                     style="width: 100%">
                                                                 <c:forEach items="${productSizes}" var="productSize">
                                                                     <option value="${productSize.id}" <c:if
@@ -191,7 +192,7 @@
                                                             <label>
                                                                 <fmt:message key="label.productCategory"/>
                                                             </label>
-                                                            <select name="productCategory" class="form-control local"
+                                                            <select name="${RequestParameters.productCategory.name}" class="form-control local"
                                                                     style="width: 100%">
                                                                 <c:forEach items="${productCategories}"
                                                                            var="productCategory">
@@ -224,7 +225,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.ProductRemove.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"><fmt:message
                                                                 key="label.confirmDelete"/></h5>
@@ -286,21 +287,21 @@
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.productName"/></b></label>
-                                        <input type="text" class="form-control" name="name" required>
+                                        <input type="text" class="form-control" name="${RequestParameters.productName.name}" required>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.productPrice"/></b></label>
-                                        <input type="number" class="form-control" name="price" required>
+                                        <input type="number" class="form-control" name="${RequestParameters.price.name}" required>
                                     </div>
                                     <div class="form-group">
                                         <label><b><fmt:message key="label.productDescription"/></b></label>
-                                        <textarea name="description" class="form-control" rows="3"></textarea>
+                                        <textarea name="${RequestParameters.description.name}" class="form-control" rows="3"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             <fmt:message key="label.city"/>
                                         </label>
-                                        <select name="city" class="form-control local" style="width: 100%">
+                                        <select name="${RequestParameters.city.name}" class="form-control local" style="width: 100%">
                                             <c:forEach items="${cities}" var="city">
                                                 <option value="${city.id}">
                                                         ${city.text}
@@ -312,7 +313,7 @@
                                         <label>
                                             <fmt:message key="label.productSize"/>
                                         </label>
-                                        <select name="productSize" class="form-control local" style="width: 100%">
+                                        <select name="${RequestParameters.productSize.name}" class="form-control local" style="width: 100%">
                                             <c:forEach items="${productSizes}" var="productSize">
                                                 <option value="${productSize.id}">
                                                         ${productSize.text}
@@ -324,7 +325,7 @@
                                         <label>
                                             <fmt:message key="label.productCategory"/>
                                         </label>
-                                        <select name="productCategory" class="form-control local" style="width: 100%">
+                                        <select name="${RequestParameters.productCategory.name}" class="form-control local" style="width: 100%">
                                             <c:forEach items="${productCategories}" var="productCategory">
                                                 <optgroup label="${productCategory.text}">
                                                     <c:forEach items="${productCategory.children}" var="children">

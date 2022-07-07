@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -33,19 +34,19 @@
             </c:if>
 
             <form action="${ActionNames.AuthRegister.name}" method="post">
-                <input type="hidden" class="form-control" name="role" id="role" value="user" />
+                <input type="hidden" class="form-control" name="role" id="${RequestParameters.role.name}" value="user" />
 
                 <div class="form-group">
                     <label for="username"><b><fmt:message key="label.login"/></b></label>
-                    <input type="text" class="form-control" name="username" id="username" required>
+                    <input type="text" class="form-control" name="${RequestParameters.username.name}" id="username" required>
                 </div>
                 <div class="form-group">
                     <label for="password"><b><fmt:message key="label.password"/></b></label>
-                    <input type="password" class="form-control" name="password" id="password" required>
+                    <input type="password" class="form-control" name="${RequestParameters.password.name}" id="password" required>
                 </div>
                 <div class="form-group">
                     <label for="confirm"><b><fmt:message key="label.confirm"/></b></label>
-                    <input type="password" class="form-control" name="confirm" id="confirm" required>
+                    <input type="password" class="form-control" name="${RequestParameters.confirm.name}" id="confirm" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary"><fmt:message key="button.register"/></button>

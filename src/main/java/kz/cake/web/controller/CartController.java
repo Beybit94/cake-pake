@@ -8,6 +8,7 @@ import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.constants.LocaleCodes;
 import kz.cake.web.helpers.constants.PageNames;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.helpers.constants.SessionParameters;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.OrderDetailDto;
@@ -57,7 +58,7 @@ public class CartController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException, IllegalAccessException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         ProductDto product = productService.getById(id);
 
         DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusDraft.getName()).get();
@@ -89,7 +90,7 @@ public class CartController extends BaseController {
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws SQLException, IllegalAccessException, IOException, CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         Product product = productService.read(id);
 
         OrderDto draft = orderService.getDraft().orElse(new OrderDto());
@@ -114,7 +115,7 @@ public class CartController extends BaseController {
     }
 
     public void delete(HttpServletRequest request, HttpServletResponse response) throws CustomValidationException, IOException, ServletException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         OrderDetail orderDetail = orderDetailService.read(id);
         orderDetailService.delete(orderDetail);
 

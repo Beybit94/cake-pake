@@ -3,6 +3,7 @@ package kz.cake.web.controller;
 import kz.cake.web.controller.base.BaseController;
 import kz.cake.web.entity.ProductPhoto;
 import kz.cake.web.exceptions.CustomValidationException;
+import kz.cake.web.helpers.constants.RequestParameters;
 import kz.cake.web.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class ProductphotoController extends BaseController {
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws CustomValidationException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         ProductPhoto productPhoto = productPhotoService.read(id);
         productPhotoService.delete(productPhoto);
     }

@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -48,15 +49,15 @@
                                             </button>
                                         </div>
                                         <form method="post" action="${ActionNames.OrderAdd.name}">
-                                            <input type="hidden" name="id" value="${sessionScope.orderDraft.id}"/>
+                                            <input type="hidden" name="${RequestParameters.id.name}" value="${sessionScope.orderDraft.id}"/>
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label><fmt:message key="label.paymentType"/></label>
-                                                    <input type="text" class="form-control" value="${Cash}" name="payment" readonly/>
+                                                    <input type="text" class="form-control" value="${Cash}" name="${RequestParameters.payment.name}" readonly/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label><fmt:message key="label.address"/></label>
-                                                    <input type="text" class="form-control" value="${sessionScope.orderDraft.user.address}" name="address"/>
+                                                    <input type="text" class="form-control" value="${sessionScope.orderDraft.user.address}" name="${RequestParameters.address.name}"/>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

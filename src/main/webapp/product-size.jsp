@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -61,13 +62,13 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.SizeEdit.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label>
                                                                 <fmt:message key="label.code"/>
                                                             </label>
-                                                            <select name="code" class="form-control local" style="width: 100%">
+                                                            <select name="${RequestParameters.code.name}" class="form-control local" style="width: 100%">
                                                                 <c:forEach items="${locals}" var="local">
                                                                     <option value="${local.code}" <c:if test="${local.code == item.code}"> selected </c:if>>
                                                                             ${local.message}
@@ -88,7 +89,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="${ActionNames.SizeRemove.name}" method="post">
-                                                    <input type="hidden" name="id" value="${item.id}"/>
+                                                    <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"><fmt:message key="label.confirmDelete"/></h5>
                                                     </div>
@@ -116,7 +117,7 @@
                                         <label>
                                             <fmt:message key="label.code"/>
                                         </label>
-                                        <select name="code" class="form-control local" style="width: 100%">
+                                        <select name="${RequestParameters.code.name}" class="form-control local" style="width: 100%">
                                             <c:forEach items="${locals}" var="local">
                                                 <option value="${local.code}">
                                                         ${local.message}

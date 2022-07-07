@@ -7,9 +7,7 @@ import kz.cake.web.exceptions.CustomValidationException;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.StringUtils;
 import kz.cake.web.helpers.UrlRouter;
-import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.constants.PageNames;
-import kz.cake.web.helpers.constants.SessionParameters;
+import kz.cake.web.helpers.constants.*;
 import kz.cake.web.model.CurrentUserDto;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.ValidationErrorDto;
@@ -43,31 +41,31 @@ public class UserController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String username = request.getParameter("username");
+        String username = request.getParameter(RequestParameters.username.getName());
         userService.save(new User.Builder()
                 .name(username)
-                .password(StringUtils.encryptPassword(request.getParameter("password")))
-                .sex(request.getParameter("sex"))
-                .address(request.getParameter("address"))
+                .password(StringUtils.encryptPassword(request.getParameter(RequestParameters.password.getName())))
+                .sex(request.getParameter(RequestParameters.sex.getName()))
+                .address(request.getParameter(RequestParameters.address.getName()))
                 .active(true)
                 .build());
-        userService.setRole(username, "manager");
+        userService.setRole(username, LocaleCodes.roleManager.getName());
         list(request, response);
     }
 
     public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String username = request.getParameter("username");
+        String username = request.getParameter(RequestParameters.username.getName());
         Optional<User> user = userService.findUserByName(username);
         if (user.isPresent()) {
-            user.get().setAddress(request.getParameter("address"));
-            user.get().setSex(request.getParameter("sex"));
+            user.get().setAddress(request.getParameter(RequestParameters.address.getName()));
+            user.get().setSex(request.getParameter(RequestParameters.sex.getName()));
             userService.save(user.get());
         }
         list(request, response);
     }
 
     public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, CustomValidationException {
-        String username = request.getParameter("username");
+        String username = request.getParameter(RequestParameters.username.getName());
         Optional<User> user = userService.findUserByName(username);
         if (user.isPresent()) {
             userService.delete(user.get());
@@ -76,10 +74,10 @@ public class UserController extends BaseController {
     }
 
     public void reset(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String username = request.getParameter("username");
+        String username = request.getParameter(RequestParameters.username.getName());
         Optional<User> user = userService.findUserByName(username);
         if (user.isPresent()) {
-            String hash = StringUtils.encryptPassword(request.getParameter("password"));
+            String hash = StringUtils.encryptPassword(request.getParameter(RequestParameters.password.getName()));
             user.get().setPassword(hash);
             userService.save(user.get());
         }
@@ -87,7 +85,7 @@ public class UserController extends BaseController {
     }
 
     public void unblock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, IllegalAccessException {
-        String username = request.getParameter("username");
+        String username = request.getParameter(RequestParameters.username.getName());
         Optional<User> user = userService.findUserByName(username);
         if (user.isPresent()) {
             user.get().setActive(true);

@@ -7,10 +7,7 @@ import kz.cake.web.entity.OrderStatus;
 import kz.cake.web.entity.Product;
 import kz.cake.web.helpers.CurrentSession;
 import kz.cake.web.helpers.UrlRouter;
-import kz.cake.web.helpers.constants.ActionNames;
-import kz.cake.web.helpers.constants.LocaleCodes;
-import kz.cake.web.helpers.constants.PageNames;
-import kz.cake.web.helpers.constants.SessionParameters;
+import kz.cake.web.helpers.constants.*;
 import kz.cake.web.model.DictionaryDto;
 import kz.cake.web.model.OrderDetailDto;
 import kz.cake.web.model.OrderDto;
@@ -47,13 +44,13 @@ public class OrderController extends BaseController {
     }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws SQLException, IllegalAccessException, ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusNew.getName()).get();
 
         Order order = orderService.read(id);
         order.setOrderDate(new Timestamp(System.currentTimeMillis()));
-        order.setAddress(request.getParameter("address"));
-        order.setPaymentType(request.getParameter("payment"));
+        order.setAddress(request.getParameter(RequestParameters.address.getName()));
+        order.setPaymentType(request.getParameter(RequestParameters.payment.getName()));
         order.setOrderStatusId(status.getId());
         order.setActive(true);
         orderService.save(order);
@@ -65,7 +62,7 @@ public class OrderController extends BaseController {
     }
 
     public void complete(HttpServletRequest request, HttpServletResponse response) throws SQLException, IllegalAccessException, ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter(RequestParameters.id.getName()));
         DictionaryDto status = orderStatusService.findByCode(LocaleCodes.statusCompleted.getName()).get();
 
         Order order = orderService.read(id);

@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -134,25 +135,25 @@
                             </div>
                             <div class="form-group">
                                 <label><b><fmt:message key="label.productName"/></b></label>
-                                <input type="text" class="form-control" name="name"
+                                <input type="text" class="form-control" name="${RequestParameters.productName.name}"
                                        value="${item.name}" required>
                             </div>
                             <div class="form-group">
                                 <label><b><fmt:message
                                         key="label.productPrice"/></b></label>
-                                <input type="number" class="form-control" name="price"
+                                <input type="number" class="form-control" name="${RequestParameters.price.name}"
                                        value="${item.price}" required>
                             </div>
                             <div class="form-group">
                                 <label><b><fmt:message key="label.productDescription"/></b></label>
-                                <textarea name="description" class="form-control"
+                                <textarea name="${RequestParameters.description.name}" class="form-control"
                                           rows="3">${item.description}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>
                                     <fmt:message key="label.city"/>
                                 </label>
-                                <select name="city" class="form-control local"
+                                <select name="${RequestParameters.city.name}" class="form-control local"
                                         style="width: 100%">
                                     <c:forEach items="${cities}" var="city">
                                         <option value="${city.id}" <c:if
@@ -166,7 +167,7 @@
                                 <label>
                                     <fmt:message key="label.productSize"/>
                                 </label>
-                                <select name="productSize" class="form-control local"
+                                <select name="${RequestParameters.productSize.name}" class="form-control local"
                                         style="width: 100%">
                                     <c:forEach items="${productSizes}" var="productSize">
                                         <option value="${productSize.id}" <c:if
@@ -180,7 +181,7 @@
                                 <label>
                                     <fmt:message key="label.productCategory"/>
                                 </label>
-                                <select name="productCategory" class="form-control local"
+                                <select name="${RequestParameters.productCategory.name}" class="form-control local"
                                         style="width: 100%">
                                     <c:forEach items="${productCategories}"
                                                var="productCategory">

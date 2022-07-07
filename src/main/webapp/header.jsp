@@ -1,6 +1,7 @@
 <%@ page import="kz.cake.web.helpers.constants.PageNames" %>
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
 <%@ page import="kz.cake.web.helpers.constants.LocaleCodes" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -101,9 +102,9 @@
 
         <form action="${ActionNames.LanguagesChange.name}" method="post" class="form-inline" id="changeLangForm"
               style="margin-left: 5px;">
-            <input type="hidden" name="redirect" value="${param.get("redirect")}"/>
+            <input type="hidden" name="${RequestParameters.redirect.name}" value="${param.get("redirect")}"/>
             <div class="form-group">
-                <select class="form-control" name="code" onchange="javascript:$('#changeLangForm').submit()">
+                <select class="form-control" name="${RequestParameters.code.name}" onchange="javascript:$('#changeLangForm').submit()">
                     <c:choose>
                         <c:when test="${sessionScope.language eq LocaleCodes.languageEn.name}">
                             <option value="${LocaleCodes.languageEn.name}" selected><fmt:message

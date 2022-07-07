@@ -1,4 +1,5 @@
 <%@ page import="kz.cake.web.helpers.constants.ActionNames" %>
+<%@ page import="kz.cake.web.helpers.constants.RequestParameters" %>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -74,9 +75,9 @@
                            <c:choose>
                                <c:when test="${sessionScope.user != null && sessionScope.user.roles.contains('user')}">
                                    <fieldset>
-                                       <input type="hidden" name="id" value="${item.id}"/>
+                                       <input type="hidden" name="${RequestParameters.id.name}" value="${item.id}"/>
                                        <div class="form-group">
-                                           <textarea name="comment" class="form-control" rows="2" placeholder="${Comment}"></textarea>
+                                           <textarea name="${RequestParameters.comment.name}" class="form-control" rows="2" placeholder="${Comment}"></textarea>
                                        </div>
                                        <button type="submit" class="btn btn-primary"><fmt:message key="button.send"/></button>
                                    </fieldset>
